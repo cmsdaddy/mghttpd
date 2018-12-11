@@ -158,7 +158,6 @@ def show_ems_advance_options(request):
         os.system("cp %s %s" % (default_const_config_file, default_config_file))
 
     config_file = default_config_file
-
     context = dict()
     context['request'] = request
     context['ems'] = load_ems_config_file(config_file)
