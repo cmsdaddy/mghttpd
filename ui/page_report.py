@@ -273,7 +273,7 @@ def show_system_report(request):
     return render(request, "系统报表.html", context=context)
 
 #报表导出
-def system_report_export():
+def system_report_export(request):
     response = HttpResponse(content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment;filename=BMS报表.excel'
 
@@ -283,7 +283,6 @@ def system_report_export():
     style_heading = xlwt.easyxf("""
             font:
                 name Arial,
-                colour_index whit,
                 bold on,
                 height 0xA0;
             align:
@@ -291,8 +290,7 @@ def system_report_export():
                 vert center,
                 horiz center;
             pattern:
-                pattern solid,
-                fore-colour 0x19;
+                pattern solid;
             borders:
                 left THIN,
                 right THIN,
@@ -301,22 +299,24 @@ def system_report_export():
             """)
 
     sheet.write(0, 0, 'bmsid', style_heading)
-    sheet.write(0, 1, '充电次数', style_heading)
-    sheet.write(0, 2, '放电次数', style_heading)
-    sheet.write(0, 3, '总充电电量', style_heading)
-    sheet.write(0, 4, '总放电电量', style_heading)
-    sheet.write(0, 5, '最高电池电压', style_heading)
-    sheet.write(0, 6, '最低电池电压', style_heading)
+    sheet.write(0, 1, 'bmsid', style_heading)
+    sheet.write(0, 2, '充电次数', style_heading)
+    sheet.write(0, 3, '放电次数', style_heading)
+    sheet.write(0, 4, '总充电电量', style_heading)
+    sheet.write(0, 5, '总放电电量', style_heading)
+    sheet.write(0, 6, '最高电池电压', style_heading)
+    sheet.write(0, 7, '最低电池电压', style_heading)
 
     data_row = 1
     for i in BMSYaoce.objects.all():
         sheet.write(data_row, 0, i.bmsid)
-        sheet.write(data_row, 1, i.bmsid)
+        sheet.write(data_row, 1, i.tsp)
         sheet.write(data_row, 2, i.bmsid)
-        sheet.write(data_row, 3, i.total_charged_kwh)
-        sheet.write(data_row, 4, i.total_discharged_kwh)
-        sheet.write(data_row, 5, i.bat_max_voltage)
-        sheet.write(data_row, 6, i.bat_min_voltage)
+        sheet.write(data_row, 3, i.bmsid)
+        sheet.write(data_row, 4, i.total_charged_kwh)
+        sheet.write(data_row, 5, i.total_discharged_kwh)
+        sheet.write(data_row, 6, i.bat_max_voltage)
+        sheet.write(data_row, 7, i.bat_min_voltage)
 
         data_row += 1
 
@@ -328,9 +328,3 @@ def system_report_export():
     response.write(output.getvalue())
 
     return response
-
-
-
-
-
-
