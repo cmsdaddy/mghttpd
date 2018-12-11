@@ -299,7 +299,7 @@ def system_report_export(request):
             """)
 
     sheet.write(0, 0, 'bmsid', style_heading)
-    sheet.write(0, 1, 'bmsid', style_heading)
+    sheet.write(0, 1, '时间', style_heading)
     sheet.write(0, 2, '充电次数', style_heading)
     sheet.write(0, 3, '放电次数', style_heading)
     sheet.write(0, 4, '总充电电量', style_heading)
