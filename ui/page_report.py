@@ -309,6 +309,7 @@ def system_report_export(request):
 
     data_row = 1
     for i in BMSYaoce.objects.all():
+        # tsp_time = i.tsp.strftime('%Y-%M-%D-%H-%M-%S')
         sheet.write(data_row, 0, i.bmsid)
         sheet.write(data_row, 1, i.tsp)
         sheet.write(data_row, 2, i.bmsid)
