@@ -10,6 +10,7 @@ import ui.api as api
 import ui.systerecords as sysrecords
 import xlwt
 from io import BytesIO
+from django.utils import timezone
 
 
 def select_datetime_range_report(bmsid, begin):
@@ -273,10 +274,11 @@ def show_system_report(request):
     return render(request, "系统报表.html", context=context)
 
 #报表导出
-def system_report_export(request):
+def system_report_export(request,start_times,end_times):
+    excel_name = str(datetime.datetime.now().date()) + 'report.xls'
     response = HttpResponse(content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment;filename=BMS报表.excel'
-
+    # response['Content-Disposition'] = 'attachment;filename=BMS.xls'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(excel_name)
     wb = xlwt.Workbook(encoding='utf8')
     sheet = wb.add_sheet('BMS报表-sheet')
 
@@ -300,26 +302,41 @@ def system_report_export(request):
 
     sheet.write(0, 0, 'bmsid', style_heading)
     sheet.write(0, 1, '时间', style_heading)
-    sheet.write(0, 2, '充电次数', style_heading)
-    sheet.write(0, 3, '放电次数', style_heading)
-    sheet.write(0, 4, '总充电电量', style_heading)
-    sheet.write(0, 5, '总放电电量', style_heading)
-    sheet.write(0, 6, '最高电池电压', style_heading)
-    sheet.write(0, 7, '最低电池电压', style_heading)
+    sheet.write(0, 2, '总充电电量/kwh', style_heading)
+    sheet.write(0, 3, '总放电电量/kwh', style_heading)
+    sheet.write(0, 4, '最高电池电压/V', style_heading)
+    sheet.write(0, 5, '最低电池电压/V', style_heading)
+    sheet.write(0, 6, '充电次数(总计)', style_heading)
+    sheet.write(0, 7, '放电次数(总计)', style_heading)
 
     data_row = 1
+    current_list = list()
     for i in BMSYaoce.objects.all():
         # tsp_time = i.tsp.strftime('%Y-%M-%D-%H-%M-%S')
         sheet.write(data_row, 0, i.bmsid)
-        sheet.write(data_row, 1, i.tsp)
-        sheet.write(data_row, 2, i.bmsid)
-        sheet.write(data_row, 3, i.bmsid)
-        sheet.write(data_row, 4, i.total_charged_kwh)
-        sheet.write(data_row, 5, i.total_discharged_kwh)
-        sheet.write(data_row, 6, i.bat_max_voltage)
-        sheet.write(data_row, 7, i.bat_min_voltage)
+        sheet.write(data_row, 1, str(i.tsp))
+        sheet.write(data_row, 2, i.total_charged_kwh)
+        sheet.write(data_row, 3, i.total_discharged_kwh)
+        sheet.write(data_row, 4, '%.3f'%(i.bat_max_voltage/1000.0))
+        sheet.write(data_row, 5, '%.3f'%(i.bat_min_voltage/1000.0))
+
 
         data_row += 1
+
+        current_list.append(i.current)
+
+    count_charge = 0
+    count_discharge = 0
+    for j in current_list:
+        if j > 0 and current_list[current_list.index(j) + 1] > 0 and current_list[current_list.index(j) + 2] < 0:
+            count_charge += 1
+
+        if j < 0 and current_list[current_list.index(j) + 1] < 0 and current_list[current_list.index(j) + 2] > 0:
+            count_discharge += 1
+
+    sheet.write(1, 6, count_charge)
+    sheet.write(1, 7, count_discharge)
+
 
     #写出到IO
     output = BytesIO()

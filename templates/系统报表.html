@@ -3,6 +3,17 @@
 <head>
     <title>首页</title>
     {% include "base-界面head.html" %}
+    <script>
+        $(document).ready(function () {
+            $("#time_check").click(function () {
+                var start_times = document.getElementById("start_time").value;
+                var end_times = document.getElementById("end_time").value;
+                console.log(start_times,end_times);
+                var url = '/report/days/' + start_times + '/' + end_times + '/';
+                document.getElementById('export_excel').href = url
+            });
+        })
+    </script>
 </head>
 <body>
     {% include "base-顶部标题栏.html" %}
@@ -74,29 +85,35 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <h5>选择需导出的报表时间</h5>
+                <h5>选择需导出的报表时间范围</h5>
+                <hr>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <form class="form-inline">
                     <div class="form-group">
-                        <input type="date" value="2018-01-01" name="start-time" class="form-control">
+                        <input type="date" id="start_time" value="2018-01-01" class="form-control">
                     </div>
                     <div class="form-group">
                         <p class="form-control-static">-</p>
                     </div>
                     <div class="form-group">
-                        <input type="date" class="form-control" name="end-time" value="2018-01-01" >
+                        <input type="date" id="end_time" class="form-control" value="2018-01-01" >
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" id="time_check">确定</button>
                     </div>
                 </form>
             </div>
         </div>
-        <br>
+        <hr>
         <div class="row">
+{#            {% if start_times and end_times %}#}
             <div class="col-sm-offset-4 col-sm-4">
-                <a href="/report/days/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">导出报表</span></a>
+                <a id="export_excel" href="/report/days/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">导出报表</span></a>
             </div>
+{#            {% endif %}#}
 {#            <div class="col-sm-offset-1 col-sm-2">#}
 {#                <a href="/report/weeks/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">按周导出</span></a>#}
 {#            </div>#}
