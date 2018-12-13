@@ -275,6 +275,7 @@ def show_system_report(request):
 
 #报表导出
 def system_report_export(request,start_times,end_times):
+    # print(start_times,end_times)
     excel_name = str(datetime.datetime.now().date()) + 'report.xls'
     response = HttpResponse(content_type='application/vnd.ms-excel')
     # response['Content-Disposition'] = 'attachment;filename=BMS.xls'
@@ -319,7 +320,6 @@ def system_report_export(request,start_times,end_times):
         sheet.write(data_row, 3, i.total_discharged_kwh)
         sheet.write(data_row, 4, '%.3f'%(i.bat_max_voltage/1000.0))
         sheet.write(data_row, 5, '%.3f'%(i.bat_min_voltage/1000.0))
-
 
         data_row += 1
 
