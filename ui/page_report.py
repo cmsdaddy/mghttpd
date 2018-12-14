@@ -326,6 +326,8 @@ def system_report_export(request,start_times,end_times):
             sheet.write(data_row, 3, i.total_discharged_kwh)
             sheet.write(data_row, 4, '%.3f'%(i.bat_max_voltage/1000.0))
             sheet.write(data_row, 5, '%.3f'%(i.bat_min_voltage/1000.0))
+        else:
+            pass
 
         data_row += 1
 
@@ -336,9 +338,13 @@ def system_report_export(request,start_times,end_times):
     for j in current_list:
         if j > 0 and current_list[current_list.index(j) + 1] > 0 and current_list[current_list.index(j) + 2] < 0:
             count_charge += 1
+        else:
+            pass
 
         if j < 0 and current_list[current_list.index(j) + 1] < 0 and current_list[current_list.index(j) + 2] > 0:
             count_discharge += 1
+        else:
+            pass
 
     sheet.write(1, 6, count_charge)
     sheet.write(1, 7, count_discharge)
