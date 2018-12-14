@@ -4,6 +4,7 @@ from ui.models import *
 from django.db.models import *
 import os
 import datetime
+# from datetime import datetime
 import ui.mg as mg
 import random
 import ui.api as api
@@ -312,14 +313,19 @@ def system_report_export(request,start_times,end_times):
 
     data_row = 1
     current_list = list()
+    #格式化时间
+    start_times = datetime.datetime.strptime(start_times,'%Y-%m-%d')
+    end_times = datetime.datetime.strptime(end_times,'%Y-%m-%d')
+    start_times = datetime.datetime(year=start_times.year,month=start_times.month,day=start_times.day)
+    end_times = datetime.datetime(year=end_times.year,month=end_times.month,day=end_times.day)
     for i in BMSYaoce.objects.all():
-        # tsp_time = i.tsp.strftime('%Y-%M-%D-%H-%M-%S')
-        sheet.write(data_row, 0, i.bmsid)
-        sheet.write(data_row, 1, str(i.tsp))
-        sheet.write(data_row, 2, i.total_charged_kwh)
-        sheet.write(data_row, 3, i.total_discharged_kwh)
-        sheet.write(data_row, 4, '%.3f'%(i.bat_max_voltage/1000.0))
-        sheet.write(data_row, 5, '%.3f'%(i.bat_min_voltage/1000.0))
+        if i.tsp > start_times and i.tsp < end_times:
+            sheet.write(data_row, 0, i.bmsid)
+            sheet.write(data_row, 1, str(i.tsp))
+            sheet.write(data_row, 2, i.total_charged_kwh)
+            sheet.write(data_row, 3, i.total_discharged_kwh)
+            sheet.write(data_row, 4, '%.3f'%(i.bat_max_voltage/1000.0))
+            sheet.write(data_row, 5, '%.3f'%(i.bat_min_voltage/1000.0))
 
         data_row += 1
 
@@ -336,7 +342,6 @@ def system_report_export(request,start_times,end_times):
 
     sheet.write(1, 6, count_charge)
     sheet.write(1, 7, count_discharge)
-
 
     #写出到IO
     output = BytesIO()
