@@ -159,85 +159,85 @@ def report_heap_day(request, heap_id, ctx):
 
 
 # 输出一周内的报告
-def report_heap_week(request, heap_id, ctx):
-    records_list = list()
-    context = dict(**ctx)
-    context['records_list'] = records_list
-    weekname = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期天']
-
-    objs = BMSYaoce.objects.filter(bmsid=heap_id).all()
-    x_now = datetime.datetime.now()
-    now = datetime.datetime(year=x_now.year, month=x_now.month, day=x_now.day,
-                            hour=x_now.hour, minute=0, second=0, microsecond=0)
-    begin = now - datetime.timedelta(days=7)
-
-    days = list()
-    charged = list()
-    discharged = list()
-
-    for t in range(7):
-        #report = select_datetime_range_report(heap_id, begin)
-        end = datetime.timedelta(days=1) + begin
-        records = BMSYaoce.objects.filter(tsp__gte=begin, tsp__lt=end)
-
-        # ======================================
-        x = [record.total_charged_kwh for record in records]
-        try:
-            charged.append(max(x) - min(x))
-        except:
-            charged.append(0)
-
-        # ======================================
-        x = [record.total_discharged_kwh for record in records]
-        try:
-            discharged.append(max(x) - min(x))
-        except:
-            discharged.append(0)
-
-        days.append(weekname[begin.weekday()] + "\n%02d-%02d" % (begin.month, begin.day))
-        begin += datetime.timedelta(days=1)
-
-    context['days'] = days
-    context['charged_kwh'] = [random.randrange(10, 100) for _ in range(7)]
-    context['discharged_kwh'] = [random.randrange(10, 100) for _ in range(7)]
-    return render(request, "bms/堆报表-本周.html", context=context)
+# def report_heap_week(request, heap_id, ctx):
+#     records_list = list()
+#     context = dict(**ctx)
+#     context['records_list'] = records_list
+#     weekname = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期天']
+#
+#     objs = BMSYaoce.objects.filter(bmsid=heap_id).all()
+#     x_now = datetime.datetime.now()
+#     now = datetime.datetime(year=x_now.year, month=x_now.month, day=x_now.day,
+#                             hour=x_now.hour, minute=0, second=0, microsecond=0)
+#     begin = now - datetime.timedelta(days=7)
+#
+#     days = list()
+#     charged = list()
+#     discharged = list()
+#
+#     for t in range(7):
+#         #report = select_datetime_range_report(heap_id, begin)
+#         end = datetime.timedelta(days=1) + begin
+#         records = BMSYaoce.objects.filter(tsp__gte=begin, tsp__lt=end)
+#
+#         # ======================================
+#         x = [record.total_charged_kwh for record in records]
+#         try:
+#             charged.append(max(x) - min(x))
+#         except:
+#             charged.append(0)
+#
+#         # ======================================
+#         x = [record.total_discharged_kwh for record in records]
+#         try:
+#             discharged.append(max(x) - min(x))
+#         except:
+#             discharged.append(0)
+#
+#         days.append(weekname[begin.weekday()] + "\n%02d-%02d" % (begin.month, begin.day))
+#         begin += datetime.timedelta(days=1)
+#
+#     context['days'] = days
+#     context['charged_kwh'] = [random.randrange(10, 100) for _ in range(7)]
+#     context['discharged_kwh'] = [random.randrange(10, 100) for _ in range(7)]
+#     return render(request, "bms/堆报表-本周.html", context=context)
 
 
 # 输出一个月内的报告
-def report_heap_month(request, heap_id, ctx):
-    records_list = list()
-    context = dict(**ctx)
-    context['records_list'] = records_list
-
-    x_now = datetime.datetime.now()
-    now = datetime.datetime(year=x_now.year, month=x_now.month, day=x_now.day,
-                            hour=x_now.hour, minute=0, second=0, microsecond=0)
-    begin = now - datetime.timedelta(months=1)
-
-    days = list()
-    charged = list()
-    discharged = list()
-
-    for t in range(30):
-        end = datetime.timedelta(days=1 + begin)
-        records = BMSYaoce.objects.filter(tsp__gte=begin, tsp__lt=end)
-
-        x = [record.total_charged_kwh for record in records]
-        try:
-            charged.append(max(x) - min(x))
-        except:
-            charged.append(0)
-
-        x = [record.total_discharged_kwh for record in records]
-        try:
-            discharged.append(max(x) - min(x))
-        except:
-            discharged.append(0)
-
-        begin += datetime.timedelta(days=1)
-
-
-    return render(request, "bms/堆报表-本月.html", context=context)
+# def report_heap_month(request, heap_id, ctx):
+#     records_list = list()
+#     context = dict(**ctx)
+#     context['records_list'] = records_list
+#
+#     x_now = datetime.datetime.now()
+#     now = datetime.datetime(year=x_now.year, month=x_now.month, day=x_now.day,
+#                             hour=x_now.hour, minute=0, second=0, microsecond=0)
+#     begin = now - datetime.timedelta(months=1)
+#
+#     days = list()
+#     charged = list()
+#     discharged = list()
+#
+#     for t in range(30):
+#         end = datetime.timedelta(days=1 + begin)
+#         records = BMSYaoce.objects.filter(tsp__gte=begin, tsp__lt=end)
+#
+#         x = [record.total_charged_kwh for record in records]
+#         try:
+#             charged.append(max(x) - min(x))
+#         except:
+#             charged.append(0)
+#
+#         x = [record.total_discharged_kwh for record in records]
+#         try:
+#             discharged.append(max(x) - min(x))
+#         except:
+#             discharged.append(0)
+#
+#         begin += datetime.timedelta(days=1)
+#
+#
+#     return render(request, "bms/堆报表-本月.html", context=context)
 
 #系统报表
 def show_system_report(request):

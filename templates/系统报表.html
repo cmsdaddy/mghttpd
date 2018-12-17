@@ -5,12 +5,14 @@
     {% include "base-界面head.html" %}
     <script>
         $(document).ready(function () {
+            $("#export_excel").attr('disabled',true).css('pointer-events','none');
             $("#time_check").click(function () {
                 var start_times = document.getElementById("start_time").value;
                 var end_times = document.getElementById("end_time").value;
                 console.log(start_times,end_times);
                 var url = '/report/days/' + start_times + '/' + end_times + '/';
-                document.getElementById('export_excel').href = url
+                document.getElementById('export_excel').href = url;
+                $("#export_excel").attr('disabled',false).css('pointer-events','');
             });
         })
     </script>
@@ -20,6 +22,7 @@
 
     <div class="container">
         {% include "base-顶级选项卡.html" %}
+        <br>
         <table class="table table-bordered">
             <caption>系统运行报表</caption>
             <tr>
@@ -73,20 +76,25 @@
 {#                </div>#}
 {#            </div>#}
 {#        </div>#}
-
-
+        <hr>
+        <br>
+        <br>
         <div class="row">
             <div class="col-sm-12">
-                <h5>U盘插入位置指导</h5>
+                <h5>报表导出指导</h5>
                 <hr>
-                <p><kbd>*</kbd> 当检测到插入U盘后，下面的`导出按钮将会可操作.`</p>
-                <p><kbd>*</kbd> 导出的文件名格式为: 'YYYY-mm-DD-系统报告.xls', U盘中原有同名文件将会被替换.</p>
+                    <p><kbd>*</kbd> 在下方选择需要导出报表的时间范围</p>
+                    <p><kbd>*</kbd> 选择好时间范围后点击确定按钮，再点击下方导出报表按钮</p>
+{#                <p><kbd>*</kbd> 当检测到插入U盘后，下面的`导出按钮将会可操作.`</p>#}
+{#                <p><kbd>*</kbd> 导出的文件名格式为: 'YYYY-mm-DD-系统报告.xls', U盘中原有同名文件将会被替换.</p>#}
             </div>
         </div>
+        <hr>
+        <br>
         <div class="row">
             <div class="col-sm-12">
                 <h5>选择需导出的报表时间范围</h5>
-                <hr>
+                <br>
             </div>
         </div>
         <div class="row">
@@ -107,8 +115,9 @@
                 </form>
             </div>
         </div>
-        <hr>
-        <div class="row">
+        <br>
+
+        <div class="row" style="margin-top: 150px">
 {#            {% if start_times and end_times %}#}
             <div class="col-sm-offset-4 col-sm-4">
                 <a id="export_excel" href="/report/days/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">导出报表</span></a>
