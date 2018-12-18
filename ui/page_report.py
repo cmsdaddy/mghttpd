@@ -12,6 +12,8 @@ import ui.systerecords as sysrecords
 import xlwt
 from io import BytesIO
 from django.utils import timezone
+from time import sleep
+import psutil
 
 
 def select_datetime_range_report(bmsid, begin):
@@ -271,12 +273,24 @@ def show_system_report(request):
     #
     # context['running_days'] = "".join(running_total)
     # context['startup_tsp'] = startup.etsp_begin
-
+    # 检测所有驱动器
+    usb_state = 0
+    for item in psutil.disk_partitions():
+        if 'removable' in item.opts:
+            usb_state = 1
+            print('发现USB驱动')
+            break
+        else:
+            usb_state = 0
+            print('未发现USB')
+            continue
+    context['usb_state'] = usb_state
     return render(request, "系统报表.html", context=context)
+
 
 #报表导出
 def system_report_export(request,start_times,end_times):
-    # print(start_times,end_times)
+
     excel_name = str(datetime.datetime.now().date()) + 'report.xls'
     response = HttpResponse(content_type='application/vnd.ms-excel')
     # response['Content-Disposition'] = 'attachment;filename=BMS.xls'
