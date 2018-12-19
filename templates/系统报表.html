@@ -83,7 +83,7 @@
                 <hr>
                     <p><kbd>*</kbd> 点击下方按钮检测U盘是否插入</p>
                     <a id="usb_check" class="btn-default btn" href="/report/system/" style="margin-bottom: 0px">检测U盘</a>
-                    <span style="color:red;margin-left: 10px">{% if usb_state %}{{ 'U盘已插入' }}{% endif %}</span>
+                    <span style="color:red;margin-left: 10px">{% if usb_state %}{{ 'U盘已插入' }}{% else %}{{ '未检测到U盘' }}{% endif %}</span>
                     <p style="margin-top: 10px"><kbd>*</kbd> 在下方选择需要导出报表的时间范围</p>
                     <p><kbd>*</kbd> 选择好时间范围后点击确定按钮，再点击下方导出报表按钮</p>
 {#                <p><kbd>*</kbd> 当检测到插入U盘后，下面的`导出按钮将会可操作.`</p>#}
@@ -130,8 +130,7 @@
 {#                <a href="/report/months/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">按月导出</span></a>#}
 {#            </div>#}
         </div>
-        {% include 'base-底部彩条.html' %}
     </div>
-
+{% include 'base-底部彩条.html' %}
 </body>
 </html>

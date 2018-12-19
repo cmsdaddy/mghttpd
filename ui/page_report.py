@@ -274,8 +274,9 @@ def show_system_report(request):
     # context['startup_tsp'] = startup.etsp_begin
     # 检测所有驱动器
     usb_state = 0
-    sdb_devices = map(os.path.realpath, glob('sys/block/sd*'))
-    for dev in sdb_devices:
+    # sdb_devices = map(os.path.realpath, glob('sys/block/sd*'))
+    sdb_devices = map(os.path.realpath, glob("/sys/block/*"))
+    for dev in list(sdb_devices):
         if 'usb' in dev.split('/')[5]:
             usb_state = 1
             print('发现U盘')
@@ -285,6 +286,7 @@ def show_system_report(request):
             print('未发现U盘')
             continue
     context['usb_state'] = usb_state
+    print(usb_state)
     return render(request, "系统报表.html", context=context)
 
 
