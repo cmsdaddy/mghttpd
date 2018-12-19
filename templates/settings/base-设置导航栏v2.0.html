@@ -70,6 +70,9 @@
     <a href="/settings/bms/">
         <div class="sideitem{% if request.path == '/settings/bms/' %} active{% endif %}">* BMS参数</div>
     </a>
+    <a href="/settings/ems/">
+        <div class="sideitem{% if request.path == '/settings/ems/' %} active{% endif %}">* EMS参数</div>
+    </a>
     <a href="/settings/battery/">
         <div class="sideitem{% if request.path == '/settings/battery/' %} active{% endif %}">*  电池及pack参数</div>
     </a>
@@ -126,7 +129,6 @@
         <span class="glyphicon glyphicon-refresh"></span>
         同步参数
     </button>
-    <hr>
 
     <a class="btn btn-block btn-success" id="id_commit">保存参数</a>
     <a class="btn btn-block btn-primary">返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</a>

@@ -12,8 +12,7 @@ import ui.systerecords as sysrecords
 import xlwt
 from io import BytesIO
 from django.utils import timezone
-from time import sleep
-import psutil
+from glob import glob
 
 
 def select_datetime_range_report(bmsid, begin):
@@ -275,14 +274,15 @@ def show_system_report(request):
     # context['startup_tsp'] = startup.etsp_begin
     # 检测所有驱动器
     usb_state = 0
-    for item in psutil.disk_partitions():
-        if 'removable' in item.opts:
+    sdb_devices = map(os.path.realpath, glob('sys/block/sd*'))
+    for dev in sdb_devices:
+        if 'usb' in dev.split('/')[5]:
             usb_state = 1
-            print('发现USB驱动')
+            print('发现U盘')
             break
         else:
             usb_state = 0
-            print('未发现USB')
+            print('未发现U盘')
             continue
     context['usb_state'] = usb_state
     return render(request, "系统报表.html", context=context)
