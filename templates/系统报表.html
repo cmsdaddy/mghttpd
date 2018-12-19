@@ -20,9 +20,13 @@
 <body>
     {% include "base-顶部标题栏.html" %}
 
-    <div class="container">
+    <div class="container-fluid">
         {% include "base-顶级选项卡.html" %}
         <br>
+
+        <div class="row">
+        <div class="col-xs-offset-1 col-xs-10">
+
         <table class="table table-bordered">
             <caption>系统运行报表</caption>
             <tr>
@@ -130,6 +134,8 @@
 {#                <a href="/report/months/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">按月导出</span></a>#}
 {#            </div>#}
         </div>
+        </div>
+    </div>
     </div>
 {% include 'base-底部彩条.html' %}
 </body>
