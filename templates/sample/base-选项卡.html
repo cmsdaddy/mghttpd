@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-lg-12">
+        <ul class="nav nav-tabs">
+
+            <li role="presentation"><a href="/">
+                返回 <span class="glyphicon glyphicon-share-alt"></span></a>
+            </li>
+            <li role="presentation" {% if request.path == "/sample/location/" %}class="active"{% endif %}>
+                <a href="/sample/location/">位置采样信息{% if not request.user.is_superuser %}(只读){% endif %}</a>
+            </li>
+
+            {% if request.user.is_superuser %}
+                <li role="presentation" {% if request.path == "/sample/analog/" %}class="active"{% endif %}>
+                    <a href="/sample/analog/">模拟量采样信息</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

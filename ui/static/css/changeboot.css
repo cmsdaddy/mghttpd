@@ -1,0 +1,6 @@
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+  background-color: #5d9fe8;
+  border-color: #337ab7;
+}

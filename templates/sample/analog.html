@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "base-界面head.html" %}
+    <title>电池堆信息总览</title>
+</head>
+<body>
+    {% include "base-顶部标题栏.html" %}
+
+    <div class="container">
+        {% include "sample/base-选项卡.html" %}
+<br>
+        <br>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">集装箱位置1温度</span>
+                                <input type="text" value="{{ sample.温度采集1 }}" class="form-control text-center">
+                                <span class="input-group-addon">℃</span>
+                            </div>
+                        </div>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">集装箱位置2温度</span>
+                                    <input type="text" value="{{ sample.温度采集2 }}" class="form-control text-center">
+                                    <span class="input-group-addon">℃</span>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">集装箱位置3温度</span>
+                                <input type="text" value="{{ sample.温度采集3 }}" class="form-control text-center">
+                                <span class="input-group-addon">℃</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">集装箱位置4温度</span>
+                                <input type="text" value="{{ sample.温度采集4 }}" class="form-control text-center">
+                                <span class="input-group-addon">℃</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <hr>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+    <script src="/static/js/bootstrap.js"></script>
+</body>
+</html>
