@@ -1,0 +1,2 @@
+fullname,shortname,path,k,b,mask,dot,unit,type,records
+%d#堆-%d#组-单体电池SOC,单体电池SOC,/BMS数据块/%d/BCMU单体电池SOC/%d/单体电池SOC,1,0,0x7fffffff,0,%,数字数组,1

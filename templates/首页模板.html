@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>首页</title>
+    {% include "base-界面head.html" %}
+    <script>
+        $(document).ready(function () {
+            $('.carousel').carousel({
+              interval: 5000
+            });
+        })
+    </script>
+    <style>
+        .item img {
+            max-height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    {% include "base-顶部标题栏.html" %}
+
+    <div class="container-fluid">
+        {% include "base-顶级选项卡.html" %}
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-10 text-center">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+                  </ol>
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                      <img src="/static/imgs/carousel/1_580x380.jpg">
+                    </div>
+                    <div class="item">
+                      <img src="/static/imgs/carousel/2_580x380.jpg">
+                    </div>
+                    <div class="item">
+                      <img src="/static/imgs/carousel/3_580x380.jpg">
+                    </div>
+                    <div class="item">
+                      <img src="/static/imgs/carousel/1_580x380.jpg">
+                    </div>
+                    <div class="item">
+                      <img src="/static/imgs/carousel/4_580x380.jpg">
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'base-底部彩条.html' %}
+</body>
+</html>

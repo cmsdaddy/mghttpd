@@ -1,0 +1,34 @@
+初始化
+========
+    请求格式:
+    {
+        "cmd": "init",
+        "rid": [int],
+        "level": 1,
+
+        "data": {}
+    }
+    正常应答格式:
+    {
+        "cmd": "ping",
+        "rid": [int],
+        "level": 1,
+
+        "status": "ok",
+        "atsp": [datetime],
+        "btsp": [datetime],
+        "data": {}
+    }
+    异常应答格式:
+    {
+        "cmd": "ping",
+        "rid": [int],
+        "level": 1,
+
+        "status": "error",
+        "code": [int],
+        "reason": [string],
+        "atsp": [datetime],
+        "btsp": [datetime],
+        "data": null
+    }

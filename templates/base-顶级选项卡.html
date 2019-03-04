@@ -1,0 +1,81 @@
+{% load userfileter %}
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10">
+        <ul class="nav nav-tabs">
+            <li role="presentation"{% if request.path == '/' %} class="active"{% endif %}><a href="/"><strong>{{ bms_name }}总览</strong></a></li>
+
+{#            <li role="presentation">#}
+{#                <a href="/ems/">能量管理系统</a>#}
+{#            </li>#}
+
+            {% if pcs_count > 1 %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">储能变流器<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        {% for pcs_id in pcs_id_list %}
+                        <li role="presentation"><a href="/pcs/{{ pcs_id }}/">{{ pcs_id | add:"1" }}#储能变流器</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% elif pcs_count == 1 %}
+                <li role="presentation"><a href="/pcs/0/">储能变流器</a></li>
+            {% endif %}
+
+            {% if bms_count > 1 %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">电池堆信息<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        {% for bms_id in bms_id_list %}
+                        <li role="presentation"><a href="/bms/{{ bms_id }}/">{{ bms_id | add:"1" }}#电池</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% elif bms_count == 1 %}
+                <li role="presentation"><a href="/bms/0/">电池</a></li>
+            {% endif %}
+
+            {% if air_count %}<li role="presentation"{% if request.path == '/air-conditioner/' %} class="active"{% endif %}>
+                <a href="/air-conditioner/">
+                    空调
+                </a>
+            </li>{% endif %}
+
+            <li role="presentation">
+                <a href="/sample/location/">采样信息</a>
+            </li>
+            <!--li role="presentation"{% if request.path == '/firecontrol/' %} class="active"{% endif %}>
+                <a href="/ems/">
+                    <span class="glyphicon glyphicon-fire">-消防</span>
+                </a>
+            </li>
+            <li role="presentation"{% if request.path == '/video/' %} class="active"{% endif %}>
+                <a href="/emss/">
+                    <span class="glyphicon glyphicon-facetime-video">-视频监控</span>
+                </a>
+            </li-->
+
+             <li role="presentation" {%if request.path|have:'/history/' %}class="active"{% endif %}>
+                <a href="/history/current/all/">
+                    故障/事件
+                </a>
+            </li>
+
+            <li role="presentation"{% if request.path == '/report/system/' %} class="active"{% endif %}>
+                <a href="/report/system/">
+                    运行报表
+                </a>
+            </li>
+
+            <li role="presentation"{% if request.path == '/system/info/' %} class="active"{% endif %}>
+                <a href="{{ request.path }}">
+                    其他设备
+                </a>
+            </li>
+            <li role="presentation"{% if request.path == '/system/info/' %} class="active"{% endif %}>
+                <a href="{{ request.path }}">
+                    功率曲线
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

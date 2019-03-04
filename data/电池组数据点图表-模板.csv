@@ -1,0 +1,3 @@
+fullname,shortname,path,k,b,mask,dot,unit,type,records
+%d#堆-%d#组-组端电压,组端电压,/BMS数据块/%d/BCMU遥测信息/%d/组端电压,1,0,0x7fffffff,0,V,数字,1
+%d#堆-%d#组-组端电流,组端电流,/BMS数据块/%d/BCMU遥测信息/%d/组端电流,1,0,0x7fffffff,0,A,数字,1

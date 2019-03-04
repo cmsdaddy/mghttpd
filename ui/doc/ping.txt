@@ -1,0 +1,38 @@
+测试
+========
+    请求格式:
+    {
+        "cmd": "ping",
+        "rid": [int],
+        "level": 5,
+
+        "data": {
+            "raise_tsp": [datetime]
+        }
+    }
+    正常应答格式:
+    {
+        "cmd": "ping",
+        "rid": [int],
+        "level": 5,
+
+        "status": "ok",
+        "atsp": [datetime],
+        "btsp": [datetime],
+        "data": {
+            "raise_tsp": [datetime]
+        }
+    }
+    异常应答格式:
+    {
+        "cmd": "ping",
+        "rid": [int],
+        "level": 5,
+
+        "status": "error",
+        "code": [int],
+        "reason": [string],
+        "atsp": [datetime],
+        "btsp": [datetime],
+        "data": null
+    }

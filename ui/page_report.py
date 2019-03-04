@@ -289,7 +289,6 @@ def show_system_report(request):
     print(usb_state)
     return render(request, "系统报表.html", context=context)
 
-
 #报表导出
 def system_report_export(request,start_times,end_times):
 
@@ -349,6 +348,7 @@ def system_report_export(request,start_times,end_times):
 
         current_list.append(i.current)
 
+    #计算充放电次数
     count_charge = 0
     count_discharge = 0
     for j in current_list:
@@ -368,8 +368,28 @@ def system_report_export(request,start_times,end_times):
     #写出到IO
     output = BytesIO()
     wb.save(output)
+    usbpath = '/home/cyf/Desktop/test/' + excel_name
 
     output.seek(0)
     response.write(output.getvalue())
-
+    save(wb.save(output), usbpath)
     return response
+
+def save(html, path):
+    '''
+    以文件形式保存数据
+    :param html: 要保存的数据
+    :param path: 保存路路径
+    :return: 
+    '''
+    if not os.path.exists(os.path.split(path)[0]):
+        os.makedirs(os.path.split(path)[0])
+
+    try:
+        #保存数据到文件
+        with open(path,'w') as f:
+            f.write(str(html))
+        print('success')
+
+    except Exception as e:
+        print('fail',e)
