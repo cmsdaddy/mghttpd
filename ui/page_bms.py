@@ -10,6 +10,9 @@ from django.db.models import *
 import ui.page_history as history
 import ui.mg as mg
 import ui.page_report as report
+from django.urls import path
+import ui.cache as cache
+import math
 
 
 # 默认显示单体信息时的列数
@@ -70,6 +73,8 @@ def __make_single_battery_table(X, battery_count, column_count):
 # 获取单体电压行数据
 def get_single_battery_V_rows(heap_sn, group_sn, battery_count, column_count):
     X = mg.get_single_battery_V(heap_sn, group_sn, battery_count)
+    battery_cache = cache.BatterySingleVoltageCache()
+    battery_cache.set(heap_sn, group_sn, X)
     return __make_single_battery_table(X, battery_count, column_count)
 
 
@@ -144,6 +149,7 @@ def get_hours_record(collector, limit_hours):
         pre = r
         l.append(r)
     return l
+
 
 def show_bms_group_grid(request, bms_sn, group_sn):
     bms_heap = mg.get_bms_heap_yaoce(bms_sn)
@@ -357,6 +363,23 @@ def show_bms_group_V(request, bms_sn, group_sn):
     title_row = get_single_battery_table_title_row(column_count)
     data_rows = get_single_battery_V_rows(bms_sn, group_sn, battery_count-1, column_count)
 
+    rows = list()
+    for row in data_rows:
+        rows.extend(row)
+
+    part1, part2, part3, part4 = rows[:50], rows[50:100], rows[100:150], rows[150:]
+    user_define_data_rows = [part1]
+    if len(part2) > 0:
+        user_define_data_rows.append(part2)
+    if len(part3) > 0:
+        user_define_data_rows.append(part3)
+    if len(part4) > 0:
+        user_define_data_rows.append(part4)
+
+    equal_voltage = round(sum(rows)/len(rows), 3)
+    standard_deviation = sum([pow(v - equal_voltage, 2) for v in rows ]) / len(rows)
+    variance = math.sqrt(standard_deviation)
+
     context = {
         "request": request,
         "bms_id": bms_sn,
@@ -369,9 +392,26 @@ def show_bms_group_V(request, bms_sn, group_sn):
         "column_count": column_count,
         "battery_count": battery_count,
         "bms_name": "%d#电池堆" % (bms_sn + 1),
+        "user_define_data_rows": user_define_data_rows,
+        "equal_voltage": equal_voltage,
+        "max_voltage": max(rows),
+        "min_voltage": min(rows),
+        "max_sub_min": round(max(rows) - min(rows), 3),
+        "standard_deviation": round(standard_deviation, 3),
+        "variance": round(variance, 3),
     }
 
-    return render(request, "bms/组-单体电压.html", context=context)
+    try:
+        style = request.GET['style']
+    except:
+        return render(request, "bms/组-单体电压-line.html", context=context)
+
+    if style == 'line':
+        return render(request, "bms/组-单体电压-line.html", context=context)
+    elif style == 'bar':
+        return render(request, "bms/组-单体电压-bar.html", context=context)
+    else:
+        return render(request, "bms/组-单体电压.html", context=context)
 
 
 # 显示电池组单体温度
@@ -510,3 +550,22 @@ def show_bms_group_yaoxin(request, bms_sn, group_sn):
     }
 
     return render(request, "bms/组-遥信.html", context=context)
+
+
+grid_url_map = [
+    path('', lambda request: HttpResponseRedirect(request.path + "0/")),
+    path('<int:bms_sn>/', show_bms_heap),
+    path('<int:bms_sn>/yaotiao/', show_bms_heap_yaotiao),
+    path('<int:bms_sn>/grid/', show_bms_grid),
+    path('<int:bms_sn>/grid/<int:group_sn>/', show_bms_group_grid),
+    path('<int:bms_sn>/grid/makeup', makeup_bms_grid),
+    path('<int:bms_sn>/group/', lambda request: HttpResponseRedirect(request.path + "0/")),
+    path('<int:bms_sn>/group/<int:group_sn>/', show_bms_group),
+    path('<int:bms_sn>/group/<int:group_sn>/V/', show_bms_group_V),
+    path('<int:bms_sn>/group/<int:group_sn>/T/', show_bms_group_T),
+    path('<int:bms_sn>/group/<int:group_sn>/SOC/', show_bms_group_SOC),
+    path('<int:bms_sn>/group/<int:group_sn>/SOH/', show_bms_group_SOH),
+    path('<int:bms_sn>/group/<int:group_sn>/yaoce/', show_bms_group_yaoce),
+    path('<int:bms_sn>/group/<int:group_sn>/yaoxin/', show_bms_group_yaoxin),
+]
+urls = (grid_url_map, 'bms', 'bms')

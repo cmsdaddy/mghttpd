@@ -1,0 +1,9 @@
+<div>
+    <b>No Graphic to Display</b><br>
+    你看到这种情况的原因如下：
+    <ol>
+        <li>还未创建一个有效的图表页面</li>
+        <li>图表页面还未和展示页面进行绑定</li>
+    </ol>
+</div>
+

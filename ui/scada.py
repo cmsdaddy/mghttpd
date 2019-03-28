@@ -32,3 +32,23 @@ class Scada:
 
     def push_to_page(self):
         pass
+
+
+class Device(object):
+    pass
+
+
+class YaoTiao(object):
+    pass
+
+
+class YaoKong(object):
+    pass
+
+
+class YaoCe(object):
+    pass
+
+
+class YaoXin(object):
+    pass

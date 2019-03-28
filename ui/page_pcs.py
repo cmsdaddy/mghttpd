@@ -8,6 +8,9 @@ from ui.models import *
 from django.db.models import *
 import ui.mg as mg
 import ui.page_history as history
+import datetime
+import ui.page_grid as grid
+
 
 
 # 显示指定序列号的PCS
@@ -22,6 +25,58 @@ def show_pcs_page(request, pcs_sn):
 
 
 yaotiao_black_list = {"状态标志位"}
+
+
+
+def show_pcs_grid(request, pcs_sn):
+    #bms_heap = mg.get_bms_heap_yaoce(pcs_sn)
+    context = {
+        "request": request,
+        "pcs_id": pcs_sn,
+        "type": "grid",
+        "pcs_name": "%d#PCS" % (pcs_sn + 1),
+        "group_id_list": [ x for x in range(mg.get_pcs_count())],
+     #   "bms_origin": bms_heap,
+      #  "bms": dict(bms_heap),
+    }
+
+    try:
+        begin = datetime.datetime.strptime(request.GET['begin'], "%Y-%m-%d")
+    except:
+        begin = datetime.datetime.now() - datetime.timedelta(hours=-24)
+
+    try:
+        end = datetime.datetime.strptime(request.GET['end'], "%Y-%m-%d")
+    except:
+        end = datetime.datetime.now()
+
+    context['begin'] = begin
+    context['end'] = end
+
+    V = []
+    I = []
+    SOC = []
+
+    # 获取当前BMS遥测值
+    # now_yaoce = mg.get_bms_heap_yaoce(bms_sn)
+    # 获取24小时范围内的全部BMS记录
+    records = PCSYaoce.objects.filter(pcsid=pcs_sn, tsp__gte=begin, tsp__lt=end)
+
+    soc_pre = 0x789121212
+    V_pre = 0x789121212
+    I_pre = 0x789121212
+    for record in records:
+        SOC.append({"datetime": record.tsp, "record": record.Vbc})
+
+        V.append({"datetime": record.tsp, "record": record.dc_voltage})
+
+        I.append({"datetime": record.tsp, "record": record.dc_power})
+
+    context['SOC'] = SOC
+    context['V'] = V
+    context['I'] = I
+
+    return render(request, "pcs/PCS-曲线图.html", context=context)
 
 
 # PCS遥调页面

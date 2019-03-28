@@ -1,0 +1,160 @@
+{% load userfileter %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ grid.name }}</title>
+    <script src="/static/js/Chart.bundle.js" ></script>
+    <script>
+        function draw_line(c, name, leg, lable, data, color, fill, width) {
+            let ctx = document.getElementById(c).getContext('2d');
+            let myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: lable,
+                    datasets: [
+                        {
+                            label: leg,
+                            data: data,
+                            borderColor: color,
+                            borderWidth: width,
+                            borderDash: [5, 5],
+                            fill: fill,
+                            pointRadius: 0
+                        },
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    title: {
+                        display: false,
+                        text: name
+                    },/*
+                    elements: {
+                        line: {
+                            tension: 0, // disables bezier curves
+                        }
+                    },*/
+                    animation: {
+                        duration: 0, // general animation time
+                    },
+                    hover: {
+                        animationDuration: 0, // duration of animations when hovering an item
+                    },
+                    // grid line settings
+                    gridLines: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                    responsiveAnimationDuration: 0, // animation duration after a resize
+                }
+            });
+
+            return myChart;
+        }
+
+        window.document.onreadystatechange = function (ev) {
+            if (ev.target.readyState === 'complete') {
+                console.log(window.innerWidth);
+                console.log(window.innerHeight);
+
+                function resize_canvas(){
+                    let height = window.innerHeight / {{ fields.records|length }};
+                    {% for field in fields.records %}
+                    window.document.getElementById('grid_canvas_{{ field.name }}').style.width = window.innerWidth + 'px';
+                    window.document.getElementById('grid_canvas_{{ field.name }}').style.height = height + 'px';
+                    {% endfor %}
+                }
+
+                resize_canvas();
+                var lable = [ {% for l in fields.lable %}"{{ l | date:"H:i" }}"{% if not forloop.last %},{% endif %}{% endfor %} ];
+
+                {% for field in fields.records %}
+                var data_{{ field.name }} = [ {% for d in field.data %}{{ d|zoom:2 }}{% if not forloop.last %},{% endif %}{% endfor %} ];
+
+                let ctx = document.getElementById('grid_canvas_{{ field.name }}').getContext('2d');
+                let painter_{{ field.name }} = new Chart(ctx, {
+                    type: {% if field.property.style == 'Bar' %}'bar'{% else %}'line'{% endif %},
+                    data: {
+                        labels: lable,
+                        datasets: [
+                            {
+                                label: "{{ field.property.display_name }}",
+                                data: data_{{ field.name }},
+                                borderColor: "{{ field.property.color }}",
+                                borderWidth: {{ field.property.width }},
+                                {% if field.property.style == 'dashed-Line' %}borderDash: [5, 5],{% endif %}
+                                fill: true{% if field.property.fill %}true{% else %}false{% endif %},
+                                pointRadius: 0
+                            },
+                            {
+                                label: "{{ field.property.display_name }}-BaseLine 1",
+                                data: [ {% for d in field.data %}80{% if not forloop.last %},{% endif %}{% endfor %} ],
+                                borderColor: "#23ca57",
+                                borderWidth: 1,
+                                borderDash: [5, 5],
+                                fill: false,
+                                pointRadius: 0
+                            },
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                },
+                                color: 'red',
+                                position: 'right',
+                            }]
+                        },
+                        title: {
+                            display: false,
+                            text: "{{ grid.name }}"
+                        },/*
+                        elements: {
+                            line: {
+                                tension: 0, // disables bezier curves
+                            }
+                        },*/
+                        animation: {
+                            duration: 0, // general animation time
+                        },
+                        hover: {
+                            animationDuration: 0, // duration of animations when hovering an item
+                        },
+                        // grid line settings
+                        gridLines: {
+                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        },
+                        responsiveAnimationDuration: 0, // animation duration after a resize
+                    }
+                });
+                {% endfor %}
+
+                window.onresize = function (ev) {
+                    resize_canvas();
+                    {% for field in fields.records %}
+                    painter_{{ field.name }}.update();
+                    {% endfor %}
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    {% for field in fields.records %}
+    <canvas id="grid_canvas_{{ field.name }}"></canvas>
+    {% endfor %}
+</body>
+</html>

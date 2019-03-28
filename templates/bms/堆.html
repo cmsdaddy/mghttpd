@@ -18,7 +18,11 @@
                     </div>
                 </div>
 
-                {% include "bms/base-报表时间段选择模板.html" %}
+                <table class="table table-bordered table-condensed table-striped">
+                    <caption class="text-right">
+                        {% include "bms/base-报表时间段选择模板.html" %}
+                    </caption>
+                </table>
 
                 <div class="row">
                     <div class="col-sm-3 text-center">
@@ -44,7 +48,11 @@
                             <div class="panel-heading text-center">
                                  <strong style="font-size: 50px">{{ bms.电池堆电流 }}</strong> A
                             </div>
-                            <span>堆电流</span>
+                            <span>堆电流
+                                <a title="电流正负的意义" href="/dev/faq/?next={{ request.path }}#BMS和PCS的功率电流关系">
+                                    <span class="glyphicon glyphicon-question-sign"></span>
+                                </a>
+                            </span>
                         </div>
                     </div>
 

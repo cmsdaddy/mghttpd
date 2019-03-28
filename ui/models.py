@@ -107,6 +107,59 @@ class SystemRecord(models.Model):
 
 
 #=================================以下为统计报表模型================================================
+class PCSYaoce(models.Model):
+    pcsid = models.IntegerField(default=0)
+    tsp = models.DateTimeField(default='2018-01-01 00:00:00.000')
+    
+    dc_power = models.IntegerField(default=0)
+
+    dc_voltage = models.IntegerField(default=0)
+    dc_current = models.IntegerField(default=0)
+
+    grid_freq = models.IntegerField(default=0)
+
+    Vab = models.IntegerField(default=0)
+    Vbc = models.IntegerField(default=0)
+    Vca = models.IntegerField(default=0)
+
+    Ia = models.IntegerField(default=0)
+    Ib = models.IntegerField(default=0)
+    Ic = models.IntegerField(default=0)
+
+    year_discharge_kwh_total = models.IntegerField(default=0)
+    year_discharge_time_total = models.IntegerField(default=0)
+
+    charge_kwh_total = models.IntegerField(default=0)
+    discharge_kwh_total = models.IntegerField(default=0)
+
+    day_charge_kwh_total = models.IntegerField(default=0)
+    day_discharge_kwh_total = models.IntegerField(default=0)
+
+    day_charge_time_total = models.IntegerField(default=0)
+    day_discharge_time_total = models.IntegerField(default=0)
+
+    month_charge_kwh_total = models.IntegerField(default=0)
+    month_discharge_kwh_total = models.IntegerField(default=0)
+
+    month_charge_time_total = models.IntegerField(default=0)
+    month_discharge_time_total = models.IntegerField(default=0)
+
+    charge_count = models.IntegerField(default=0)
+    discharge_count = models.IntegerField(default=0)
+
+    year_charge_time_total = models.IntegerField(default=0)
+    year_charge_kwh_total = models.IntegerField(default=0)
+
+    charge_time_total = models.IntegerField(default=0)
+    discharge_time_total = models.IntegerField(default=0)
+
+    #def __str__(self):
+    #    return self.pcsid
+
+    class Meta:
+        db_table = "PCSYaoce"
+
+
 class BMSYaoce(models.Model):
     bmsid = models.IntegerField(default=0)
     tsp = models.DateTimeField(default='2018-01-01 00:00:00.000')
@@ -128,8 +181,8 @@ class BMSYaoce(models.Model):
     total_charged_kwh = models.IntegerField(default=0)
     total_discharged_kwh = models.IntegerField(default=0)
 
-    def __str__(self):
-        return self.bmsid
+    #def __str__(self):
+    #    return self.bmsid
 
     class Meta:
         db_table = "BMSYaoce"
@@ -192,4 +245,23 @@ class HistoryError(models.Model):
 
     class Meta:
         db_table = "HistoryError"
+
+
+class UserDefinedGrid(models.Model):
+    name = models.CharField(max_length=1024, default='default name')
+    enabled = models.BooleanField(default=True)
+    born = models.DateTimeField(default='2019-01-01 00:00:00')
+    target = models.CharField(max_length=100, default='None')
+    json_data = models.TextField(default="")
+
+    class Meta:
+        db_table = "UserDefinedGrid"
+
+
+class GridPageBinder(models.Model):
+    grid = models.ForeignKey(UserDefinedGrid, on_delete=models.CASCADE)
+    path = models.CharField(max_length=512, default="/grid/")
+
+    class Meta:
+        db_table = "GridPageBinder"
 

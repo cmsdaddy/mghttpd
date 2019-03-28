@@ -18,14 +18,16 @@
                     </div>
                 </div>
 
-                {% include "bms/base-报表时间段选择模板.html" %}
 
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-12">
-                <table class="table table-bordered table-condensed table-striped".>
+                <table class="table table-bordered table-condensed table-striped">
+                    <caption class="text-right">
+                        {% include "bms/base-报表时间段选择模板.html" %}
+                    </caption>
                     <tr>
                         <th rowspan="2"><br>时间段</th>
                         <th rowspan="2"><br>充电量</th>

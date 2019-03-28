@@ -83,7 +83,12 @@
                         <td><span class="line-B">&nbsp;B&nbsp;</span> 相电流</td>
                         <th>{{ pcs.B相电流|zoom:2 }} A</th>
                         <td>直流电流</td>
-                        <th>{{ pcs.直流电流|zoom:2 }} A</th>
+                        <th>
+                            {{ pcs.直流电流|zoom:2 }} A
+                            <a title="电流正负的意义" href="/dev/faq/?next={{ request.path }}#BMS和PCS的功率电流关系">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
+                        </th>
                         <td>有功功率</td>
                         <th>{{ pcs.有功功率|zoom:5 }} kW</th>
                     </tr>

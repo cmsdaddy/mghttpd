@@ -14,13 +14,13 @@ def have(body, finger):
 
 @register.filter(name='odd')
 def odd(v):
-    print(v, type(v))
+    #print(v, type(v))
     return True
 
 
 @register.filter(name='zoom')
 def zoom(v, dot):
-    print(v, type(v))
+    #print(v, type(v))
     try:
         v = int(v)
     except:

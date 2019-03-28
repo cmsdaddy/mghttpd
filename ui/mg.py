@@ -12,9 +12,9 @@ def get_single_battery_V(heap_sn, group_sn, battery_count):
     path = get_datacenter_root() + '/BMS数据块/%d/BCMU单体电池电压/%d/单体电池电压/' % (heap_sn, group_sn)
     X = api.api_read(host, path)
     if X is None:
-        return ["0.000"] * battery_count
+        return [0.000] * battery_count
 
-    return [ "%.3f" % (v/1000) for v in X ]
+    return [(round(v/1000, 3)) for v in X]
 
 
 # 获取单体温度信息
@@ -23,7 +23,7 @@ def get_single_battery_T(heap_sn, group_sn, battery_count):
     path = get_datacenter_root() + '/BMS数据块/%d/BCMU单体电池温度/%d/单体电池温度/' % (heap_sn, group_sn)
     X = api.api_read(host, path)
     if X is None:
-        return ["25"] * battery_count
+        return [0] * battery_count
 
     return [ "%d" % v for v in X ]
 
@@ -34,9 +34,9 @@ def get_single_battery_SOC(heap_sn, group_sn, battery_count):
     path = get_datacenter_root() + '/BMS数据块/%d/BCMU单体电池SOC/%d/单体电池SOC/' % (heap_sn, group_sn)
     X = api.api_read(host, path)
     if X is None:
-        return ["0.000"] * battery_count
+        return [0] * battery_count
 
-    return [ "%d" % v for v in X ]
+    return [v for v in X ]
 
 
 # 获取单体SOH信息
@@ -45,9 +45,9 @@ def get_single_battery_SOH(heap_sn, group_sn, battery_count):
     path = get_datacenter_root() + '/BMS数据块/%d/BCMU单体电池SOH/%d/单体电池SOH/' % (heap_sn, group_sn)
     X = api.api_read(host, path)
     if X is None:
-        return ["0.000"] * battery_count
+        return [0] * battery_count
 
-    return [ "%d" % v for v in X ]
+    return [v for v in X ]
 
 
 # 过滤黑名单中的遥调值

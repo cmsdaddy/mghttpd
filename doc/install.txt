@@ -1,3 +1,0 @@
-django 2.05
-plotly 2.70
-

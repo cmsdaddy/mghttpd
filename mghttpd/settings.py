@@ -27,6 +27,7 @@ SECRET_KEY = '=3+n3b87qbxyjxv(jmk_vargu2+3l8!4wp#i@ekt19^r5@!rko'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -92,7 +93,7 @@ ASGI_APPLICATION = 'mghttpd.urls.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 DEFAULT_CHARSET = 'utf-8'
 
-if True:
+if False:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -108,7 +109,7 @@ else:
                 'NAME': 'mg',
                 'USER': 'root',
                 'PASSWORD': '8989889',
-                'HOST': '127.0.0.1',
+                'HOST': '192.168.1.107',
                 'POST': 3306
             }
         }
@@ -151,10 +152,14 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 #sdjcelery.setup_loader()
 
 BROKER_URL = 'redis://127.0.0.1:6379/2'
 # BROKER_URL = 'redis://:密码@主机地址:端口号/数据库号'
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/2'
+
+# graphic cache url
+GRAPHIC_CACHE_URL = 'redis://127.0.0.1:6379/3'
 

@@ -1,0 +1,18 @@
+<table class="table table-bordered">
+    <tr>
+        <th colspan=2>BMS</th>
+        <th colspan=2>PCS</th>
+    </tr>
+    <tr>
+        <th>充电电流</th>
+        <th>放电电流</th>
+        <th>充电电流</th>
+        <th>放电电流</th>
+    </tr>
+    <tr>
+        <th>&gt;&nbsp;0</th>
+        <th>&lt;&nbsp;0</th>
+        <th>&lt;&nbsp;0</th>
+        <th>&gt;&nbsp;0</th>
+    </tr>
+</table>

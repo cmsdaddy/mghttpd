@@ -36,6 +36,9 @@ import ui.page_error as error
 import ui.page_report as report
 import ui.page_aircondition as air
 import ui.page_sample as sample
+import ui.page_grid as grid
+import ui.devel as devel
+
 
 admin.site.site_header = '用户登录'
 
@@ -123,7 +126,6 @@ urlpatterns = [
     path('settings/bell/', lambda request: settings.show_autmatic_page(request, settings.监控通讯参数)),
 
     # 开发选项
-
     path('settings/dev/autorun/', lambda request: settings.show_autmatic_page(request, settings.监控通讯参数)),
     path('settings/dev/collector/', lambda request: settings.show_autmatic_page(request, settings.监控通讯参数)),
 
@@ -141,26 +143,14 @@ urlpatterns = [
     path('change_user/', main.show_change_page),
 
     # 显示BMS信息
-    path('bms/', redirect_to_zero_index),
-    path('bms/<int:bms_sn>/', bms.show_bms_heap),
-    path('bms/<int:bms_sn>/yaotiao/', bms.show_bms_heap_yaotiao),
-    path('bms/<int:bms_sn>/grid/', bms.show_bms_grid),
-    path('bms/<int:bms_sn>/grid/<int:group_sn>/', bms.show_bms_group_grid),
-    path('bms/<int:bms_sn>/grid/makeup', bms.makeup_bms_grid),
-    path('bms/<int:bms_sn>/group/', redirect_to_zero_index),
-    path('bms/<int:bms_sn>/group/<int:group_sn>/', bms.show_bms_group),
-    path('bms/<int:bms_sn>/group/<int:group_sn>/V/', bms.show_bms_group_V),
-    path('bms/<int:bms_sn>/group/<int:group_sn>/T/', bms.show_bms_group_T),
-    path('bms/<int:bms_sn>/group/<int:group_sn>/SOC/', bms.show_bms_group_SOC),
-    path('bms/<int:bms_sn>/group/<int:group_sn>/SOH/', bms.show_bms_group_SOH),
-    path('bms/<int:bms_sn>/group/<int:group_sn>/yaoce/', bms.show_bms_group_yaoce),
-    path('bms/<int:bms_sn>/group/<int:group_sn>/yaoxin/', bms.show_bms_group_yaoxin),
+    path('bms/', bms.urls),
 
     # 显示PCS信息
     path('pcs/', redirect_to_zero_index),
     path('pcs/<int:pcs_sn>/', pcs.show_pcs_page),
     path('pcs/<int:pcs_sn>/yaotiao/', pcs.show_pcs_yaotiao_page),
     path('pcs/<int:pcs_sn>/yaokong/', pcs.show_pcs_yaokong_page),
+    path('pcs/<int:pcs_sn>/grid/', pcs.show_pcs_grid),
 
     # 历史事件过滤
     # 全部历史记录
@@ -210,4 +200,8 @@ urlpatterns = [
 
     #功率曲线
     path('power/grid/', bms.show_bms_grid),
+
+    path('grid/', grid.urls),
+    path("dev/", devel.urls)
 ]
+

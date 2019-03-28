@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include "base-界面head.html" %}
+
+    <style>
+        body {
+            background-image: url("/static/imgs/404.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row text-center">
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1>
+                <i>
+                    <span style="font-size: 40px;">No Graphic to Display</span>
+                    <small style="font-size: 15px;">
+                        <a title="What this means?" target="_blank" href="/dev/faq/?next={{ request.path }}#还没有绑定相关的曲线页面">
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                            我为什么会看到这个?
+                        </a>
+                    </small>
+                </i>
+            </h1>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-10 text-center">
+                <a class="btn btn-primary" href="/grid/list/" target="_blank">
+                    <b><span class="glyphicon glyphicon-link"></span></b>
+                    Bind a Graphic to this Page Now
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

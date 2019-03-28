@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "base-界面head.html" %}
+    <title>单体电压</title>
+    <!--meta http-equiv="refresh" content="{{ period }}"-->
+    <script src="/static/js/Chart.bundle.js" ></script>
+
+    <script>
+        $(document).ready(function () {
+            {% for grid_style_data_rows in user_define_data_rows  %}
+            let ctx_{{ forloop.counter }} = document.getElementById('grid_canvas_{{ forloop.counter }}').getContext('2d');
+            let painter{{ forloop.counter }} = new Chart(ctx_{{ forloop.counter }}, {
+                type: 'bar',
+                data: {
+                    labels: [ {% for d in grid_style_data_rows %}{{ forloop.counter }}{% if not forloop.last %},{% endif %}{% endfor %} ],
+                    datasets: [
+                    {
+                        type: "bar",
+                        label: "Voltage (V)",
+                        borderColor: "red",
+                        backgroundColor: Chart.helpers.color("{{ red }}").alpha(0.2).rgbString(),
+                        data: [{% for d in grid_style_data_rows %}{{ d|safe }}{% if not forloop.last %},{% endif %}{% endfor %}],
+                        yAxisID: "id_left",
+                        borderWidth: 1,
+                        pointRadius: 0
+                    },
+                    ]
+                },
+                options: {
+                    hoverMode: 'index',
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: false,
+                                },
+                                display: true,
+                                position: 'left',
+                                id: "id_left"
+                            },
+                        ]
+                    },
+                    title: {
+                        display: false,
+                        text: "SOC"
+                    },/*
+                    elements: {
+                        line: {
+                            tension: 0, // disables bezier curves
+                        }
+                    },*/
+                    animation: {
+                        duration: 0, // general animation time
+                    },
+                    hover: {
+                        animationDuration: 0, // duration of animations when hovering an item
+                    },
+                    // grid line settings
+                    gridLines: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                    responsiveAnimationDuration: 0, // animation duration after a resize
+                }
+            });
+            {% endfor %}
+        });
+
+
+    </script>
+</head>
+<body>
+    {% include "base-顶部标题栏.html" %}
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                {% include "bms/base-组tab列表模板.html" %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-striped table-hover table-bordered text-center table-responsive">
+                    <caption>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                单体<strong>电压</strong>信息，共计电池 <strong> {{ battery_count }}</strong> 节,
+
+                                平均:{{ equal_voltage }} V
+                                <span class="text-danger">最高</span>:
+                                <a href="#">{{ max_voltage }} V</a>
+
+                                <span class="text-danger">最低</span>:
+                                <a href="#">{{ min_voltage }} V</a>
+
+                                <span class="text-danger">极差值</span>:
+                                <a href="#">{{ max_sub_min }} V</a>
+
+                                <!--span class="text-danger">标准差</span>:
+                                <a href="#">{{ standard_deviation|default:0 }}</a>
+
+                                <span class="text-danger">方差</span>:
+                                <a href="#">{{ variance|default:0 }}</a-->
+                            </div>
+                            <!--div class="col-sm-6 text-right">
+                                数据将会自动更新，周期约 <kbd>{{ period }}</kbd> 秒.
+                            </div-->
+                        </div>
+                    </caption>
+                    <tr>
+                        <td style="width: 100%">
+                            {% for row in user_define_data_rows %}
+                            <canvas id="grid_canvas_{{ forloop.counter }}" height="45px;"></canvas>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="/static/js/bootstrap.js"></script>
+</body>
+</html>
