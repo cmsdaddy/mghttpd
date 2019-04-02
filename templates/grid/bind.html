@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>bind首页</title>
+    {% include "base-界面head.html" %}
+</head>
+<body>
+    {% include "devel/base-devel-顶部标题栏.html" %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-2">
+                {% include "devel/base-devel-侧边栏.html" %}
+            </div>
+
+            <div class="col-xs-10">
+
+                <form method="post">
+                    <div class="form-group">
+                        <label for="target">Target URL</label>
+                        <input class="form-control" id="target" name="target" value="{{ request.GET.target }}" required>
+                    </div>
+
+                    <label for="gid">Grid:</label>
+                    <select id="gid" class="form-control" name="gid" required>
+                        <option value="">Select a grid below ...</option>
+                        {% for grid in defined_grids_list %}
+                        <option value="{{ grid.id }}">{{ grid.name }}-{{ grid.id }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <br>
+                    <input type="submit" class="form-control btn btn-primary" value="Bind">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

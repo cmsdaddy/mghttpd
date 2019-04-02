@@ -9,39 +9,21 @@ from django.db.models import *
 
 import ui.page_history as history
 import ui.mg as mg
+from django.urls import path
+from django.shortcuts import render
+from django.http import *
 
 
-# 记录数据
-def data_record(request, cid):
-    print(request.POST)
-    try:
-        collector = Collector.objects.get(id=cid)
-    except:
-        return HttpResponse('{"status":"fail", "data": %d}' % cid)
-
-    tsp = request.POST['tsp']
-    data = request.POST['data']
-
-    record = DataPointRecords(collector=collector, datetime=tsp, record=data)
-    record.save()
-
-    return HttpResponse('{"status":"ok", "data": %d}' % cid)
+def show_general_collector_profile_page(request):
+    context = dict()
+    context['const_env_list'] = {
+        "PROJECT_NAME": '"1',
+        "TIMESTAMP_FORMAT": '%Y-%m-%d %H:%M%:S.%f',
+    }
+    return render(request, "collector/index.html", context=context)
 
 
-# 创建一个采集器ID，若已经存在则返回ID
-def create_collector(request):
-    print(request.POST)
-    try:
-        #obj = json.loads(request.body.decode('utf8'))
-        path = request.POST['path']
-    except Exception as e:
-        print(e)
-        return HttpResponse('{"status":"fail"}')
-
-    try:
-        collector = Collector.objects.get(path=path)
-    except:
-        collector = Collector(path=path)
-        collector.save()
-
-    return HttpResponse('{"status":"ok", "data": %d}' % collector.id)
+collector_url_map = [
+    path('', show_general_collector_profile_page),
+]
+urls = (collector_url_map, 'collector', 'collector')

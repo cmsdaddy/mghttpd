@@ -3,28 +3,14 @@ from django.http import *
 from ui.models import *
 from django.db.models import *
 import os
-#from ui import celery_app
 import time
-
-
-#@celery_app.task
-def delay_test(*args):
-    # print(*args)
-    time.sleep(5)
-    print("done")
-    return True
-
-
-def celery_test(request):
-    delay_test.delay(1,2,3,4,5)
-    return HttpResponse("ok")
 
 
 def page_not_implemented(request, *c, **any):
     context = {
         'request': request
     }
-    return render(request, 'notimplement.html', context)
+    return render(request, 'error/notimplement.html', context)
 
 
 def get_templates_list():

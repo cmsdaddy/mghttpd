@@ -1,0 +1,5 @@
+{% if request.GET.theme == 'dark' or theme == 'dark' %}
+    {% include "theme/dark/04-顶级选项卡.html" %}
+{% else %}
+    {% include "theme/default/04-顶级选项卡.html" %}
+{% endif %}

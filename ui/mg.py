@@ -246,6 +246,7 @@ def get_pcs_count():
         return 0
     return count
 
+
 # 获取协议盒遥信信息
 def get_sample_yx():
     host = get_datacenter_address()
@@ -256,6 +257,7 @@ def get_sample_yx():
         return None
 
     return X
+
 
 # 获取协议盒遥测信息
 def get_sample_yc():
@@ -268,6 +270,7 @@ def get_sample_yc():
 
     return X
 
+
 #获取蜂鸣器遥控
 def get_bee_yaokong():
     host = get_datacenter_address()
@@ -279,6 +282,7 @@ def get_bee_yaokong():
 
     return X
 
+
 # 设置蜂鸣器遥控
 def set_bee_yaokong(name, value, visitor=None):
     host = get_datacenter_address()
@@ -289,6 +293,7 @@ def set_bee_yaokong(name, value, visitor=None):
         return None
 
     return api.api_write(host, path, value, visitor)
+
 
 # 获取数据中心节点地址
 def get_datacenter_address():
@@ -303,6 +308,7 @@ def get_datacenter_address():
         return '192.168.1.107:8083'
         # return '127.0.0.1:8000'
     return '%s:%d' % (http_ip, http_port)
+
 
 # 获取数据中心的根目录
 def get_datacenter_root():

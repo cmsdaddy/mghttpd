@@ -5,8 +5,6 @@ import urllib.parse
 import json
 
 
-
-
 # 从数据中心读取数据
 def api_read(host_address, path, visitor=None, wait=None):
     if visitor is None:

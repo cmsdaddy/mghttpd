@@ -280,7 +280,9 @@ def show_graphic_by_id(request, gid):
         graphic_profile = load_grid_parameters_from_database(int(gid))
         return draw_graphic_page(request, **graphic_profile)
     except Exception as e:
-        return HttpResponseRedirect("/grid/list/")
+        context = dict()
+        context['message'] = str(e)
+        return render(request, "grid/error.html", context=context)
 
 
 def show_graphic_by_path(request):
@@ -290,9 +292,12 @@ def show_graphic_by_path(request):
     if binder_list.count() == 0:
         return render(request, "grid/no_graphic_binded.html", context=context)
     elif binder_list.count() == 1:
-        pass
+        grid = binder_list[0].grid
+        return show_graphic_by_id(request, grid.id)
     else:
-        pass
+        context = dict()
+        context['message'] = "duplicate graphic binding"
+        return render(request, "grid/error.html", context=context)
 
 
 def create_grid_graphic(request):
@@ -340,6 +345,30 @@ def show_grid_page(request):
     return render(request, "grid/main.html", context=context)
 
 
+def bind_graphic_to_url_path(request):
+    if request.method == 'GET':
+        context = dict()
+        context['defined_grids_list'] = models.UserDefinedGrid.objects.all()
+        return render(request, "grid/bind.html", context=context)
+    else:
+        gid = int(request.POST['gid'])
+        target = request.POST['target']
+
+        grid = models.UserDefinedGrid.objects.get(id=gid)
+        models.GridPageBinder(grid=grid, path=target).save()
+        return HttpResponseRedirect(request.POST['target'])
+
+
+def grid_and_path_binder_list(request):
+    if request.method == 'GET':
+        context = dict()
+        context['grids_list'] = models.UserDefinedGrid.objects.all()
+        context['binder_list'] = models.GridPageBinder.objects.all()
+        return render(request, "grid/bind-list.html", context=context)
+    else:
+        return HttpResponseRedirect(request.path)
+
+
 grid_url_map = [
     path('', show_grid_page),
     path('show/<int:gid>/', show_graphic_by_id),
@@ -348,5 +377,7 @@ grid_url_map = [
     path('preview/', preview_grid),
     path('create/', create_grid_graphic),
     path('list/', list_all_graphic_object),
+    path('bind/', bind_graphic_to_url_path),
+    path('bind/list/', grid_and_path_binder_list),
 ]
 urls = (grid_url_map, 'grid', 'grid')

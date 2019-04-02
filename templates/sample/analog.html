@@ -1,60 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% include "base-界面head.html" %}
-    <title>电池堆信息总览</title>
-</head>
-<body>
-    {% include "base-顶部标题栏.html" %}
+{% extends "theme/base.html" %}
 
-    <div class="container">
-        {% include "sample/base-选项卡.html" %}
-<br>
-        <br>
-        <div class="col-sm-12">
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}模拟量采样信息{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "sample/base-选项卡.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon">集装箱位置1温度</span>
-                                <input disabled type="text" value="{{ sample.温度采集1 }}" class="form-control text-center">
-                                <span class="input-group-addon">℃</span>
-                            </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">集装箱位置1温度</span>
+                        <input disabled type="text" value="{{ sample.温度采集1 }}" class="form-control text-center">
+                        <span class="input-group-addon">℃</span>
+                    </div>
+                </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">集装箱位置2温度</span>
+                            <input disabled type="text" value="{{ sample.温度采集2 }}" class="form-control text-center">
+                            <span class="input-group-addon">℃</span>
                         </div>
-                            <div class="col-sm-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">集装箱位置2温度</span>
-                                    <input disabled type="text" value="{{ sample.温度采集2 }}" class="form-control text-center">
-                                    <span class="input-group-addon">℃</span>
-                                </div>
-                            </div>
+                    </div>
 
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">集装箱位置3温度</span>
+                        <input disabled type="text" value="{{ sample.温度采集3 }}" class="form-control text-center">
+                        <span class="input-group-addon">℃</span>
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon">集装箱位置3温度</span>
-                                <input disabled type="text" value="{{ sample.温度采集3 }}" class="form-control text-center">
-                                <span class="input-group-addon">℃</span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon">集装箱位置4温度</span>
-                                <input disabled type="text" value="{{ sample.温度采集4 }}" class="form-control text-center">
-                                <span class="input-group-addon">℃</span>
-                            </div>
-                        </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">集装箱位置4温度</span>
+                        <input disabled type="text" value="{{ sample.温度采集4 }}" class="form-control text-center">
+                        <span class="input-group-addon">℃</span>
                     </div>
                 </div>
             </div>
         </div>
-    <hr>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
-    <script src="/static/js/bootstrap.js"></script>
-</body>
-</html>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

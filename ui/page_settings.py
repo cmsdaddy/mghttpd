@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import *
 from ui.models import *
 from django.db.models import *
+from django.urls import path
 import os
 import ui.mg as mg
 import random
@@ -397,6 +398,7 @@ class SUB_PCS参数(PosterProcessor):
             GroupInLineItem(groups=groups)
         ]
 
+
 class PCS参数(PosterProcessor):
     """PCS参数配置对象"""
     def __init__(self):
@@ -727,3 +729,35 @@ def show_settings_warning_page(request):
     context = dict()
     context['request'] = request
     return render(request, "settings/系统参数配置警告.html", context=context)
+
+
+urlpatterns = [
+    path('', show_settings_warning_page),
+    path('refresh/', refresh_system_configure),
+
+    path('scada_com/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+    path('cloud/', lambda request: show_autmatic_page(request, 云平台参数)),
+    path('peripheral/', lambda request: show_autmatic_page(request, 外设数量参数)),
+    path('video/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+    path('firecontrol/', lambda request: show_autmatic_page(request, 消防参数)),
+    path('airconditioner/', lambda request: show_autmatic_page(request, 空调参数)),
+    path('gpio/', lambda request: show_autmatic_page(request, 开入开出盒参数)),
+
+    # 通用设备配置页
+    path('inv/', lambda request: show_autmatic_page(request, INV参数)),
+    path('pcs/', lambda request: show_autmatic_page(request, PCS参数)),
+    path('bms/', lambda request: show_autmatic_page(request, BMS参数)),
+
+    path('battery/', lambda request: show_autmatic_page(request, 电池参数)),
+    path('report/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+    path('general/', lambda request: show_autmatic_page(request, 系统通用参数)),
+    path('datetime/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+    path('password/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+    path('backup/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+    path('bell/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+
+    # 开发选项
+    path('dev/autorun/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+    path('dev/collector/', lambda request: show_autmatic_page(request, 监控通讯参数)),
+]
+urls = (urlpatterns, "settings", "settings")

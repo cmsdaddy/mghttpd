@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    {% block meta_block %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+    {% block js_library %}{% endblock %}
+    {% block css_library %}{% endblock %}
+    {% block inline_js %}{% endblock %}
+    {% block inline_css %}{% endblock %}
+</head>
+<body>
+    {% block page_header %}{% endblock %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-offset-1 col-sm-10">
+                <div class="row">
+                    <div class="col-sm-12">{% block menu_tabs %}{% endblock %}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">{% block main_body %}{% endblock %}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block bottom_color_bar %}{% endblock %}
+</body>
+</html>

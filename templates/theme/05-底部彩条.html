@@ -1,0 +1,5 @@
+{% if request.GET.theme == 'dark' or theme == 'dark' %}
+    {% include "theme/dark/05-底部彩条.html" %}
+{% else %}
+    {% include "theme/default/05-底部彩条.html" %}
+{% endif %}

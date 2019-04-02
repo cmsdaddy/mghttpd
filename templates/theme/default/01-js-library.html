@@ -1,0 +1,42 @@
+<script src="/static/js/jquery.js" ></script>
+<script src="/static/js/bootstrap.js"></script>
+<script>
+    var getCurrentTimeStr = function() {
+        var t = new Date();
+        var year = t.getFullYear();
+        var month = t.getMonth() >= 10 ? t.getMonth() + 1 : "0" + (t.getMonth() + 1);
+        var day = t.getDate() >= 10 ? t.getDate() : "0" + t.getDate();
+        var hour = t.getHours() >= 10 ? t.getHours() : "0" + t.getHours();
+        var minute = t.getMinutes() >= 10 ? t.getMinutes() : "0" + t.getMinutes();
+        var second = t.getSeconds() >= 10 ? t.getSeconds() : "0" + t.getSeconds();
+
+        return "" + year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
+{#        return "2019/01/03 10:58:28"#}
+    };
+    $(document).ready(function () {
+        function updatedatetime() {
+            var s = getCurrentTimeStr();
+            $("#id_datetime").html(s);
+        }
+        updatedatetime();
+        setInterval(updatedatetime, 1000);
+
+        function blinkall() {
+            {#$(".blink-danger").toggleClass("btn-danger btn-default");#}
+            {#if($(".blink-danger").hasClass('btn-default')){#}
+            {#    $(".blink-danger-2").toggleClass("text-danger");#}
+
+            $(".blink-danger").toggleClass('btn-danger');
+            $(".blink-danger-2").toggleClass('text-danger');
+            $(".blink-warning").toggleClass('btn-warning');
+            $(".blink-warning-2").toggleClass('text-warning');
+            {#clearInterval();#}
+        }
+        setInterval(blinkall, 500);
+
+        function blinkallfast() {
+            $(".fastblink").toggle();
+        }
+        setInterval(blinkallfast, 350);
+    });
+</script>

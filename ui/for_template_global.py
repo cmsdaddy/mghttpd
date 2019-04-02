@@ -29,6 +29,8 @@ def global_vars(request):
     else:
         content['pageclass'] = 'normal'
 
+    content["theme"] = 'default'
+
     content['bms_count'] = mg.get_bms_count()
     content['bms_id_list'] = [x for x in range(mg.get_bms_count())]
     content['pcs_count'] = mg.get_pcs_count()
@@ -55,6 +57,5 @@ def global_vars(request):
         "2-Weeks",
         "4-Weeks",
     ]
-
 
     return content

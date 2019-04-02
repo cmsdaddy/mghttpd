@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import *
+from django.urls import path
 from ui.models import *
 from django.db.models import *
 import os
@@ -159,3 +160,30 @@ def show_history_error_test(request):
         print(e)
         return HttpResponse('{"status": "fail"}')
 
+
+urlpatterns = [
+    # 全部历史记录
+    path('all/', show_history_all_records),
+    # 当前故障
+    path('', show_current_all_errors),
+    # 当前故障
+    path('current/all/', show_current_all_errors),
+    # 全部历史故障
+    path('errors/all/', show_history_all_errors),
+    # 全部历史事件
+    path('events/all/', show_history_all_events),
+    # 全部遥控历史事件
+    path('events/yaokong/all/', show_history_all_yaokong_events),
+    # 全部遥调历史事件
+    path('events/yaotiao/all/', show_history_all_yaotiao_events),
+
+    path('show/', show_history_error_detail),
+    path('confirm/', show_history_error_confirm),
+
+    path('test/', show_history_error_test),
+
+    path('doc/', show_document),
+    path('export/', export_history),
+]
+
+urls = (urlpatterns, "history", "history")

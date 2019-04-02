@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>系统磁盘空间不足</title>
+    <link rel="stylesheet" href="/static/css/global.css" />
+    <style>
+        body {
+            color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        系统磁盘空间不足
+    </h1>
+    <hr>
+    <pre>系统磁盘空间不足可能会导致系统无法正常工作</pre>
+    <h2>系统当前磁盘使用情况如下：</h2>
+    <pre>{{ df_information|safe }}</pre>
+
+    <h2>各目录对磁盘空间占用情况如下：</h2>
+    <pre>{{ du_root_information|safe }}</pre>
+
+    <div>
+        <a href="/error/backup_and_cleanup/">备份并清理空间</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/">忽略，继续运行</a>
+    </div>
+</body>
+</html>

@@ -1,11 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% include "base-界面head.html" %}
-    <title>单体电压</title>
-    <!--meta http-equiv="refresh" content="{{ period }}"-->
-    <script src="/static/js/Chart.bundle.js" ></script>
+{% extends "theme/base.html" %}
 
+{% block meta_block %}
+    <meta http-equiv="refresh" content="120">
+{% endblock %}
+
+{% block title %}单体电压{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+    <script src="/static/js/Chart.bundle.js" ></script>
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
     <script>
         $(document).ready(function () {
             {% for grid_style_data_rows in user_define_data_rows  %}
@@ -68,59 +79,59 @@
 
 
     </script>
-</head>
-<body>
-    {% include "base-顶部标题栏.html" %}
+{% endblock %}
 
-    <div class="container">
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
 
-        <div class="row">
-            <div class="col-lg-12">
-                {% include "bms/base-组tab列表模板.html" %}
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "bms/base-组tab列表模板.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <table class="table table-striped table-hover table-bordered text-center table-responsive">
+        <caption>
+            <div class="row">
+                <div class="col-sm-12">
+                    单体<strong>电压</strong>信息，共计电池 <strong> {{ battery_count }}</strong> 节,
+
+                    平均:{{ equal_voltage }} V
+                    <span class="text-danger">最高</span>:
+                    <a href="#">{{ max_voltage }} V</a>
+
+                    <span class="text-danger">最低</span>:
+                    <a href="#">{{ min_voltage }} V</a>
+
+                    <span class="text-danger">极差值</span>:
+                    <a href="#">{{ max_sub_min }} V</a>
+
+                    <!--span class="text-danger">标准差</span>:
+                    <a href="#">{{ standard_deviation|default:0 }}</a>
+
+                    <span class="text-danger">方差</span>:
+                    <a href="#">{{ variance|default:0 }}</a-->
+                </div>
+                <!--div class="col-sm-6 text-right">
+                    数据将会自动更新，周期约 <kbd>{{ period }}</kbd> 秒.
+                </div-->
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <table class="table table-striped table-hover table-bordered text-center table-responsive">
-                    <caption>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                单体<strong>电压</strong>信息，共计电池 <strong> {{ battery_count }}</strong> 节,
+        </caption>
+        <tr>
+            <td style="width: 100%">
+                {% for row in user_define_data_rows %}
+                <canvas id="grid_canvas_{{ forloop.counter }}" height="35px;"></canvas>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}
 
-                                平均:{{ equal_voltage }} V
-                                <span class="text-danger">最高</span>:
-                                <a href="#">{{ max_voltage }} V</a>
-
-                                <span class="text-danger">最低</span>:
-                                <a href="#">{{ min_voltage }} V</a>
-
-                                <span class="text-danger">极差值</span>:
-                                <a href="#">{{ max_sub_min }} V</a>
-
-                                <!--span class="text-danger">标准差</span>:
-                                <a href="#">{{ standard_deviation|default:0 }}</a>
-
-                                <span class="text-danger">方差</span>:
-                                <a href="#">{{ variance|default:0 }}</a-->
-                            </div>
-                            <!--div class="col-sm-6 text-right">
-                                数据将会自动更新，周期约 <kbd>{{ period }}</kbd> 秒.
-                            </div-->
-                        </div>
-                    </caption>
-                    <tr>
-                        <td style="width: 100%">
-                            {% for row in user_define_data_rows %}
-                            <canvas id="grid_canvas_{{ forloop.counter }}" height="45px;"></canvas>
-                            {% endfor %}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-
-    </div>
-    <script src="/static/js/bootstrap.js"></script>
-</body>
-</html>
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

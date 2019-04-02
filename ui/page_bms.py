@@ -212,16 +212,18 @@ def show_bms_group_grid(request, bms_sn, group_sn):
 
 
 def show_bms_grid(request, bms_sn):
-    bms_heap = mg.get_bms_heap_yaoce(bms_sn)
+    #bms_heap = mg.get_bms_heap_yaoce(bms_sn)
     context = {
         "request": request,
         "bms_id": bms_sn,
         "type": "heap-grid",
         "bms_name": "%d#电池堆" % (bms_sn + 1),
         "group_id_list": [ x for x in range(mg.get_bms_group_count(bms_sn))],
-        "bms_origin": bms_heap,
-        "bms": dict(bms_heap),
+    #    "bms_origin": bms_heap,
+    #    "bms": dict(bms_heap),
     }
+
+    """
     try:
         befor = 0 - int(request.GET['befor'])
     except:
@@ -267,6 +269,7 @@ def show_bms_grid(request, bms_sn):
     context['SOC'] = SOC
     context['V'] = V
     context['I'] = I
+    """
 
     return render(request, "bms/堆-曲线图.html", context=context)
 
@@ -557,10 +560,10 @@ grid_url_map = [
     path('<int:bms_sn>/', show_bms_heap),
     path('<int:bms_sn>/yaotiao/', show_bms_heap_yaotiao),
     path('<int:bms_sn>/grid/', show_bms_grid),
-    path('<int:bms_sn>/grid/<int:group_sn>/', show_bms_group_grid),
     path('<int:bms_sn>/grid/makeup', makeup_bms_grid),
     path('<int:bms_sn>/group/', lambda request: HttpResponseRedirect(request.path + "0/")),
     path('<int:bms_sn>/group/<int:group_sn>/', show_bms_group),
+    path('<int:bms_sn>/group/<int:group_sn>/grid/', show_bms_group_grid),
     path('<int:bms_sn>/group/<int:group_sn>/V/', show_bms_group_V),
     path('<int:bms_sn>/group/<int:group_sn>/T/', show_bms_group_T),
     path('<int:bms_sn>/group/<int:group_sn>/SOC/', show_bms_group_SOC),

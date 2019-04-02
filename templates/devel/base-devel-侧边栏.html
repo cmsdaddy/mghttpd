@@ -1,0 +1,47 @@
+<h3><span class="glyphicon glyphicon-menu-hamburger"></span> Menu</h3>
+<hr>
+<ul class="list-group">
+
+    <li class="list-group-item{% if request.path == "/dev/" %} list-group-item-danger{% endif %}">
+        <a href="/dev/">图表列表</a>
+    </li>
+
+    <li class="list-group-item{% if request.path == "/grid/bind/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/?next={{ request.path }}">图表绑定管理</a>
+    </li>
+
+    <li class="list-group-item{% if request.path == "/grid/bind/list/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/list/?next={{ request.path }}">图表绑定列表</a>
+    </li>
+
+    <hr>
+
+    <li class="list-group-item{% if request.path == "/dev/collector/" %} list-group-item-danger{% endif %}">
+        <a href="/dev/collector/?next={{ request.path }}">数据采集器通用配置</a>
+    </li>
+    <li class="list-group-item{% if request.path == "/grid/bind/list/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/list/?next={{ request.path }}">BMS数据采集器</a>
+    </li>
+    <li class="list-group-item{% if request.path == "/grid/bind/list/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/list/?next={{ request.path }}">PCS数据采集器</a>
+    </li>
+    <li class="list-group-item{% if request.path == "/grid/bind/list/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/list/?next={{ request.path }}">空调数据采集器</a>
+    </li>
+    <li class="list-group-item{% if request.path == "/grid/bind/list/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/list/?next={{ request.path }}">消防数据采集器</a>
+    </li>
+    <li class="list-group-item{% if request.path == "/grid/bind/list/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/list/?next={{ request.path }}">开入开出数据采集器</a>
+    </li>
+    <li class="list-group-item{% if request.path == "/grid/bind/list/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/list/?next={{ request.path }}">电表遥测采集器</a>
+    </li>
+    <li class="list-group-item{% if request.path == "/grid/bind/list/" %} list-group-item-danger{% endif %}">
+        <a href="/grid/bind/list/?next={{ request.path }}">系统状态数据采集器</a>
+    </li>
+
+    <hr>
+
+    <li class="list-group-item"><b>Version</b>: Beta 2019.03.29</li>
+</ul>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模型-表单</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>JModels-编辑</title>
+
+    <!--- Site CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/semantic/semantic.css">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/semantic/semantic.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.ui.dropdown').dropdown();
+            $('.menu .item').tab();
+
+
+            $("td").click(function () {
+                $("input[name=library]").val($(this).attr('library'));
+                $("input[name=row]").val($(this).attr('row'));
+                $("input[name=column]").val($(this).attr('column'));
+            });
+
+            $("#id_save").click(function () {
+                $("input[type=submit]").click();
+            });
+        });
+    </script>
+
+    <style>
+        td {
+            border: black 1px dashed;
+        }
+
+        .selected {
+            border: #5a30b5 1px dashed;
+        }
+
+        td:hover {
+            border: red 1px solid;
+        }
+    </style>
+</head>
+<body>
+    <div class="ui fluid menu">
+        <div class="header item">JModels-编辑</div>
+
+        <div class="right menu">
+            <a class="item" id="id_save">
+                <button class="ui button green">
+                    <i class="save icon"></i>
+                    保存
+                </button>
+            </a>
+            <a class="item" href="/">
+                <button class="ui button red">
+                    <i class="edit icon"></i>
+                    编辑
+                </button>
+            </a>
+            <a class="item" href="/preview/">
+                <button class="ui button blue">
+                    <i class="eye icon"></i>
+                    预览
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <form class="ui form" method="post" action="{{ request.path }}">
+        <input type="submit" hidden name="submit">
+        <h3 class="ui dividing header">模型信息-ID={{ model.id }}@{{ model.name }}</h3>
+        <div class="field">
+            <label><h4>基本信息</h4></label>
+            <hr>
+            <div class="six fields">
+                <div class="field">
+                    <label>唯一名称</label>
+                    <input type="text" name="search_name" placeholder="唯一名称" value="{{ model.name }}">
+                </div>
+                <div class="field">
+                    <label>显示字符串</label>
+                    <input type="text" name="display_text" placeholder="默认显示字符串" value="{{ model.style.display_text }}">
+                </div>
+                <div class="field">
+                    <label>offset-X</label>
+                    <input type="number" name="offset-x" placeholder="中心点-X坐标" value="{{ model.x_offset }}">
+                </div>
+                <div class="field">
+                    <label>offset-Y</label>
+                    <input type="number" name="offset-y" placeholder="中心点-Y坐标" value="{{ model.y_offset }}">
+                </div>
+                <div class="field">
+                    <label>宽</label>
+                    <input type="number" name="width" placeholder="宽度" value="{{ model.width }}">
+                </div>
+                <div class="field">
+                    <label>高</label>
+                    <input type="number" name="height" placeholder="高度" value="{{ model.height }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label><h4>风格属性</h4></label>
+            <hr>
+            <div class="six fields">
+                <div class="field">
+                      <label>旋转角度</label>
+                      <input type="text" name="degree" value="{{ model.style.degree }}">
+                </div>
+                <div class="field">
+                    <label>翻转</label>
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="v_scale" {% if model.style.v_scale == -1 %}checked{% endif %} value="-1">
+                      <label>垂直</label>
+                    </div>
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="h_scale" {% if model.style.h_scale == -1 %}checked{% endif %} value="-1">
+                      <label>水平</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>外框</label>
+                    <div class="inline fields">
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                            <input type="radio" name="show_boarder" value="1" {% if model.style.show_boarder %}checked{% endif %}>
+                            <label>显示</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                            <input type="radio" name="show_boarder" value="0" {% if not model.style.show_boarder %}checked{% endif %}>
+                            <label>隐藏</label>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui top attached tabular menu">
+            <input type="hidden" name="library" value="{{ model.style.library }}">
+            <input hidden type="number" name="row" placeholder="行" value="{{ model.style.row }}">
+            <input hidden type="number" name="column" placeholder="列" value="{{ model.style.column }}">
+            {% for library in all_model.libraries %}
+            <a class="item {% if model.style.library == library.id %}active{% endif %}" data-tab="{{ library.id }}">{{ library.name }}({{ library.unit_width }}x{{ library.unit_height }})</a>
+            {% endfor %}
+        </div>
+
+        {% for library in all_model.libraries %}
+        <div class="ui bottom attached tab segment {% if model.style.library == library.id %}active{% endif %}" data-tab="{{ library.id }}">
+            <table class="table center">
+                {% for row in "012345678" %}
+                    {% if forloop.counter0 < library.row %}
+                <tr>
+                    {% for column in "0123456789" %}
+                        {% if forloop.counter0 < library.column %}
+                        <td {% if row == model.style.row and column == model.style.column %} class="selected" {% endif %} library="{{ library.id }}" row="{{ row }}" column="{{ column }}" style="width: {{ library.unit_width }}px; height: {{ library.unit_height }}px; background-size: cover; background: url('{{ library.src }}') -{% widthratio column 1 library.unit_width %}px -{% widthratio row 1 library.unit_height %}px no-repeat;">{% widthratio row 1 column %}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        {% endfor %}
+
+    </form>
+</body>
+</html>

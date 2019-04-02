@@ -6,6 +6,7 @@ import ui.models as models
 from ui.page_grid import GRID_DATABASE_MODELS
 import os
 import codecs
+import ui.page_collector as collector
 
 
 def show_develop_main_page(request):
@@ -64,5 +65,7 @@ def show_faq_page(request):
 develop_url_map = [
     path('', show_develop_main_page),
     path('faq/', show_faq_page),
+
+    path("collector/", collector.urls)
 ]
 urls = (develop_url_map, 'develop', 'develop')

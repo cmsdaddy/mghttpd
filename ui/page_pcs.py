@@ -4,6 +4,7 @@ import json
 import time
 from django.shortcuts import render
 from django.http import *
+from django.urls import path
 from ui.models import *
 from django.db.models import *
 import ui.mg as mg
@@ -149,3 +150,14 @@ def show_pcs_yaokong_page(request, pcs_sn):
 
     return render(request, "pcs/PCS遥控模板.html", context=context)
 
+
+url_patterns = [
+    path('', lambda request: show_pcs_page(request, 0)),
+    path('<int:pcs_sn>/', show_pcs_page),
+    path('<int:pcs_sn>/yaotiao/', show_pcs_yaotiao_page),
+    path('<int:pcs_sn>/yaokong/', show_pcs_yaokong_page),
+    path('<int:pcs_sn>/grid/', show_pcs_grid),
+]
+
+
+urls = (url_patterns, "pcs", "pcs")

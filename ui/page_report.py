@@ -287,7 +287,7 @@ def show_system_report(request):
             continue
     context['usb_state'] = usb_state
     print(usb_state)
-    return render(request, "系统报表.html", context=context)
+    return render(request, "report/系统报表.html", context=context)
 
 #报表导出
 def system_report_export(request,start_times,end_times):
