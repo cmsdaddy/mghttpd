@@ -61,11 +61,106 @@ let JPaintbord = function (dom_id, width, height, options, profile) {
         this.master.drawImage(this.slave.canvas, 0, 0);
     };
 
-    this.dom.onmousemove = function (ev) {this.painter.editor && this.painter.editor.onmousemove && this.painter.editor.onmousemove(ev);};
-    this.dom.onmousedown = function (ev) {this.painter.editor && this.painter.editor.onmousedown && this.painter.editor.onmousedown(ev);};
-    this.dom.onmouseup = function (ev) {this.painter.editor && this.painter.editor.onmouseup && this.painter.editor.onmouseup(ev);};
-    this.dom.onclick = function (ev) {this.painter.editor && this.painter.editor.onclick && this.painter.editor.onclick(ev);};
-    this.dom.ondblclick = function (ev) {this.painter.editor && this.painter.editor.ondblclick && this.painter.editor.ondblclick(ev);};
+    this.dom.onmousemove = function (ev) {
+        return this.painter.editor && this.painter.editor.onmousemove ? this.painter.editor.onmousemove(ev) : this.painter.onmousemove(ev);
+    };
+    this.dom.onmousedown = function (ev) {
+        return this.painter.editor && this.painter.editor.onmousedown ? this.painter.editor.onmousedown(ev) : this.painter.onmousedown(ev);
+    };
+    this.dom.onmouseup = function (ev) {
+        return this.painter.editor && this.painter.editor.onmouseup ? this.painter.editor.onmouseup(ev) : this.painter.onmouseup(ev);
+    };
+    this.dom.onclick = function (ev) {
+        return this.painter.editor && this.painter.editor.onclick ? this.painter.editor.onclick(ev) : this.painter.onclick(ev);
+    };
+    this.dom.ondblclick = function (ev) {
+        return this.painter.editor && this.painter.editor.ondblclick ? this.painter.editor.ondblclick(ev) : this.painter.ondblclick(ev);
+    };
+
+
+    this._listen_model_mousemove = [];
+    this.listen_model_mousemove = function(callback){
+        this._listen_model_mousemove.push(callback);
+        return this;
+    };
+    this._dispatch_model_mousemove = function (ev, model) {
+        let length = this._listen_model_mousemove.length;
+        for (let i = 0; i < length; i ++ ) {
+            this._listen_model_mousemove[i](ev, model);
+        }
+    };
+
+    this._listen_model_mousein = [];
+    this.listen_model_mousein = function(callback){
+        this._listen_model_mousein.push(callback);
+        return this;
+    };
+    this._dispatch_model_mousein = function (ev, model) {
+        let length = this._listen_model_mousein.length;
+        for (let i = 0; i < length; i ++ ) {
+            this._listen_model_mousein[i](ev, model);
+        }
+    };
+
+    this._listen_model_mouseout = [];
+    this.listen_model_mouseout = function(callback){
+        this._listen_model_mouseout.push(callback);
+        return this;
+    };
+    this._dispatch_model_mouseout = function (ev, model) {
+        let length = this._listen_model_mouseout.length;
+        for (let i = 0; i < length; i ++ ) {
+            this._listen_model_mouseout[i](ev, model);
+        }
+    };
+
+    this._listen_model_mousedown = [];
+    this.listen_model_mousedown = function(callback){
+        this._listen_model_mousedown.push(callback);
+        return this;
+    };
+    this._dispatch_model_mousedown = function (ev, model) {
+        let length = this._listen_model_mousedown.length;
+        for (let i = 0; i < length; i ++ ) {
+            this._listen_model_mousedown[i](ev, model);
+        }
+    };
+
+    this._listen_model_mouseup = [];
+    this.listen_model_mouseup = function(callback){
+        this._listen_model_mouseup.push(callback);
+        return this;
+    };
+    this._dispatch_model_mouseup = function (ev, model) {
+        let length = this._listen_model_mouseup.length;
+        for (let i = 0; i < length; i ++ ) {
+            this._listen_model_mouseup[i](ev, model);
+        }
+    };
+
+    this._listen_model_click = [];
+    this.listen_model_click = function(callback){
+        this._listen_model_click.push(callback);
+        return this;
+    };
+    this._dispatch_model_click = function (ev, model) {
+        let length = this._listen_model_click.length;
+        for (let i = 0; i < length; i ++ ) {
+            this._listen_model_click[i](ev, model);
+        }
+    };
+
+    this._listen_model_dblclick = [];
+    this.listen_model_dblclick = function(callback){
+        this._listen_model_dblclick.push(callback);
+        return this;
+    };
+    this._dispatch_model_dblclick  = function (ev, model) {
+        let length = this._listen_model_dblclick .length;
+        for (let i = 0; i < length; i ++ ) {
+            this._listen_model_dblclick [i](ev, model);
+        }
+    };
 
     // 添加动画支持
     window.painter = this;
@@ -73,6 +168,79 @@ let JPaintbord = function (dom_id, width, height, options, profile) {
 
     // 预先从配置选项中加载对象
     return this.load(options.width, options.height, options.models, options.anchors, options.links, options.libraries);
+};
+
+
+JPaintbord.prototype.onmousemove = function(ev) {
+    let model = this.select_model(ev);
+
+    if (!model) {
+        // 光标移动时没有找到模型，可能发送光标离开的事件
+        if (this.last_mousemove_model) {
+            model = this.last_mousemove_model;
+            this.last_mousemove_model = null;
+
+            this._dispatch_model_mouseout(ev, model);
+            return model.do_onmouseout_callback(ev);
+        }
+    } else {
+        if (this.last_mousemove_model) {
+            // 前一状态已经在模型内部
+            if (model === this.last_mousemove_model) {
+                // 同一模型发送mousemove事件
+
+                this._dispatch_model_mousemove(ev, model);
+                return model.do_onmousemove_callback(ev);
+            } else {
+                // 不同模型时，旧模型发送mouseout事件，新模型发送mousein事件
+                this._dispatch_model_mouseout(ev, this.last_mousemove_model);
+                this.last_mousemove_model.do_onmouseout_callback(ev);
+
+                this.last_mousemove_model = model;
+
+                this._dispatch_model_mousein(ev, model);
+                return model.do_onmousein_callback(ev);
+            }
+        } else {
+            // 前一状态不在模型内部，发送mousein事件
+            this.last_mousemove_model = model;
+
+            this._dispatch_model_mousein(ev, model);
+            return model.do_onmousein_callback(ev);
+        }
+    }
+};
+
+JPaintbord.prototype.onmousedown = function(ev) {
+    let model = this.select_model(ev);
+    if ( model ) {
+        this._dispatch_model_mousedown(ev, model);
+        model.do_onmousedown_callback(ev);
+    }
+};
+
+JPaintbord.prototype.onmouseup = function(ev) {
+    let model = this.select_model(ev);
+    if ( model ) {
+        this._dispatch_model_mouseup(ev, model);
+        model.do_onmouseup_callback(ev);
+    }
+};
+
+JPaintbord.prototype.onclick = function(ev) {
+    let model = this.select_model(ev);
+    if ( model ) {
+        this._dispatch_model_click(ev, model);
+        model.do_onclick_callback(ev);
+    }
+};
+
+JPaintbord.prototype.ondblclick = function(ev) {
+    let model = this.select_model(ev);
+    if ( model ) {
+        this._dispatch_model_dblclick(ev, model);
+        model.do_ondblclick_callback(ev);
+    }
 };
 
 
@@ -219,13 +387,57 @@ JPaintbord.prototype.load = function(width, height, models, anchors, links, libr
 };
 
 /**
+ * 根据鼠标事件选择模型
+ * */
+JPaintbord.prototype.select_model = function (ev) {
+    for ( let id in this.models_list ) {
+        if ( !this.models_list.hasOwnProperty(id) ) {
+            continue;
+        }
+        let model = this.models_list[id];
+
+        if ( model.x > ev.offsetX ) {
+            continue;
+        }
+        if ( model.x + model.width < ev.offsetX ) {
+            continue;
+        }
+        if ( model.y > ev.offsetY ) {
+            continue;
+        }
+        if ( model.y + model.height < ev.offsetY ) {
+            continue;
+        }
+
+        if ( ev.offsetX > model.x_offset && ev.offsetY > model.y_offset ) {
+            this.in_resize_model_arae = true;
+            this.in_move_model_arae = false;
+        } else {
+            this.in_resize_model_arae = false;
+            this.in_move_model_arae = true;
+        }
+
+        return model;
+    }
+};
+
+
+/**
  * 根据ID搜索模型
  * */
 JPaintbord.prototype.search_model = function (id) {
     return this.models_list[id];
 };
 JPaintbord.prototype.search_model_by_id = JPaintbord.prototype.search_model;
-JPaintbord.prototype.search_model_by_name = function(name) {};
+JPaintbord.prototype.search_model_by_name = function(name) {
+    for (let key in this.models_list) {
+        let model = this.models_list[key];
+        if (model.name === name) {
+            return model;
+        }
+    }
+    return null;
+};
 
 /**
  * 根据ID搜索链接
@@ -235,6 +447,22 @@ JPaintbord.prototype.search_link = function (id) {
 };
 JPaintbord.prototype.search_link_by_id = JPaintbord.prototype.search_link;
 JPaintbord.prototype.search_link_by_name = function(name) {};
+
+// 返回第一条被搜索到的link
+JPaintbord.prototype.search_link_by_anchor_object = function(anchor) {
+    for (let id in this.links_list) {
+        if (this.links_list[id].begin === anchor) {
+            return this.links_list[id];
+        }
+
+        if (this.links_list[id].end === anchor) {
+            return this.links_list[id];
+        }
+    }
+
+    return null;
+};
+
 
 /**
  * 根据ID搜索锚点

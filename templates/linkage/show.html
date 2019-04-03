@@ -20,6 +20,31 @@
         #paint {
             padding: 0;
         }
+
+        .information_box {
+            position: absolute;
+            float: left;
+            top: 100px;
+            left: 100px;
+            width: 300px;
+            height: 100px;
+            border: #b0b5b1 solid 1px;
+            border-right-width: 2px;
+            border-bottom-width: 2px;
+            border-radius: 4px;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            font-family: monospace;
+            font-size: 10px;
+        }
+
+        .information_box .title {
+            color: red;
+        }
+
+        .information_box .value {
+            color: white;
+        }
     </style>
 
     <script>
@@ -34,11 +59,48 @@
                 painter.begin();
                 painter.render();
                 painter.update();
+
+                // 监听光标移动事件
+                painter.listen_model_mousemove(function (ev, model) {
+                    let inforbox = $(".information_box");
+                    inforbox.css("left", ev.x + 10 + "px");
+                    inforbox.css("top", ev.y + "px");
+                    $(".title").html(model.name);
+                    inforbox.show();
+                }).listen_model_mouseout(function (ev, model) {
+                    $(".information_box").hide();
+                    model.library = model.old_library ? model.old_library : painter.search_image_library_by_name("Jmodel");
+                }).listen_model_mousein(function (ev, model) {
+                    model.old_library = model.library;
+                    model.library = painter.search_image_library(4);
+                });
+
+                /*
+                let pcs_model = painter.search_model_by_name("pcs");
+                if (pcs_model) {
+                    pcs_model.onmousemove(function (ev, model) {
+                        let inforbox = $(".information_box");
+                        inforbox.css("left", ev.x + 5 + "px");
+                        inforbox.css("top", ev.y + 5 + "px");
+                        $(".title").html(model.name);
+                        inforbox.show();
+                    }).onmouseout(function (ev, model) {
+                        $(".information_box").hide();
+                    });
+                }
+                */
             });
         });
     </script>
 </head>
 <body>
     <canvas id="paint"></canvas>
+    <div class="information_box" hidden>
+        <div>
+            <span class="title">标题</span>
+            <span class="value">0.98 V</span>
+        </div>
+        <hr>
+    </div>
 </body>
 </html>

@@ -42,12 +42,12 @@ color: #767676;
 	display:inline-block;
 	width:15px;
 	line-height: 2.1em;
-	background: url("../img/title.png") no-repeat 0 0;
+	background: url("../imgs/title.png") no-repeat 0 0;
 	font-size: 14px;
 }
 .fishBone .item .title .title-center{
 	display:inline-block;
-	background: url("../img/title.png") repeat-x 0 -600px;
+	background: url("../imgs/title.png") repeat-x 0 -600px;
 	font-size: 15px;
 	font-weight:bold;
 	font-family:'微软雅黑';
@@ -58,14 +58,14 @@ color: #767676;
 	display:inline-block;
 	width:15px;
 	line-height: 2.1em;
-	background: url("../img/title.png") no-repeat 0 -1200px;
+	background: url("../imgs/title.png") no-repeat 0 -1200px;
 	font-size: 14px;
 }
 .fishBone .item .title{
 	display: block;
 	position: relative;
 	left: -33px;
-	background: url(../img/line-point.png) no-repeat 12px -212px;
+	background: url(../imgs/line-point.png) no-repeat 12px -212px;
 }
 .fishBone .item.top .title{
 }
@@ -98,7 +98,7 @@ color: #767676;
 	padding-left: 19px;
 	left: -4px;
 	border-left: 0!important;
-	background: url(../img/line-first.png) no-repeat 0px 0px;
+	background: url(../imgs/line-first.png) no-repeat 0px 0px;
 	font-size: 14px;
 	font-family:'微软雅黑';
 	font-weight: 550;
@@ -116,7 +116,7 @@ color: #767676;
 	display: inline-block;
 	width: 20px;
 	height: 40px;
-	background: url(../img/arrow.png) no-repeat -1px 13px;
+	background: url(../imgs/arrow.png) no-repeat -1px 13px;
 }
 .fishBone .prev:hover{
 cursor: pointer;
@@ -133,7 +133,7 @@ background-position-y: -28px;
 	display: inline-block;
 	width: 20px;
 	height: 40px;
-	background: url(../img/arrow.png) no-repeat -19px 13px;
+	background: url(../imgs/arrow.png) no-repeat -19px 13px;
 }
 /**line**/
 .fishBone .line {
@@ -151,7 +151,7 @@ background-position-y: -28px;
 	display: block;
 	height: 18px;
 	width: 18px;
-	background: url(../img/line-point.png) no-repeat 0px 0px;
+	background: url(../imgs/line-point.png) no-repeat 0px 0px;
 }
 .fishBone .item.bottom .line-point {
 	top: -6px

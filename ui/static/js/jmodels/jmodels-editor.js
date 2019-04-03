@@ -91,12 +91,46 @@ JEditor.prototype.render_model = function(ctx, model) {
 };
 
 
+JEditor.prototype.render_reference_grid = function(ctx) {
+    let width = this.painter.width;
+    let height = this.painter.height;
+    let color_deep = "#CCCCCC";
+    let color_light = "#dddddd";
+
+    ctx.save();
+
+    for (let x = 10; x < width; x += 10) {
+        let color = x % 50 ? color_light : color_deep;
+        ctx.beginPath();
+        ctx.moveTo(x+0.5, 0);
+        ctx.lineTo(x+0.5, height);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+    }
+
+    for (let x = 10; x < width; x += 10) {
+        let color = x % 50 ? color_light : color_deep;
+        ctx.beginPath();
+        ctx.moveTo(0, x + 0.5);
+        ctx.lineTo(width, x + 0.5);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+    }
+
+    ctx.restore();
+};
+
+
 /**
  * 编辑器的绘制事件
  * */
 JEditor.prototype.render = function(ctx) {
     ctx.save();
 
+    // 绘制参考线
+    //this.render_reference_grid(ctx);
+
+    // 绘制连接线
     let link_list = this.painter.links_list;
     for (let idx in link_list) {
         if ( ! link_list.hasOwnProperty(idx) ) {
@@ -105,6 +139,7 @@ JEditor.prototype.render = function(ctx) {
         this.render_link(ctx, link_list[idx]);
     }
 
+    // 绘制锚点
     let anchor_list = this.painter.anchors_list;
     for (let idx in anchor_list) {
         if ( ! anchor_list.hasOwnProperty(idx) ) {
@@ -113,6 +148,7 @@ JEditor.prototype.render = function(ctx) {
         this.render_anchor(ctx, anchor_list[idx]);
     }
 
+    // 绘制模型
     let model_list = this.painter.models_list;
     for (let idx in model_list) {
         if ( ! model_list.hasOwnProperty(idx) ) {
@@ -348,6 +384,8 @@ JEditor.prototype.is_cursor_in_model_change_location_area = function(model, ev) 
  * 选择模型
  * */
 JEditor.prototype.select_model = function (ev) {
+    return this.painter.select_model(ev);
+/*
     for ( let id in this.painter.models_list ) {
         if ( !this.painter.models_list.hasOwnProperty(id) ) {
             continue;
@@ -376,7 +414,7 @@ JEditor.prototype.select_model = function (ev) {
         }
 
         return model;
-    }
+    }*/
 };
 
 
@@ -632,9 +670,24 @@ JEditor.prototype.onmouseup = function (ev) {
     if ( anchor && this.anchor_stack_selected.indexOf(anchor) < 0 ) {
         let begin_anchor = this.anchor_stack_selected.pop();
 
-        // 现在已经有两个锚点了，判断一下：若还没有建立过连接，则新建一个连接
-        let link = this.create_link(begin_anchor, anchor, {});
-        console.log(link);
+        // 切换连接的锚点
+        if (anchor.model === begin_anchor.model) {
+            let link = this.painter.search_link_by_anchor_object(begin_anchor);
+            if (link) {
+                console.log("change link", begin_anchor, anchor);
+                if (link.begin === begin_anchor) {
+                    link.begin = anchor;
+                } else {
+                    link.end = anchor;
+                }
+            } else {
+                console.error("something is wrong!");
+            }
+        } else {
+            // 现在已经有两个锚点了，判断一下：若还没有建立过连接，则新建一个连接
+            let link = this.create_link(begin_anchor, anchor, {});
+            console.log("new link:", link);
+        }
     }
 
     let model = this.select_model(ev);

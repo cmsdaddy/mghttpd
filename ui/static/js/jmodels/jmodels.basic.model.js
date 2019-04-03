@@ -41,35 +41,94 @@ let JModel = function (id, painter, name, x_offset, y_offset, width, height, sty
 
     // 绑定的事件函数
     // 尺寸变化回调
-    this._onresize = undefined;
-    this.onresize = function (callback) {this._onresize = callback;};
+    this._onresize = [];
+    this.onresize = function (callback) {this._onresize.push(callback); return this;};
 
     // 位置变化回调
-    this._onrelocation = undefined;
-    this.onrelocation = function (callback) {this._onrelocation = callback;};
+    this._onrelocation = [];
+    this.onrelocation = function (callback) {this._onrelocation.push(callback); return this;};
+
+    // 光标移动事件
+    this._onmousemove = [];
+    this.onmousemove = function (callback) {this._onmousemove.push(callback); return this;};
 
     // 光标悬停回调
-    this._onhover = undefined;
-    this.onhover = function (callback) {this._onhover = callback;};
+    this._onhover = [];
+    this.onhover = function (callback) {this._onhover.push(callback); return this;};
 
     // 光标进入回调
-    this._onmousein = undefined;
-    this.onmousein = function (callback) {this._onmousein = callback;};
+    this._onmousein = [];
+    this.onmousein = function (callback) {this._onmousein.push(callback); return this;};
 
     // 光标退出回调
-    this._onmouseout = undefined;
-    this.onmouseout = function (callback) {this._onmouseout = callback;};
+    this._onmouseout = [];
+    this.onmouseout = function (callback) {this._onmouseout.push(callback); return this;};
 
     // 左键单击回调
-    this._onclick = undefined;
-    this.onclick = function (callback) {this._onclick = callback;};
+    this._onclick = [];
+    this.onclick = function (callback) {this._onclick.push(callback); return this;};
 
     // 左键双击回调
-    this._ondbclick = undefined;
-    this.ondbclick = function (callback) {this._ondbclick = callback;};
+    this._ondbclick = [];
+    this.ondbclick = function (callback) {this._ondbclick.push(callback); return this;};
 
     return this;
 };
+
+JModel.prototype.do_onmousemove_callback = function(ev) {
+    console.log(this.name, "do_onmousemove_callback");
+
+    let length = this._onmousemove.length;
+    for ( let i = 0; i < length; i ++ ) {
+        this._onmousemove[i](ev, this);
+    }
+};
+
+JModel.prototype.do_onmousein_callback = function(ev) {
+    console.log(this.name, "do_onmousein_callback");
+
+    let length = this._onmousein.length;
+    for ( let i = 0; i < length; i ++ ) {
+        this._onmousein[i](ev, this);
+    }
+};
+
+JModel.prototype.do_onmouseout_callback = function(ev) {
+    console.log(this.name, "do_onmouseout_callback");
+
+    let length = this._onmouseout.length;
+    for ( let i = 0; i < length; i ++ ) {
+        this._onmouseout[i](ev, this);
+    }
+};
+
+JModel.prototype.do_onmousedown_callback = function(ev) {
+    console.log(this.name, "do_onmousedown_callback");
+
+};
+
+JModel.prototype.do_onmouseup_callback = function(ev) {
+    console.log(this.name, "do_onmouseup_callback");
+};
+
+JModel.prototype.do_onclick_callback = function(ev) {
+    console.log(this.name, "do_onclick_callback");
+
+    let length = this._onclick.length;
+    for ( let i = 0; i < length; i ++ ) {
+        this._onclick[i](ev, this);
+    }
+};
+
+JModel.prototype.do_ondblclick_callback = function(ev) {
+    console.log(this.name, "do_ondblclick_callback");
+
+    let length = this._ondbclick.length;
+    for ( let i = 0; i < length; i ++ ) {
+        this._ondbclick[i](ev, this);
+    }
+};
+
 
 /**
  * 渲染函数
@@ -78,7 +137,7 @@ JModel.prototype.render = function (ctx) {
     // 控制外框显示
     if ( this.style.show_boarder ) {
         ctx.strokeRect(this.x-0.5, this.y-0.5, this.width, this.height);
-        console.info(this.x, this.y);
+        //console.info(this.x, this.y);
     }
 
     if ( this.library && this.library.image.complete ) {

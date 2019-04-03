@@ -29,7 +29,7 @@ JLink.prototype.save = function () {
 };
 
 
-JLink.prototype.render = function (ctx) {
+JLink.prototype.render2 = function (ctx) {
     let delta_x = (this.end.x + this.end.width/2) - (this.begin.x + this.begin.width/2);
     let delta_y = (this.end.y + this.end.height/2) - (this.begin.y + this.begin.height/2);
 
@@ -65,7 +65,7 @@ JLink.prototype.render = function (ctx) {
 /**
  * 渲染函数
  * */
-JLink.prototype.render2 = function (ctx) {
+JLink.prototype.render = function (ctx) {
     /*
      ctx.beginPath();
      ctx.moveTo(this.begin.x + this.begin.width/2, this.begin.y + this.begin.height/2);
@@ -86,10 +86,10 @@ JLink.prototype.render2 = function (ctx) {
 
     // 创建固定绘制区域, 使有效绘制区域限制在固定范围内
     ctx.beginPath();
-    ctx.lineTo(0, 5);
-    ctx.lineTo(len, 5);
-    ctx.lineTo(len, -5);
-    ctx.lineTo(0, -5);
+    ctx.lineTo(0, 2);
+    ctx.lineTo(len, 2);
+    ctx.lineTo(len, -2);
+    ctx.lineTo(0, -2);
     ctx.closePath();
     ctx.clip();
 
@@ -125,7 +125,7 @@ JLink.prototype.render2 = function (ctx) {
 
     this.idx_x += 1;
     if ( this.idx_x > 0 ) {
-        this.idx_x = begin_index;
+        this.idx_x = -5;
     }
     ctx.restore();
 };
