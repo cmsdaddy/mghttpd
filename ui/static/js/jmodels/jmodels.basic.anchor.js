@@ -26,6 +26,29 @@ let JAnchor = function (id, model, x_offset, y_offset, style) {
 
     return this;
 };
+
+
+/**
+ * 判断指定的鼠标事件的光标范围在这个锚点范围内
+ * */
+JAnchor.prototype.is_cursor_in = function(ev) {
+    if ( this.x > ev.offsetX ) {
+        return false;
+    }
+    if ( this.x + this.width < ev.offsetX ) {
+        return false;
+    }
+    if ( this.y > ev.offsetY ) {
+        return false;
+    }
+
+    if ( this.y + this.height < ev.offsetY ) {
+        return false;
+    }
+
+    return true;
+};
+
 /**
  * 渲染函数
  * */

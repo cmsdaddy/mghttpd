@@ -28,6 +28,7 @@
  *     3. Paintboard通过mdatabase将模型渲染在canvas上
  */
 document.write("<script type='text/javascript' src='/static/js/jmodels/jmodels.basic.library.js'></script>");
+document.write("<script type='text/javascript' src='/static/js/jmodels/jmodels.basic.event.js'></script>");
 document.write("<script type='text/javascript' src='/static/js/jmodels/jmodels.basic.link.js'></script>");
 document.write("<script type='text/javascript' src='/static/js/jmodels/jmodels.basic.anchor.js'></script>");
 document.write("<script type='text/javascript' src='/static/js/jmodels/jmodels.basic.model.js'></script>");

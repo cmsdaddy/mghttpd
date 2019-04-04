@@ -61,34 +61,19 @@
                 painter.update();
 
                 // 监听光标移动事件
-                painter.listen_model_mousemove(function (ev, model) {
+                painter.model_event_listener.onmousemove(function (ev, model) {
                     let inforbox = $(".information_box");
                     inforbox.css("left", ev.x + 10 + "px");
                     inforbox.css("top", ev.y + "px");
                     $(".title").html(model.name);
                     inforbox.show();
-                }).listen_model_mouseout(function (ev, model) {
+                }).onmouseout(function (ev, model) {
                     $(".information_box").hide();
                     model.library = model.old_library ? model.old_library : painter.search_image_library_by_name("Jmodel");
-                }).listen_model_mousein(function (ev, model) {
+                }).onmousein(function (ev, model) {
                     model.old_library = model.library;
                     model.library = painter.search_image_library(4);
                 });
-
-                /*
-                let pcs_model = painter.search_model_by_name("pcs");
-                if (pcs_model) {
-                    pcs_model.onmousemove(function (ev, model) {
-                        let inforbox = $(".information_box");
-                        inforbox.css("left", ev.x + 5 + "px");
-                        inforbox.css("top", ev.y + 5 + "px");
-                        $(".title").html(model.name);
-                        inforbox.show();
-                    }).onmouseout(function (ev, model) {
-                        $(".information_box").hide();
-                    });
-                }
-                */
             });
         });
     </script>

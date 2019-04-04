@@ -48,87 +48,38 @@ let JModel = function (id, painter, name, x_offset, y_offset, width, height, sty
     this._onrelocation = [];
     this.onrelocation = function (callback) {this._onrelocation.push(callback); return this;};
 
-    // 光标移动事件
-    this._onmousemove = [];
-    this.onmousemove = function (callback) {this._onmousemove.push(callback); return this;};
-
-    // 光标悬停回调
-    this._onhover = [];
-    this.onhover = function (callback) {this._onhover.push(callback); return this;};
-
-    // 光标进入回调
-    this._onmousein = [];
-    this.onmousein = function (callback) {this._onmousein.push(callback); return this;};
-
-    // 光标退出回调
-    this._onmouseout = [];
-    this.onmouseout = function (callback) {this._onmouseout.push(callback); return this;};
-
-    // 左键单击回调
-    this._onclick = [];
-    this.onclick = function (callback) {this._onclick.push(callback); return this;};
-
-    // 左键双击回调
-    this._ondbclick = [];
-    this.ondbclick = function (callback) {this._ondbclick.push(callback); return this;};
+    // 新建一个鼠标事件监听器
+    this.event_listener = new JEventListener(this);
 
     return this;
 };
 
-JModel.prototype.do_onmousemove_callback = function(ev) {
-    console.log(this.name, "do_onmousemove_callback");
+/**
+ * 判断指定的鼠标事件的光标范围在这个模型范围内
+ * */
+JModel.prototype.is_cursor_in = function(ev) {
+    if ( this.x > ev.offsetX ) {
+        return false;
+    }
+    if ( this.x + this.width < ev.offsetX ) {
+        return false;
+    }
+    if ( this.y > ev.offsetY ) {
+        return false;
+    }
+    if ( this.y + this.height < ev.offsetY ) {
+        return false;
+    }
 
+    return true;
+};
+
+JModel.prototype.do_onmousemove_callback = function(ev) {
     let length = this._onmousemove.length;
     for ( let i = 0; i < length; i ++ ) {
         this._onmousemove[i](ev, this);
     }
 };
-
-JModel.prototype.do_onmousein_callback = function(ev) {
-    console.log(this.name, "do_onmousein_callback");
-
-    let length = this._onmousein.length;
-    for ( let i = 0; i < length; i ++ ) {
-        this._onmousein[i](ev, this);
-    }
-};
-
-JModel.prototype.do_onmouseout_callback = function(ev) {
-    console.log(this.name, "do_onmouseout_callback");
-
-    let length = this._onmouseout.length;
-    for ( let i = 0; i < length; i ++ ) {
-        this._onmouseout[i](ev, this);
-    }
-};
-
-JModel.prototype.do_onmousedown_callback = function(ev) {
-    console.log(this.name, "do_onmousedown_callback");
-
-};
-
-JModel.prototype.do_onmouseup_callback = function(ev) {
-    console.log(this.name, "do_onmouseup_callback");
-};
-
-JModel.prototype.do_onclick_callback = function(ev) {
-    console.log(this.name, "do_onclick_callback");
-
-    let length = this._onclick.length;
-    for ( let i = 0; i < length; i ++ ) {
-        this._onclick[i](ev, this);
-    }
-};
-
-JModel.prototype.do_ondblclick_callback = function(ev) {
-    console.log(this.name, "do_ondblclick_callback");
-
-    let length = this._ondbclick.length;
-    for ( let i = 0; i < length; i ++ ) {
-        this._ondbclick[i](ev, this);
-    }
-};
-
 
 /**
  * 渲染函数

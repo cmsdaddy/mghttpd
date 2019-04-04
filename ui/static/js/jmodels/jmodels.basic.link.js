@@ -15,6 +15,57 @@ var JLink = function (id, begin, end, style) {
     return this;
 };
 
+/**
+ * 判断指定的鼠标事件的光标范围在这个连接线范围内
+ * */
+JLink.prototype.is_cursor_in = function(ev) {
+    let By = this.end.y;
+    let Bx = this.end.x;
+
+    let Ay = this.begin.y;
+    let Ax = this.begin.x;
+
+    let offset = 0;
+
+    let delta_AB_x = Ax - Bx;
+    if ( delta_AB_x <= 5 ) {
+        offset = 5;
+    }
+
+    let Cx = ev.offsetX;
+    let Cy = ev.offsetY;
+
+    if (Cx < Math.min(Ax, Bx) - offset) {
+        return false;
+    }
+
+    if (Cx > Math.max(Ax, Bx) + offset) {
+        return false;
+    }
+
+    if ( offset ) {
+        if (Cy < Math.min(Ay, By)) {
+            return false;
+        }
+
+        if (Cy > Math.max(Ay, By)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    let y = By - (Bx - Cx) * (By -Ay) / (Bx - Ax);
+
+    let delta = Math.max(y, Cy) - Math.min(y, Cy);
+
+    if ( delta > 5 ) {
+        return false;
+    }
+
+    return true;
+};
+
 
 /**
  * 生成保存锚点对象
@@ -29,7 +80,7 @@ JLink.prototype.save = function () {
 };
 
 
-JLink.prototype.render2 = function (ctx) {
+JLink.prototype.render = function (ctx) {
     let delta_x = (this.end.x + this.end.width/2) - (this.begin.x + this.begin.width/2);
     let delta_y = (this.end.y + this.end.height/2) - (this.begin.y + this.begin.height/2);
 
@@ -65,7 +116,7 @@ JLink.prototype.render2 = function (ctx) {
 /**
  * 渲染函数
  * */
-JLink.prototype.render = function (ctx) {
+JLink.prototype.render2 = function (ctx) {
     /*
      ctx.beginPath();
      ctx.moveTo(this.begin.x + this.begin.width/2, this.begin.y + this.begin.height/2);

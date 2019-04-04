@@ -1,3 +1,31 @@
+let ClickSelectStack = function(obj) {
+    // 选择的模型
+    this.models = [];
+    // 选择的连接
+    this.links = [];
+    // 选择的锚点
+    this.anchors = [];
+
+    // 光标位置
+    this.cursor = [];
+};
+
+// 清空所有选择的对象
+ClickSelectStack.prototype.empty = function() {
+    this.models = this.links = this.anchors = this.cursor = [];
+};
+
+
+/**
+ * jmodels 的模型对象编辑器
+ * 主要功能：
+ *  - 绘制参考线
+ *  - 绘制锚点
+ *  - 绘制模型
+ *  - 连接锚点
+ *  - 修改模型位置
+ *  - 修改模型大小
+ * */
 let JEditor = function (painter) {
     this.painter = painter;
     this.painter.editor = this;
@@ -25,6 +53,9 @@ let JEditor = function (painter) {
     // 光标移动的位置记录, 左键按下时记录，左键弹起时清空
     this.cursor_motion_stack = [];
 
+    // 点击选择列表
+    this.select_stack = new ClickSelectStack(this);
+
     // 开始移动的点
     this.move_begin_point = undefined;
 
@@ -35,6 +66,10 @@ let JEditor = function (painter) {
 
     window.requestAnimationFrame(this.animation_render);
     window.editor = this;
+
+    // 编辑区空白处点击事件, 点击空白区域后清空选择栈中的全部对象
+    //painter.empty_event_listener.onmousedown(this.select_stack.empty);
+
     return this;
 };
 
@@ -56,8 +91,9 @@ JEditor.prototype.render_link = function(ctx, link) {
  * */
 JEditor.prototype.render_anchor = function(ctx, anchor) {
     ctx.save();
-    ctx.strokeRect(anchor.x, anchor.y, anchor.width, anchor.height);
-    ctx.fillStyle = 'red';
+    //ctx.strokeRect(anchor.x, anchor.y, anchor.width, anchor.height);
+    ctx.fillStyle = '#23ca57';
+    ctx.fillRect(anchor.x, anchor.y, anchor.width, anchor.height);
     ctx.fillText(anchor.id, anchor.x, anchor.y);
     ctx.restore();
 };
@@ -68,6 +104,7 @@ JEditor.prototype.render_anchor = function(ctx, anchor) {
  * */
 JEditor.prototype.render_model = function(ctx, model) {
     // 绘制调整大小的把手
+
     let x = model.x_offset + model.width/2;
     let y = model.y_offset + model.height/2;
 
@@ -80,7 +117,6 @@ JEditor.prototype.render_model = function(ctx, model) {
     }
     ctx.stroke();
     ctx.restore();
-
     /*
     ctx.fillText("id:"+model.id, model.x_offset - 30, model.y_offset - 10);
     ctx.fillText("x:"+model.x, model.x_offset - 30, model.y_offset - 22);
@@ -91,11 +127,14 @@ JEditor.prototype.render_model = function(ctx, model) {
 };
 
 
+/**
+ * 绘制编辑区的参考线
+ * */
 JEditor.prototype.render_reference_grid = function(ctx) {
     let width = this.painter.width;
     let height = this.painter.height;
     let color_deep = "#CCCCCC";
-    let color_light = "#dddddd";
+    let color_light = "#DDDDDD";
 
     ctx.save();
 
@@ -127,8 +166,14 @@ JEditor.prototype.render_reference_grid = function(ctx) {
 JEditor.prototype.render = function(ctx) {
     ctx.save();
 
+    this.painter.render_background(ctx);
+
     // 绘制参考线
-    //this.render_reference_grid(ctx);
+    this.render_reference_grid(ctx);
+
+    this.painter.render_all_links(ctx);
+    this.painter.render_all_anchors(ctx);
+    this.painter.render_all_models(ctx);
 
     // 绘制连接线
     let link_list = this.painter.links_list;
@@ -184,6 +229,13 @@ JEditor.prototype.render = function(ctx) {
         ctx.restore();
     }
 
+    // 绘制加入选区的模型
+    for (let i = 0, length = this.select_stack.models.length; i < length; i ++) {
+        let model = this.select_stack.models[i];
+        ctx.strokeStyle = '#ff00ff';
+        ctx.strokeRect(model.x - 5, model.y - 5, model.width + 10, model.height + 10);
+    }
+
     // 绘制选择的模型, 有改变模型位置的选择对象
     for(let i = 0, length = this.change_location_models_statck.length; i < length; i ++) {
         let model = this.change_location_models_statck[i];
@@ -194,7 +246,7 @@ JEditor.prototype.render = function(ctx) {
     // 绘制选择的模型, 有改变模型大小的选择对象
     for(let i =0, length = this.resize_models_stack.length; i < length; i ++) {
         let model = this.resize_models_stack[i];
-        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = 'blue';
         ctx.strokeRect(model.x - 5, model.y - 5, model.width + 10, model.height + 10);
     }
 
@@ -385,36 +437,6 @@ JEditor.prototype.is_cursor_in_model_change_location_area = function(model, ev) 
  * */
 JEditor.prototype.select_model = function (ev) {
     return this.painter.select_model(ev);
-/*
-    for ( let id in this.painter.models_list ) {
-        if ( !this.painter.models_list.hasOwnProperty(id) ) {
-            continue;
-        }
-        let model = this.painter.models_list[id];
-
-        if ( model.x > ev.offsetX ) {
-            continue;
-        }
-        if ( model.x + model.width < ev.offsetX ) {
-            continue;
-        }
-        if ( model.y > ev.offsetY ) {
-            continue;
-        }
-        if ( model.y + model.height < ev.offsetY ) {
-            continue;
-        }
-
-        if ( ev.offsetX > model.x_offset && ev.offsetY > model.y_offset ) {
-            this.in_resize_model_arae = true;
-            this.in_move_model_arae = false;
-        } else {
-            this.in_resize_model_arae = false;
-            this.in_move_model_arae = true;
-        }
-
-        return model;
-    }*/
 };
 
 
@@ -422,27 +444,15 @@ JEditor.prototype.select_model = function (ev) {
  * 选择锚点
  * */
 JEditor.prototype.select_anchor = function (ev) {
-    for ( let id in this.painter.anchors_list ) {
-        if ( !this.painter.anchors_list.hasOwnProperty(id) ) {
-            continue;
-        }
-        let anchor = this.painter.anchors_list[id];
+    return this.painter.select_anchor(ev);
+};
 
-        if ( anchor.x > ev.offsetX ) {
-            continue;
-        }
-        if ( anchor.x + anchor.width < ev.offsetX ) {
-            continue;
-        }
-        if ( anchor.y > ev.offsetY ) {
-            continue;
-        }
-        if ( anchor.y + anchor.height < ev.offsetY ) {
-            continue;
-        }
 
-        return anchor;
-    }
+/**
+ * 选择连接线
+ * */
+JEditor.prototype.select_link = function (ev) {
+    return this.painter.select_link(ev);
 };
 
 
@@ -507,6 +517,11 @@ JEditor.prototype.update_model_size = function(model, new_width, new_height) {
  */
 JEditor.prototype.onmousemove = function (ev) {
     let update_request = 0;
+
+    let link = this.select_link(ev);
+    if (link) {
+        console.log(link);
+    }
 
     // 跟踪热锚点位置, 光标移动至锚点上时用不同颜色的框描出边框
     let anchor = this.select_anchor(ev);
@@ -604,6 +619,8 @@ JHotline.prototype.update_endpoint = function(end_x, end_y) {
  * 鼠标按下事件
  */
 JEditor.prototype.onmousedown = function (ev) {
+    this.painter.onmousedown(ev);
+
     let anchor = this.select_anchor(ev);
 
     // 只允许将锚点压栈一次
@@ -714,6 +731,8 @@ JEditor.prototype.onmouseup = function (ev) {
     this.attribute_of_selected_model_statck = {};
     // 光标移动的位置记录, 左键按下压栈两次，光标移动时更新最后一个，左键弹起时清空
     this.cursor_motion_stack = [];
+
+    return this.painter.onmouseup(ev);
 };
 
 /***
@@ -721,7 +740,7 @@ JEditor.prototype.onmouseup = function (ev) {
  * 鼠标单击事件
  */
 JEditor.prototype.onclick = function (ev) {
-    //let model = this.select_model(ev);
+    return this.painter.onclick(ev);
 };
 
 /***
@@ -729,10 +748,31 @@ JEditor.prototype.onclick = function (ev) {
  * 鼠标双击事件
  */
 JEditor.prototype.ondblclick = function (ev) {
-    let model = this.select_model(ev);
-    if ( model !== undefined ) {
-        let href = '/linkage/model/' + model.id.toString() + '/change/';
-        console.log(href);
-        window.location.href = href;
-    }
+    return this.painter.ondblclick(ev);
 };
+
+
+/**
+ * 初始化jmodels编辑器
+ * */
+function initialize_jmodels_editor(painter) {
+    let editor = new JEditor(painter);
+
+    // 左键点击任意空白区域后，选择区的所有对象都会被清空
+    painter.empty_event_listener.onmousedown(function (ev, painter) {
+        editor.select_stack.empty();
+        console.log("select empty.");
+    });
+
+    // 选择模型, 将鼠标左键点击的模型压入选择栈，按住shift键可选择多个模型
+    painter.model_event_listener.onclick(function (ev, model) {
+        if (editor.select_stack.models.indexOf(model) === -1) {
+            if (!ev.shiftKey) {
+                editor.select_stack.models = [model]
+            } else {
+                editor.select_stack.models.push(model);
+            }
+            console.log("select model", model, ev);
+        }
+    });
+}
