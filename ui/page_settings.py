@@ -82,7 +82,7 @@ class SettingsItemBasic(object):
             return None
         '''
 
-        print("sync", path, self.value)
+        print("sync", host, path, self.value)
         return api.api_write(host, path, self.value)
 
     def complie(self, txt):
@@ -239,9 +239,6 @@ class 监控通讯参数(PosterProcessor):
     def __init__(self):
         super(监控通讯参数, self).__init__(self.__class__.__name__)
         imap = dict()
-        imap['EMS设备地址'] = STextItem(cls=self, name='EMS设备地址', default='192.168.2.106',
-                                           path="/EMS模块通讯地址/")
-        imap['EMS输出端口'] = SIntegerItem(cls=self, name='EMS输出端口', default=8084, path="/EMS输出端口/")
 
         imap['数据中心地址'] = STextItem(cls=self, name='数据中心地址', default='192.168.2.106', path=None)
         imap['SOCKET协议端口'] = SIntegerItem(cls=self, name='SOCKET协议端口', default=8084, path=None)
@@ -254,7 +251,6 @@ class 监控通讯参数(PosterProcessor):
 
         self.imap = imap
         self.items_list = [
-            GroupInLineItem(groups=[imap['EMS设备地址'], imap['EMS输出端口']]),
             GroupInLineItem(groups=[imap['数据中心地址'], imap['SOCKET协议端口'],
                                            imap['HTTP协议端口'], imap['协议版本']]),
             GroupInLineItem(groups=[imap['UI服务器地址'], imap['UI服务端口']]),
@@ -376,6 +372,51 @@ class BMS参数(PosterProcessor):
         bms = SUB_BMS参数(bmsid=bmsid)
         self.items_list.extend(bms.items_list)
         self.imap = dict(self.imap, **bms.imap)
+
+
+class EMS_Settings(PosterProcessor):
+    """EMS通讯参数配置对象"""
+    def __init__(self):
+        super().__init__(self.__class__.__name__)
+        imap = dict()
+        imap['EMS输出端口'] = SIntegerItem(cls=self, name='EMS输出端口', default=8084, path="/EMS输出端口/")
+        imap['EMS设备地址'] = STextItem(cls=self, name='EMS设备地址', default='192.168.2.106', path="/EMS模块通讯地址/")
+        imap['EMS子网掩码'] = STextItem(cls=self, name='EMS子网掩码', default='255.255.255.0', path=None)
+        imap['EMS网关'] = STextItem(cls=self, name='EMS网关', default="192.168.1.1", path=None)
+
+        self.imap = imap
+        self.items_list = [
+            GroupInLineItem(groups=[imap['EMS输出端口']]),
+            GroupInLineItem(groups=[imap['EMS设备地址'], imap['EMS子网掩码'], imap['EMS网关']]),
+        ]
+
+    def on_post(self, request):
+        old_ip = self.imap['EMS设备地址'].value
+        old_mask = self.imap['EMS子网掩码'].value
+        old_gateway = self.imap['EMS网关'].value
+
+        super().on_post(request)
+
+        new_ip = self.imap['EMS设备地址'].value
+        new_mask = self.imap['EMS子网掩码'].value
+        new_gateway = self.imap['EMS网关'].value
+
+        if {old_ip, old_mask, old_gateway} ^ {new_ip, new_mask, new_gateway} == set({}):
+            print("no change.")
+            return
+
+        command_line_list = [
+            "curl -s ",
+            "'http://", new_ip, ":8085",
+            "/config/?",
+            "ip=", new_ip,
+            "&netmask=", new_mask,
+            "&gateway=", new_gateway,
+            "'&"
+        ]
+        comand_line = "".join(command_line_list)
+        print("changed", comand_line)
+        os.system(comand_line)
 
 
 class SUB_PCS参数(PosterProcessor):
@@ -747,6 +788,8 @@ urlpatterns = [
     path('inv/', lambda request: show_autmatic_page(request, INV参数)),
     path('pcs/', lambda request: show_autmatic_page(request, PCS参数)),
     path('bms/', lambda request: show_autmatic_page(request, BMS参数)),
+
+    path('ems/', lambda request: show_autmatic_page(request, EMS_Settings)),
 
     path('battery/', lambda request: show_autmatic_page(request, 电池参数)),
     path('report/', lambda request: show_autmatic_page(request, 监控通讯参数)),
