@@ -298,15 +298,14 @@ def set_bee_yaokong(name, value, visitor=None):
 # 获取数据中心节点地址
 def get_datacenter_address():
     try:
-        raise ValueError
         with codecs.open('data/configure/监控通讯参数/数据中心地址.json', encoding='utf8') as file:
             http_ip = json.load(file)
 
         with codecs.open('data/configure/监控通讯参数/HTTP协议端口.json', encoding='utf8') as file:
             http_port = json.load(file)
     except Exception as e:
-        return '192.168.1.107:8083'
-        # return '127.0.0.1:8000'
+        return '127.0.0.1:8083'
+
     return '%s:%d' % (http_ip, http_port)
 
 

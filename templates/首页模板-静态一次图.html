@@ -1,0 +1,47 @@
+{% extends "theme/base.html" %}
+{% block title %}首页{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+{% endblock %}
+
+{% block inline_css %}
+    <style>
+    body {
+        overflow: hidden;
+    }
+    </style>
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "theme/04-顶级选项卡.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <div class="row">
+                <div class="col-xs-12">
+                    <a href="#" class="thumbnail">
+                        <img src="/static/imgs/main.png" alt="" height="600px">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

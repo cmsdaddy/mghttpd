@@ -18,19 +18,11 @@
                 </a>
             </li>
             {% endif %}
-            {% if bee == 0 %}
-                <li>
-                    <a href="/?蜂鸣器遥控点=1" class="btn btn-lg btn-success" style="height:30px; padding-top: 3px; color: #f0f0f0; margin: 10px 5px 0px 0px;">
-                        <span class="glyphicon glyphicon-volume-off"></span>静音
-                    </a>
-                </li>
-            {% elif bee == 1 %}
-                <li>
-                    <a href="/?蜂鸣器遥控点=0" class="btn btn-lg btn-success" style="height:30px; padding-top: 3px; color: #f0f0f0; margin: 10px 5px 0px 0px;">
-                        <span class="glyphicon glyphicon-volume-up"></span>恢复
-                    </a>
-                </li>
-            {% endif %}
+
+            <li title="蜂鸣器控制区">
+                <iframe src="/control/status/" height="50px" width="80px;" style="padding: 0; margin: 0; border: 0"></iframe>
+            </li>
+
             {% if request.path != "/version/" %}
                 <li>
                     <a href="/version/?next={{ request.path }}">

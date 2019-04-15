@@ -22,7 +22,7 @@ def index(request):
     context['pcs_count'] = mg.get_pcs_count()
     context["pcs_id_list"] = [x for x in range(mg.get_pcs_count())]
 
-    return render(request, "首页模板.html", context=context)
+    return render(request, "首页模板-静态一次图.html", context=context)
 
 
 def get_ip_address(ifname):

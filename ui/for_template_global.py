@@ -8,22 +8,6 @@ import datetime
 def global_vars(request):
     content = dict()
 
-    if len(request.GET) >= 1:
-        for key, value in request.GET.items():
-            if key == '蜂鸣器遥控点':
-                success = mg.set_bee_yaokong(key, int(value), str(request.user))
-                content['success'] = success
-                break
-
-    yaokong = mg.get_bee_yaokong()
-
-    for name in yaokong:
-        if name == '蜂鸣器遥控点':
-            if yaokong[name] == 0:
-                content['bee'] = 0
-            elif yaokong[name] == 1:
-                content['bee'] = 1
-
     if request.path.find("/settings") >= 0:
         content['pageclass'] = 'settings'
     else:

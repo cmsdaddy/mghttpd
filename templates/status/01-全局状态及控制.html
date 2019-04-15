@@ -1,0 +1,62 @@
+{% extends "theme/base.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}全局状态及控制{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            margin-top: 10px;
+        }
+        .btn {
+            margin: 0;
+        }
+        .container-fluid {
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block page_header %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block user_define_block %}
+    {# 在这里添加你的代码 #}
+    <div class="container-fluid">
+        {% if beep %}
+        <a href="{{ request.path }}?蜂鸣器遥控点=0" class="btn btn-block btn-success">
+            <span class="glyphicon glyphicon-volume-off"></span>
+            恢复
+        </a>
+        {% else %}
+        <a href="{{ request.path }}?蜂鸣器遥控点=1"  class="btn btn-block btn-success text-danger">
+            <span class="glyphicon glyphicon-volume-up"></span>
+            消音
+        </a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

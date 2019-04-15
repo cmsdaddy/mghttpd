@@ -39,6 +39,7 @@ import ui.page_sample as sample
 import ui.page_grid as grid
 import ui.devel as devel
 import ui.page_linkage as linkage
+import ui.page_control as control
 
 
 admin.site.site_header = '用户登录'
@@ -77,6 +78,9 @@ urlpatterns = [
 
     # 管理页面重定向
     path('admin/', admin.site.urls),
+
+    # 系统状态控制展示区
+    path("control/", control.urls),
 
     # 错误重定位
     path("error/", error.urls),
