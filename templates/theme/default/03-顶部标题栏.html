@@ -62,18 +62,16 @@
                 {% endif %}
             {% endif %}
 
-            {% if not request.user.is_anonymous %}
-                <li>
-                    <a href="/">
-                        <span class="glyphicon glyphicon-user">{{ request.user.username }}</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/logout/?cancel={{ request.path }}">
-                        <span class="glyphicon glyphicon-off text-danger"></span>
-                    </a>
-                </li>
-            {% endif %}
+            <li>
+                <a href="/">
+                    <span class="glyphicon glyphicon-user">{{ request.user.username }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="/logout/?cancel={{ request.path }}">
+                    <span class="glyphicon glyphicon-off text-danger"></span>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

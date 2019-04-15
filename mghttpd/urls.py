@@ -116,6 +116,7 @@ urlpatterns = [
     # 退出系统选择页面
     path('logout/', main.show_logout_page),
     path('change_user/', main.show_change_page),
+    path('reboot/', main.show_reboot_page),
 
     # 能量管理系统事件
     path('ems/', ems.show_ems_index),

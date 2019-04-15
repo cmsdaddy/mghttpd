@@ -74,12 +74,19 @@ def show_logout_page(request):
 
     return render(request, "退出系统选择页面.html", context=context)
 
+
 def show_login_page(request):
     context = dict()
     return render(request,'admin.html',context=context)
+
 
 def show_change_page(request):
     # (sleep 2;pkill -t tty7) &
     os.system('(sleep 2;pkill -t tty7)&')
     # print("kill tty7")
-    return HttpResponseRedirect('/admin/logout?next=/')
+    return HttpResponseRedirect('/static/system/logout.html')
+
+
+def show_reboot_page(request):
+    os.system("reboot")
+    return HttpResponseRedirect('/static/system/reboot.html')
