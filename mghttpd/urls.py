@@ -14,14 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.http import *
 #from channels.routing import ProtocolTypeRouter
 #from channels.auth import AuthMiddlewareStack
 #from channels.routing import ProtocolTypeRouter, URLRouter
-
+import mimetypes
+import mghttpd.settings as settings
 #import ui.wsapi as wsapi
-
+import os
 import ui.views
 
 import ui.page_history as history
@@ -31,7 +32,7 @@ import ui.page_pcs as pcs
 import ui.page_collector as collector
 import ui.page_ems as ems
 import ui.page_doc as doc
-import ui.page_settings as settings
+import ui.page_settings as app_settings
 import ui.page_error as error
 import ui.page_report as report
 import ui.page_aircondition as air
@@ -73,8 +74,31 @@ def redirect_to_zero_index(request, **args):
 #    ),
 #})
 
+def sendback_static_file(request):
+    current_dir_path = os.path.dirname(os.path.abspath(__file__))
+    project_dir_path = os.path.dirname(current_dir_path)
+    filename = project_dir_path + "/ui" + request.path
+
+    def file_iterator(file_name, chunk_size=512):
+        with open(file_name, 'rb') as f:
+            while True:
+                c = f.read(chunk_size)
+                if c:
+                    yield c
+                else:
+                    break
+
+    response = StreamingHttpResponse(file_iterator(filename, 1024))
+    response['Content-Type'] = mimetypes.guess_type(filename)[0]
+
+    return response
+
+
 urlpatterns = [
     path('favicon.ico', lambda request: HttpResponseRedirect("/static/favicon.ico")),
+
+    # 静态文件
+    re_path(r'static/', sendback_static_file),
 
     # 管理页面重定向
     path('admin/', admin.site.urls),
@@ -101,7 +125,7 @@ urlpatterns = [
     path("history/", history.urls),
 
     # 系统参数配置页面
-    path("settings/", settings.urls),
+    path("settings/", app_settings.urls),
 
     # 系统一次图
     path("linkage/", linkage.urls),
