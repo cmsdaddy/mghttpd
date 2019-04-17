@@ -131,7 +131,7 @@ def show_bms_heap(request, bms_sn):
     else:
         pass
 
-    return render(request, "bms/堆.html", context=context)
+    return render(request, "01-BMS设备管理/堆.html", context=context)
 
 
 def get_hours_record(collector, limit_hours):
@@ -208,7 +208,7 @@ def show_bms_group_grid(request, bms_sn, group_sn):
     context['V'] = V
     context['I'] = I
 
-    return render(request, "bms/组-曲线图.html", context=context)
+    return render(request, "01-BMS设备管理/组-曲线图.html", context=context)
 
 
 def show_bms_grid(request, bms_sn):
@@ -223,55 +223,7 @@ def show_bms_grid(request, bms_sn):
     #    "bms": dict(bms_heap),
     }
 
-    """
-    try:
-        befor = 0 - int(request.GET['befor'])
-    except:
-        befor = -48
-
-    now = datetime.datetime.now()
-    before_hours = now + datetime.timedelta(hours=befor)
-
-    V = []
-    I = []
-    SOC = []
-
-    # 获取当前BMS遥测值
-    # now_yaoce = mg.get_bms_heap_yaoce(bms_sn)
-
-    # 获取24小时范围内的全部BMS记录
-    records = BMSYaoce.objects.filter(bmsid=bms_sn, tsp__gte=before_hours, tsp__lt=now)
-    soc_pre = 0
-    V_pre = 0
-
-    I_pre = 0
-    for record in records:
-        if record.SOC == soc_pre:
-            pass
-        else:
-            SOC.append({"datetime": record.tsp, "record": record.SOC})
-            soc_pre = record.SOC
-
-        # 5V 的变化幅度才记录
-        if abs(record.voltage - V_pre) < 500:
-            pass
-        else:
-
-            V.append({"datetime": record.tsp, "record": record.voltage})
-            V_pre = record.voltage
-
-        if record.current == I_pre:
-            pass
-        else:
-            I.append({"datetime": record.tsp, "record": record.current})
-            I_pre = record.current
-
-    context['SOC'] = SOC
-    context['V'] = V
-    context['I'] = I
-    """
-
-    return render(request, "bms/堆-曲线图.html", context=context)
+    return render(request, "01-BMS设备管理/堆-曲线图.html", context=context)
 
 
 def makeup_bms_grid(request, bms_sn):
@@ -306,7 +258,7 @@ def show_bms_heap_yaotiao(request, bms_sn):
         "yaotiao_list": yaotiao_list,
     }
 
-    return render(request, "bms/堆-遥调.html", context=context)
+    return render(request, "01-BMS设备管理/堆-遥调.html", context=context)
 
 
 # 显示电池组信息
@@ -320,30 +272,10 @@ def show_bms_group(request, bms_sn, group_sn):
         "group_id": group_sn,
         "battery_count": mg.get_bms_battery_count(bms_sn, group_sn),
         "bms_name": "%d#电池堆" % (bms_sn + 1),
-
-        "group_V": bms_yaoce['组端电压'],
-        "group_I": bms_yaoce['组端电流'],
-        "group_SOC": bms_yaoce['组SOC'],
-        "group_SOH": bms_yaoce['组SOH'],
-        "group_charge_count": bms_yaoce['充电次数'],
-        "group_discharge_count": bms_yaoce['放电次数'],
-        "group_available_cap": bms_yaoce['可用能量'],
-        "group_charge_cap": bms_yaoce['累计充电容量'],
-        "group_discharge_cap": bms_yaoce['累计放电容量'],
-        "group_average_T": bms_yaoce['平均温度'],
-        "group_average_V": bms_yaoce['平均电压'],
-        "group_V_max": bms_yaoce['最高单体电压'],
-        "group_V_min": bms_yaoce['最低单体电压'],
-        "group_T_max": bms_yaoce['单体最高温度'],
-        "group_T_min": bms_yaoce['单体最低温度'],
-        "group_SOC_max": bms_yaoce['单体SOC最大值'],
-        "group_SOC_min": bms_yaoce['单体SOC最小值'],
-        "group_SOH_max": bms_yaoce['单体SOH最大值'],
-        "group_SOH_min": bms_yaoce['单体SOH最小值'],
         "bms_yaoce": bms_yaoce,
     }
 
-    return render(request, "bms/组.html", context=context)
+    return render(request, "01-BMS设备管理/组.html", context=context)
 
 
 # 显示电池组单体电压
@@ -407,14 +339,14 @@ def show_bms_group_V(request, bms_sn, group_sn):
     try:
         style = request.GET['style']
     except:
-        return render(request, "bms/组-单体电压-line.html", context=context)
+        return render(request, "01-BMS设备管理/组-单体电压-line.html", context=context)
 
     if style == 'line':
-        return render(request, "bms/组-单体电压-line.html", context=context)
+        return render(request, "01-BMS设备管理/组-单体电压-line.html", context=context)
     elif style == 'bar':
-        return render(request, "bms/组-单体电压-bar.html", context=context)
+        return render(request, "01-BMS设备管理/组-单体电压-bar.html", context=context)
     else:
-        return render(request, "bms/组-单体电压.html", context=context)
+        return render(request, "01-BMS设备管理/组-单体电压.html", context=context)
 
 
 # 显示电池组单体温度
@@ -450,7 +382,7 @@ def show_bms_group_T(request, bms_sn, group_sn):
         "bms_name": "%d#电池堆" % (bms_sn + 1),
     }
 
-    return render(request, "bms/组-单体温度.html", context=context)
+    return render(request, "01-BMS设备管理/组-单体温度.html", context=context)
 
 
 # 显示电池组单体SOC
@@ -486,7 +418,7 @@ def show_bms_group_SOC(request, bms_sn, group_sn):
         "bms_name": "%d#电池堆" % (bms_sn + 1),
     }
 
-    return render(request, "bms/组-单体SOC.html", context=context)
+    return render(request, "01-BMS设备管理/组-单体SOC.html", context=context)
 
 
 # 显示电池组单体SOH
@@ -522,7 +454,7 @@ def show_bms_group_SOH(request, bms_sn, group_sn):
         "bms_name": "%d#电池堆" % (bms_sn + 1),
     }
 
-    return render(request, "bms/组-单体SOH.html", context=context)
+    return render(request, "01-BMS设备管理/组-单体SOH.html", context=context)
 
 
 # 显示电池组遥测
@@ -536,7 +468,7 @@ def show_bms_group_yaoce(request, bms_sn, group_sn):
         "bms_name": "%d#电池堆" % (bms_sn + 1),
     }
 
-    return render(request, "bms/组-遥测.html", context=context)
+    return render(request, "01-BMS设备管理/组-遥测.html", context=context)
 
 
 # 显示电池组遥信
@@ -552,7 +484,7 @@ def show_bms_group_yaoxin(request, bms_sn, group_sn):
         "bms_name": "%d#电池堆" % (bms_sn + 1),
     }
 
-    return render(request, "bms/组-遥信.html", context=context)
+    return render(request, "01-BMS设备管理/组-遥信.html", context=context)
 
 
 grid_url_map = [

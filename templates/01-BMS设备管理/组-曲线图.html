@@ -1,0 +1,41 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% load userfileter %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}电池组充放电曲线{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "01-BMS设备管理/base-组tab列表模板.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <iframe src="/grid/show/?path={{ request.path }}" width="100%" height="700px;" frameborder="0"></iframe>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

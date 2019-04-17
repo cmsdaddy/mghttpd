@@ -19,15 +19,15 @@ filename = 'save.json'
 
 # Create your views here.
 def show_editor_page(request):
-    return render(request, "linkage/editor.html")
+    return render(request, "95-系统一次图编辑显示管理/editor.html")
 
 
 def show_preview_page(request):
-    return render(request, "linkage/preview.html")
+    return render(request, "95-系统一次图编辑显示管理/preview.html")
 
 
 def show_linkage_page(request):
-    return render(request, "linkage/show.html")
+    return render(request, "95-系统一次图编辑显示管理/show.html")
 
 
 def edit_models(request):
@@ -91,7 +91,7 @@ def show_change_model_page(request, id):
 
         return HttpResponseRedirect('/')
 
-    return render(request, "linkage/model_change_form.html", context={"model": model, "all_model": all_models})
+    return render(request, "95-系统一次图编辑显示管理/model_change_form.html", context={"model": model, "all_model": all_models})
 
 
 urlpatterns = [

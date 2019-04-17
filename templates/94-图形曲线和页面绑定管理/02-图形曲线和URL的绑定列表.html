@@ -1,0 +1,94 @@
+{% extends "theme/base-0-12-0.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}测试主体的标题{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "99-开发管理/base-devel-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <div class="row">
+        <div class="col-xs-2">
+            {% include "99-开发管理/base-devel-侧边栏.html" %}
+        </div>
+
+        <div class="col-xs-10">
+            <form method="post">
+                <table class="table table-bordered table-condensed table-striped">
+                    <caption>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                grid binder list
+                            </div>
+
+                            <div class="col-lg-6 text-right">
+                                <select name="operation" required>
+                                    <option value="">Select An Item...</option>
+                                    <option value="delete">Delete Selected Grid</option>
+                                    <option value="enable">Enable Seleted Grid</option>
+                                    <option value="disable">Disable Seleted Grid</option>
+                                </select>
+
+                                <input class="btn btn-xs btn-success" type="submit" value="Confirm Operation">
+
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-primary btn-xs" href="/grid/bind/">
+                                        <span class="glyphicon glyphicon-plus-sign"></span> New binder
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </caption>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Grid Name</th>
+                        <th>URL PATH</th>
+                    </tr>
+                    {% for binder in binder_list %}
+                    <tr>
+                        <th><input type="checkbox" name="bid[]" value="{{ binder.id }}"></th>
+
+                        <th>
+                            <select name="grid_id[]" class="form-control">
+                                {% for grid in grids_list %}
+                                    <option value="{{ grid.id }}"{% if grid.id == binder.grid.id %} selected{% endif %}>{{ grid.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </th>
+                        <th>
+                            <input type="text" name="path[]" value="{{ binder.path }}" required class="form-control">
+                        </th>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

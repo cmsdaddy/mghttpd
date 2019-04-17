@@ -44,27 +44,27 @@ def do_linux_logout(request):
 
     if login:
         os.system('(sleep 2;pkill -t {})&'.format(login['tty']))
-        return render(request, "linux/logout-splash.html", context={'login': login})
+        return render(request, "00-linux操作系统管理/03-退出登录等待页面.html", context={'login': login})
     else:
-        return render(request, "linux/logout-select.html", context={'login_list': login_list})
+        return render(request, "00-linux操作系统管理/02-退出登录用户选择页面.html", context={'login_list': login_list})
 
 
 def do_linux_reboot(request):
     context = dict()
     os.system("reboot")
-    return render(request, "linux/reboot-splash.html", context=context)
+    return render(request, "00-linux操作系统管理/04-重启等待页面.html", context=context)
 
 
 def do_linux_halt(request):
     context = dict()
     os.system("halt")
-    return render(request, "linux/halt-splash.html", context=context)
+    return render(request, "00-linux操作系统管理/01-关机等待页面.html", context=context)
 
 
 def show_linux_control_panel(request):
     context = dict()
     context['cancel'] = request.GET['cancel']
-    return render(request, "linux/退出系统选择页面.html", context=context)
+    return render(request, "00-linux操作系统管理/05-系统登录管理控制页面.html", context=context)
 
 
 urlpatterns = [

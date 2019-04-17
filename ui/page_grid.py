@@ -65,7 +65,7 @@ def list_all_graphic_object(request):
     if request.method == 'GET':
         context['defined_grids_list'] = models.UserDefinedGrid.objects.all()
         context['select_models_list'] = GRID_DATABASE_MODELS
-        return render(request, "grid/list.html", context=context)
+        return render(request, "94-图形曲线和页面绑定管理/04-图形曲线列表.html", context=context)
     else:
         grid_ids = [int(gid) for gid in request.POST.getlist('grid_ids')]
         if len(grid_ids) == 0:
@@ -163,7 +163,7 @@ def draw_graphic_page(request, model_name, graphic_name, x_axis_field_name, filt
     context['datasources_fields_list'] = datasources_fields_list
     context['references_list'] = references_list
 
-    return render(request, "grid/show.html", context=context)
+    return render(request, "94-图形曲线和页面绑定管理/06-曲线渲染显示.html", context=context)
 
 
 def load_grid_parameters_from_form(form):
@@ -259,7 +259,7 @@ def preview_grid(request):
         v_key = request.GET['v_key']
         graphic_profile = gcache.get(v_key)
         if graphic_profile is None:
-            return render(request, "grid/error.html", {'message': "preview key invalid."})
+            return render(request, "94-图形曲线和页面绑定管理/08-iframe渲染曲线出错页面.html", {'message': "preview key invalid."})
 
         return draw_graphic_page(request, **graphic_profile)
     except Exception as e:
@@ -282,22 +282,26 @@ def show_graphic_by_id(request, gid):
     except Exception as e:
         context = dict()
         context['message'] = str(e)
-        return render(request, "grid/error.html", context=context)
+        return render(request, "94-图形曲线和页面绑定管理/08-iframe渲染曲线出错页面.html", context=context)
 
 
 def show_graphic_by_path(request):
     context = dict()
-    binder_list = models.GridPageBinder.objects.filter(path=request.GET['path'])
 
-    if binder_list.count() == 0:
-        return render(request, "grid/no_graphic_binded.html", context=context)
-    elif binder_list.count() == 1:
+    try:
+        binder_list = models.GridPageBinder.objects.filter(path=request.GET['path'])
+    except:
+        binder_list = list()
+
+    if len(binder_list) == 0:
+        return render(request, "94-图形曲线和页面绑定管理/09-iframe未绑定渲染曲线页面.html", context=context)
+    elif len(binder_list) == 1:
         grid = binder_list[0].grid
         return show_graphic_by_id(request, grid.id)
     else:
         context = dict()
         context['message'] = "duplicate graphic binding"
-        return render(request, "grid/error.html", context=context)
+        return render(request, "94-图形曲线和页面绑定管理/08-iframe渲染曲线出错页面.html", context=context)
 
 
 def create_grid_graphic(request):
@@ -317,7 +321,7 @@ def create_grid_graphic(request):
         context['model'] = GRID_DATABASE_MODELS[model]
         context['preprocess_list'] = GRID_PREPROCESSORS
 
-        return render(request, "grid/create.html", context=context)
+        return render(request, "94-图形曲线和页面绑定管理/03-创建新的图形曲线.html", context=context)
     else:
         profile = load_grid_parameters_from_form(request.POST)
         model_name = profile['model_name']
@@ -342,14 +346,14 @@ def show_grid_page(request):
     context['binder_list'] = binder_list
     context['binder_count'] = binder_list.count()
 
-    return render(request, "grid/main.html", context=context)
+    return render(request, "94-图形曲线和页面绑定管理/07-系统概要曲线.html", context=context)
 
 
 def bind_graphic_to_url_path(request):
     if request.method == 'GET':
         context = dict()
         context['defined_grids_list'] = models.UserDefinedGrid.objects.all()
-        return render(request, "grid/bind.html", context=context)
+        return render(request, "94-图形曲线和页面绑定管理/01-图形曲线和URL的绑定表单.html", context=context)
     else:
         gid = int(request.POST['gid'])
         target = request.POST['target']
@@ -364,7 +368,7 @@ def grid_and_path_binder_list(request):
         context = dict()
         context['grids_list'] = models.UserDefinedGrid.objects.all()
         context['binder_list'] = models.GridPageBinder.objects.all()
-        return render(request, "grid/bind-list.html", context=context)
+        return render(request, "94-图形曲线和页面绑定管理/02-图形曲线和URL的绑定列表.html", context=context)
     else:
         return HttpResponseRedirect(request.path)
 

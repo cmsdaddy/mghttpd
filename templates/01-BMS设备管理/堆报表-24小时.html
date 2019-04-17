@@ -1,0 +1,97 @@
+{% extends "theme/base-1-10-1.html" %}
+{% load userfileter %}
+
+{% block title %}电池堆信息总览{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "01-BMS设备管理/base-堆tab列表模板.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <table class="table table-bordered table-condensed table-striped">
+        <caption class="text-right">
+            {% include "01-BMS设备管理/base-报表时间段选择模板.html" %}
+        </caption>
+        <tr>
+            <th rowspan="2"><br>时间段</th>
+            <th rowspan="2"><br>充电量</th>
+            <th rowspan="2"><br>放电量</th>
+            <th colspan="2">堆SOC(%)</th>
+            <th colspan="2">堆电压(V)</th>
+            <th colspan="2">堆电流(A)</th>
+            <th colspan="2">最高单体电压</th>
+            <th colspan="2">最低单体电压</th>
+            <th colspan="2">最高单体温度</th>
+            <th colspan="2">最低单体温度</th>
+        </tr>
+        <tr>
+            <th>最大</th>
+            <th>最小</th>
+            <th>最大</th>
+            <th>最小</th>
+            <th>最大</th>
+            <th>最小</th>
+            <th>值(V)</th>
+            <th>组号</th>
+            <th>值(V)</th>
+            <th>组号</th>
+            <th>值(℃)</th>
+            <th>组号</th>
+            <th>值(℃)</th>
+            <th>组号</th>
+        </tr>
+        {% for record in records_list %}
+        <tr>
+            <td>{{ record.time_range }}</td>
+            <td>{{ record.充电量|zoom:2 }}</td>
+            <td>{{ record.放电量|zoom:2 }}</td>
+
+            <td>{{ record.堆SOC_最大值|zoom:2 }}</td>
+            <td>{{ record.堆SOC_最小值|zoom:2 }}</td>
+
+            <td>{{ record.堆电压_最大值|zoom:2 }}</td>
+            <td>{{ record.堆电压_最小值|zoom:2 }}</td>
+
+            <td>{{ record.堆电流_最大值|zoom:2 }}</td>
+            <td>{{ record.堆电流_最小值|zoom:2 }}</td>
+
+            <td>{{ record.最高单体电压_值|zoom:3 }}</td>
+            <td>{{ record.最高单体电压_组编号 }}</td>
+
+            <td>{{ record.最低单体电压_值|zoom:3 }}</td>
+            <td>{{ record.最低单体电压_组编号 }}</td>
+
+            <td>{{ record.最高单体温度_值|zoom:2 }}</td>
+            <td>{{ record.最高单体温度_组编号 }}</td>
+
+            <td>{{ record.最低单体温度_值|zoom:2 }}</td>
+            <td>{{ record.最低单体温度_组编号 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

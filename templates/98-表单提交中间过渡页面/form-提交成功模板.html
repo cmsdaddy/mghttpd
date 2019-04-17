@@ -1,0 +1,52 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}
+    <meta http-equiv="refresh" content="1; url={{ next }}">
+{% endblock %}
+
+{% block title %}表单提交成功{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">系统已经接收了您提供的参数</h3>
+        </div>
+        <div class="panel-body">
+            <h1>页面正在自动跳转....</h1>
+
+            <div class="row">
+                <div class="col-xs-offset-10 col-xs-1">
+                    <a class="btn btn-primary" href="{{ next }}">立即跳转</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

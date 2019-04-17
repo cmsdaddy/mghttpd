@@ -22,7 +22,7 @@ def show_pcs_page(request, pcs_sn):
     context['pcs_name'] = "%d#PCS" % (pcs_sn + 1)
     context['pcs'] = mg.get_pcs_yaoce(pcs_sn)
     context['type'] = 'pcs'
-    return render(request, "pcs/PCS数据模板.html", context=context)
+    return render(request, "02-PCS设备管理/PCS数据模板.html", context=context)
 
 
 yaotiao_black_list = {"状态标志位"}
@@ -77,7 +77,7 @@ def show_pcs_grid(request, pcs_sn):
     context['V'] = V
     context['I'] = I
 
-    return render(request, "pcs/PCS-曲线图.html", context=context)
+    return render(request, "02-PCS设备管理/PCS-曲线图.html", context=context)
 
 
 # PCS遥调页面
@@ -106,7 +106,7 @@ def show_pcs_yaotiao_page(request, pcs_sn):
     }
 
     context['type'] = 'yaotiao'
-    return render(request, "pcs/PCS遥调模板.html", context=context)
+    return render(request, "02-PCS设备管理/PCS遥调模板.html", context=context)
 
 
 # PCS遥控页面
@@ -148,7 +148,7 @@ def show_pcs_yaokong_page(request, pcs_sn):
     context['yaokong_list'] = yaokong_list
     context['type'] = 'yaokong'
 
-    return render(request, "pcs/PCS遥控模板.html", context=context)
+    return render(request, "02-PCS设备管理/PCS遥控模板.html", context=context)
 
 
 url_patterns = [

@@ -12,11 +12,6 @@ import time
 import json
 
 
-# 显示这个模板的文档内容
-def show_document(request):
-    return render(request, "history/document.html", None)
-
-
 # 导出全部历史记录数据
 def export_history(request):
     pass
@@ -59,7 +54,7 @@ def show_current_all_errors(request):
         show_count, show_page = parser_multipage_parameters(request)
         records = CurrentError.objects.all()
         context = page.multipage_processor(records, show_page, show_count)
-        return render(request, "history/当前故障列表.html", context=context)
+        return render(request, "05-系统历史事件管理/当前故障列表.html", context=context)
     except Exception as e:
         return HttpResponse('{"status": "fail"}')
 
@@ -70,7 +65,7 @@ def show_history_all_errors(request):
         show_count, show_page = parser_multipage_parameters(request)
         records = HistoryError.objects.filter(elevel__lte=2)
         context = page.multipage_processor(records, show_page, show_count)
-        return render(request, "history/历史故障列表.html", context=context)
+        return render(request, "05-系统历史事件管理/历史故障列表.html", context=context)
     except Exception as e:
         print(e)
         return HttpResponse('{"status": "fail"}')
@@ -81,7 +76,7 @@ def show_history_error_detail(request):
     context = dict()
     ueid = request.GET['ueid']
     context['record'] = HistoryError.objects.get(ueid=ueid)
-    return render(request, "history/历史故障详情.html", context=context)
+    return render(request, "05-系统历史事件管理/历史故障详情.html", context=context)
 
 
 def show_history_error_confirm(request):
@@ -95,7 +90,7 @@ def show_history_all_records(request):
         show_count, show_page = parser_multipage_parameters(request)
         records = HistoryError.objects.all()
         context = page.multipage_processor(records, show_page, show_count)
-        return render(request, "history/历史故障列表.html", context=context)
+        return render(request, "05-系统历史事件管理/历史故障列表.html", context=context)
     except Exception as e:
         print(e)
         return HttpResponse('{"status": "fail"}')
@@ -155,7 +150,7 @@ def show_history_error_test(request):
         show_count, show_page = parser_multipage_parameters(request)
         records = HistoryError.objects.all()
         context = page.multipage_processor(records, show_page, show_count)
-        return render(request, "history/历史故障列表-时间轴图.html", context=context)
+        return render(request, "05-系统历史事件管理/历史故障列表-时间轴图.html", context=context)
     except Exception as e:
         print(e)
         return HttpResponse('{"status": "fail"}')
@@ -182,7 +177,6 @@ urlpatterns = [
 
     path('test/', show_history_error_test),
 
-    path('doc/', show_document),
     path('export/', export_history),
 ]
 

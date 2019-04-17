@@ -1,0 +1,159 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}系统报表{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+    <script>
+        $(document).ready(function () {
+            $("#export_excel").attr('disabled',true).css('pointer-events','none');
+            $("#time_check").click(function () {
+                var start_times = document.getElementById("start_time").value;
+                var end_times = document.getElementById("end_time").value;
+                console.log(start_times,end_times);
+                var url = '/report/days/' + start_times + '/' + end_times + '/';
+                document.getElementById('export_excel').href = url;
+                $("#export_excel").attr('disabled',false).css('pointer-events','');
+            });
+        })
+    </script>
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "theme/04-顶级选项卡.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+
+    <table class="table table-bordered">
+        <caption>系统运行报表</caption>
+        <tr>
+            <th>系统累计运行时长</th>
+            <td>{{ rolling_days }}天</td>
+            <th>系统已经启动时长</th>
+            <td>{{ running_days }}</td>
+            <th>当前登录用户</th>
+            <td>{{ request.user }}</td>
+            <th>启动时间</th>
+            <td>{{ startup_tsp }}</td>
+        </tr>
+        <tr>
+            <th>系统历史告警总数</th>
+            <td>{{ errors_total_count }} 条</td>
+            <th>系统当前告警总数</th>
+            <td>{{ current_warnings_count }} 条</td>
+        </tr>
+    </table>
+
+{#        <h5>U盘插入位置指导</h5>#}
+{#        <hr>#}
+{#        <div class="row">#}
+{#            <div class="col-sm-4">#}
+{#                <div class="thumbnail">#}
+{#                    <img src="/static/img/exportguide/1.png">#}
+{#                    <div class="caption">#}
+{#                        <h3>图1</h3>#}
+{#                        <p>需要找到的设备正面</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="col-sm-4">#}
+{#                <div class="thumbnail">#}
+{#                    <img src="/static/img/exportguide/2.png">#}
+{#                    <div class="caption">#}
+{#                        <h3>图2</h3>#}
+{#                        <p>需要找到的设备背面</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="col-sm-4">#}
+{#                <div class="thumbnail">#}
+{#                    <img src="/static/img/exportguide/3.png">#}
+{#                    <div class="caption">#}
+{#                        <h3>图3</h3>#}
+{#                        <p>红色圈内的三个口即为USB接口位置</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <h5>报表导出指导</h5>
+            <hr>
+                <p><kbd>*</kbd> 点击下方按钮检测U盘是否插入</p>
+                <a id="usb_check" class="btn-default btn" href="/report/system/" style="margin-bottom: 0px">检测U盘</a>
+                <span style="color:red;margin-left: 10px">{% if usb_state %}{{ 'U盘已插入' }}{% else %}{{ '未检测到U盘' }}{% endif %}</span>
+                <p style="margin-top: 10px"><kbd>*</kbd> 在下方选择需要导出报表的时间范围</p>
+                <p><kbd>*</kbd> 选择好时间范围后点击确定按钮，再点击下方导出报表按钮</p>
+{#                <p><kbd>*</kbd> 当检测到插入U盘后，下面的`导出按钮将会可操作.`</p>#}
+{#                <p><kbd>*</kbd> 导出的文件名格式为: 'YYYY-mm-DD-系统报告.xls', U盘中原有同名文件将会被替换.</p>#}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <h5>选择需导出的报表时间范围</h5>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="form-inline">
+                <div class="form-group">
+                    <input type="date" id="start_time" value="2018-01-01" class="form-control">
+                </div>
+                <div class="form-group">
+                    <p class="form-control-static">-</p>
+                </div>
+                <div class="form-group">
+                    <input type="date" id="end_time" class="form-control" value="2018-01-01" >
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" id="time_check">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+
+    <div class="row" style="margin-top: 150px">
+{#            {% if start_times and end_times %}#}
+        <div class="col-sm-offset-4 col-sm-4">
+            <a id="export_excel" href="/report/days/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">导出报表</span></a>
+        </div>
+{#            {% endif %}#}
+{#            <div class="col-sm-offset-1 col-sm-2">#}
+{#                <a href="/report/weeks/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">按周导出</span></a>#}
+{#            </div>#}
+{#            <div class="col-sm-offset-1 col-sm-2">#}
+{#                <a href="/report/months/" class="btn btn-success btn-block"><span class="glyphicon glyphicon-export">按月导出</span></a>#}
+{#            </div>#}
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

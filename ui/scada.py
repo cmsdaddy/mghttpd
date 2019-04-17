@@ -1,54 +1,17 @@
 # -*- coding: UTF-8 -*-
 __author__ = 'lijie'
+import os
 
+# scada UI 服务器版本
+__version__ = "ui-v1.1"
 
-class Scada:
-    def __init__(self):
-        self.pcs_list = list()
-        self.bms_list = list()
-        self.air_list = list()
+_current_dir_path = os.path.dirname(os.path.abspath(__file__))
 
-        self.ws_list = list()
+# 项目根目录
+project_dir_path = os.path.dirname(_current_dir_path)
 
-        self.status = '初始化'
+# 项目配置文件根目录
+profile_dir_path = project_dir_path + '/data'
 
-        self.errors_list = list()
-        self.warning_list = list()
-
-        self.net_offline = True
-        self.usb_offline = True
-
-    def ws_push(self, ws):
-        pass
-
-    def ws_pop(self, ws):
-        pass
-
-    def push_to_all(self):
-        pass
-
-    def push_to_user(self):
-        pass
-
-    def push_to_page(self):
-        pass
-
-
-class Device(object):
-    pass
-
-
-class YaoTiao(object):
-    pass
-
-
-class YaoKong(object):
-    pass
-
-
-class YaoCe(object):
-    pass
-
-
-class YaoXin(object):
-    pass
+# 项目文档存放目录
+documents_dir_path = project_dir_path + '/doc'

@@ -1,0 +1,137 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}
+    <meta http-equiv="refresh" content="120">
+{% endblock %}
+
+{% block title %}单体电压{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+    <script src="/static/js/Chart.bundle.js" ></script>
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+    <script>
+        $(document).ready(function () {
+            {% for grid_style_data_rows in user_define_data_rows  %}
+            let ctx_{{ forloop.counter }} = document.getElementById('grid_canvas_{{ forloop.counter }}').getContext('2d');
+            let painter{{ forloop.counter }} = new Chart(ctx_{{ forloop.counter }}, {
+                type: 'bar',
+                data: {
+                    labels: [ {% for d in grid_style_data_rows %}{{ forloop.counter }}{% if not forloop.last %},{% endif %}{% endfor %} ],
+                    datasets: [
+                    {
+                        type: "bar",
+                        label: "Voltage (V)",
+                        borderColor: "red",
+                        backgroundColor: Chart.helpers.color("{{ red }}").alpha(0.2).rgbString(),
+                        data: [{% for d in grid_style_data_rows %}{{ d|safe }}{% if not forloop.last %},{% endif %}{% endfor %}],
+                        yAxisID: "id_left",
+                        borderWidth: 1,
+                        pointRadius: 0
+                    },
+                    ]
+                },
+                options: {
+                    hoverMode: 'index',
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: false,
+                                },
+                                display: true,
+                                position: 'left',
+                                id: "id_left"
+                            },
+                        ]
+                    },
+                    title: {
+                        display: false,
+                        text: "SOC"
+                    },/*
+                    elements: {
+                        line: {
+                            tension: 0, // disables bezier curves
+                        }
+                    },*/
+                    animation: {
+                        duration: 0, // general animation time
+                    },
+                    hover: {
+                        animationDuration: 0, // duration of animations when hovering an item
+                    },
+                    // grid line settings
+                    gridLines: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                    responsiveAnimationDuration: 0, // animation duration after a resize
+                }
+            });
+            {% endfor %}
+        });
+
+
+    </script>
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "01-BMS设备管理/base-组tab列表模板.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <table class="table table-striped table-hover table-bordered text-center table-responsive">
+        <caption>
+            <div class="row">
+                <div class="col-sm-12">
+                    单体<strong>电压</strong>信息，共计电池 <strong> {{ battery_count }}</strong> 节,
+
+                    平均:{{ equal_voltage }} V
+                    <span class="text-danger">最高</span>:
+                    <a href="#">{{ max_voltage }} V</a>
+
+                    <span class="text-danger">最低</span>:
+                    <a href="#">{{ min_voltage }} V</a>
+
+                    <span class="text-danger">极差值</span>:
+                    <a href="#">{{ max_sub_min }} V</a>
+
+                    <!--span class="text-danger">标准差</span>:
+                    <a href="#">{{ standard_deviation|default:0 }}</a>
+
+                    <span class="text-danger">方差</span>:
+                    <a href="#">{{ variance|default:0 }}</a-->
+                </div>
+                <!--div class="col-sm-6 text-right">
+                    数据将会自动更新，周期约 <kbd>{{ period }}</kbd> 秒.
+                </div-->
+            </div>
+        </caption>
+        <tr>
+            <td style="width: 100%">
+                {% for row in user_define_data_rows %}
+                <canvas id="grid_canvas_{{ forloop.counter }}" height="35px;"></canvas>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

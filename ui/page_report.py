@@ -156,7 +156,7 @@ def report_heap_day(request, heap_id, ctx):
         record = dict(record, **report)
         records_list.append(record)
 
-    return render(request, "bms/堆报表-24小时.html", context=context)
+    return render(request, "01-BMS设备管理/堆报表-24小时.html", context=context)
 
 
 # 输出一周内的报告
@@ -287,7 +287,7 @@ def show_system_report(request):
             continue
     context['usb_state'] = usb_state
     print(usb_state)
-    return render(request, "report/系统报表.html", context=context)
+    return render(request, "96-系统报表管理/系统报表管理.html", context=context)
 
 #报表导出
 def system_report_export(request,start_times,end_times):

@@ -16,38 +16,24 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from django.http import *
-#from channels.routing import ProtocolTypeRouter
-#from channels.auth import AuthMiddlewareStack
-#from channels.routing import ProtocolTypeRouter, URLRouter
 import mimetypes
-import mghttpd.settings as settings
-#import ui.wsapi as wsapi
 import os
-import ui.views
 
 import ui.page_history as history
 import ui.page_bms as bms
 import ui.page_main as main
 import ui.page_pcs as pcs
 import ui.page_collector as collector
-import ui.page_ems as ems
-import ui.page_doc as doc
 import ui.page_settings as app_settings
 import ui.page_error as error
 import ui.page_report as report
 import ui.page_aircondition as air
 import ui.page_sample as sample
 import ui.page_grid as grid
-import ui.devel as devel
+import ui.page_devel as devel
 import ui.page_linkage as linkage
-import ui.page_control as control
+import ui.page_scada as scada
 import ui.page_linux as linux
-
-
-admin.site.site_header = '用户登录'
-
-def redirect_root_index(request):
-    return HttpResponseRedirect("/page/")
 
 
 def mg_started(request):
@@ -56,30 +42,10 @@ def mg_started(request):
     return respons
 
 
-# 将无索引目录定位至第一个索引位置
-def redirect_to_zero_index(request, **args):
-    return HttpResponseRedirect(request.path + "0/")
-
-
-#websocket_urlpatterns = [
-#    path('ws/chat/<str:room_name>/', wsapi.WsApiGateWay),
-#]
-
-
-#application = ProtocolTypeRouter({
-#    # Empty for now (http->django views is added by default)
-#    'websocket': AuthMiddlewareStack(
-#        URLRouter(
-#            websocket_urlpatterns
-#        )
-#    ),
-#})
-
 def sendback_static_file(request):
     current_dir_path = os.path.dirname(os.path.abspath(__file__))
     project_dir_path = os.path.dirname(current_dir_path)
     filename = project_dir_path + "/ui" + request.path
-    print(filename)
 
     def file_iterator(file_name, chunk_size=512):
         with open(file_name, 'rb') as f:
@@ -97,16 +63,15 @@ def sendback_static_file(request):
 
 
 urlpatterns = [
-    path('favicon.ico', lambda request: HttpResponseRedirect("/static/favicon.ico")),
-
     # 静态文件
     re_path('static/', sendback_static_file),
+    path('favicon.ico', lambda request: HttpResponseRedirect("/static/favicon.ico")),
 
     # 管理页面重定向
     path('admin/', admin.site.urls),
 
     # 系统状态控制展示区
-    path("control/", control.urls),
+    path("scada/", scada.urls),
 
     # 错误重定位
     path("error/", error.urls),
@@ -132,10 +97,6 @@ urlpatterns = [
     # 系统一次图
     path("linkage/", linkage.urls),
 
-    # 文档路由
-    path('doc/', doc.show_index),
-    path('doc/ems/settings/', doc.show_index),
-
     # 系统启动标识
     path('mg-started.json', mg_started),
 
@@ -150,16 +111,8 @@ urlpatterns = [
     path('reboot/', lambda request: HttpResponseRedirect('/linux/reboot/')),
     path('halt/', lambda request: HttpResponseRedirect('/linux/halt/')),
 
-    # 能量管理系统事件
-    path('ems/', ems.show_ems_index),
-    path('ems/settings/', ems.show_ems_single_settings),
-    path('ems/options/', ems.show_ems_advance_options),
-    path('ems/settings/save/', ems.save_ems_setings),
-    path('ems/settings/json/', ems.show_ems_json_setings),
-
-    # 采样信息时间
-    path("sample/location/",sample.show_location_info),
-    path("sample/analog/",sample.show_analog_info),
+    # 采样信息页面
+    path("sample/", sample.urls),
 
     # 空调
     path('air-conditioner/', air.show_all_list),

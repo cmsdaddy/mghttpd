@@ -1,0 +1,182 @@
+{% extends "theme/base-0-12-0.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}位置状态采样信息{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+    <style>
+    body{
+        overflow: hidden;
+    }
+    </style>
+{% endblock %}
+
+{% block page_header %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <h2>位置量信息</h2>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">&nbsp;&nbsp;主进线断路器位置&nbsp;&nbsp;</span>
+                        <input disabled type="text" value="{{ sample.主进线断路器位置 }}" class="form-control text-center" placeholder="">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">备用进线断路器位置</span>
+                        <input disabled type="text" value="{{ sample.备用进线断路器位置 }}" class="form-control text-center" placeholder="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">空调馈线断路器位置</span>
+                        <input disabled type="text" value="{{ sample.空调馈线断路器位置 }}" class="form-control text-center" placeholder="">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">浪涌回路断路器位置</span>
+                        <input disabled type="text" value="{{ sample.浪涌回路断路器位置 }}" class="form-control text-center" placeholder="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">UPS馈线断路器位置</span>
+                            <input disabled type="text" value="{{ sample.UPS馈线断路器位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">BMS馈线断路器位置</span>
+                            <input disabled type="text" value="{{ sample.BMS馈线断路器位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">消防馈线断路器位置</span>
+                            <input disabled type="text" value="{{ sample.消防馈线断路器位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">视频馈线断路器位置</span>
+                            <input disabled type="text" value="{{ sample.视频馈线断路器位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <br>
+    <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">控制电源断路器位置</span>
+                            <input disabled type="text" value="{{ sample.控制电源断路器位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">UPS检修断路器位置</span>
+                            <input disabled type="text" value="{{ sample.UPS检修断路器位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消防启动信号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input disabled type="text" value="{{ sample.消防启动信号 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">&nbsp;&nbsp;消防手动启动信号&nbsp;&nbsp;</span>
+                            <input disabled type="text" value="{{ sample.消防手动启动信号 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <br>
+    <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">&nbsp;&nbsp;消防手动停止信号&nbsp;&nbsp;</span>
+                            <input disabled type="text" value="{{ sample.消防手动停止信号 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1#门位置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input disabled type="text" value="{{ sample.一号门位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2#门位置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input disabled type="text" value="{{ sample.二号门位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3#门位置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input disabled type="text" value="{{ sample.三号门位置 }}" class="form-control text-center" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <br>
+    <hr>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

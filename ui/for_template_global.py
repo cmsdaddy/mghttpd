@@ -5,12 +5,11 @@ import datetime
 import ui.page_linux as linux
 import codecs
 import os
+import ui.scada as scada
 
 
 try:
-    ui_source_dir = os.path.dirname(__file__)
-    project_dir = os.path.dirname(ui_source_dir)
-    profile_dir = project_dir + '/data'
+    profile_dir = scada.project_dir_path + '/data'
     logo_title_file_path = profile_dir + '/logo-title.txt'
     with codecs.open(logo_title_file_path, encoding='utf8') as file:
         logo_title = file.read().rstrip()

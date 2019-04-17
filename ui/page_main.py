@@ -22,7 +22,7 @@ def index(request):
     context['pcs_count'] = mg.get_pcs_count()
     context["pcs_id_list"] = [x for x in range(mg.get_pcs_count())]
 
-    return render(request, "首页模板.html", context=context)
+    return render(request, "06-SCADA设备/首页模板.html", context=context)
 
 
 def get_ip_address(ifname):
@@ -60,6 +60,6 @@ def version(request):
     except Exception as e:
         context['next'] = '/'
 
-    return render(request, "scada/version.html", context=context)
+    return render(request, "06-SCADA设备/00-SCADA程序版本信息.html", context=context)
 
 

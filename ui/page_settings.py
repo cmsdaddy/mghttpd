@@ -719,7 +719,7 @@ def show_autmatic_page(request, ProcessorClass):
         return automatic_settings_accept(path=request.path)
 
     context['processor'] = x
-    return render(request, "settings/base-自动生成配置页面.html", context=context)
+    return render(request, "97-系统参数配置管理/base-自动生成配置页面.html", context=context)
 
 
 def automatic_settings_accept(path):
@@ -769,7 +769,7 @@ def refresh_system_configure(request):
 def show_settings_warning_page(request):
     context = dict()
     context['request'] = request
-    return render(request, "settings/系统参数配置警告.html", context=context)
+    return render(request, "97-系统参数配置管理/系统参数配置警告.html", context=context)
 
 
 urlpatterns = [

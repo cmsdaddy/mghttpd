@@ -25,7 +25,7 @@ def show_all_list(request):
         air['id'] = aid + 1
         air_list.append(air)
 
-    return render(request, "空调设备/空调列表.html", context=context)
+    return render(request, "03-空调设备管理/空调列表.html", context=context)
 
 
 def show_aircondition(request, aid):
@@ -37,4 +37,4 @@ def show_aircondition(request, aid):
     air['id'] = aid + 1
     context['air'] = air
 
-    return render(request, "空调设备/空调详细数据.html", context=context)
+    return render(request, "03-空调设备管理/空调详细数据.html", context=context)

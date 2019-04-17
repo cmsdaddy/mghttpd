@@ -1,0 +1,104 @@
+{% extends "theme/base-0-12-0.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}Develop Tool Kit{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "99-开发管理/base-devel-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <div class="row">
+        <div class="col-xs-2">
+            {% include "99-开发管理/base-devel-侧边栏.html" %}
+        </div>
+
+        <div class="col-xs-10">
+            <form method="post">
+                <table class="table table-bordered table-condensed table-striped">
+                    <caption>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                grid list
+                            </div>
+
+                            <div class="col-lg-6 text-right">
+                                <select name="operation" required>
+                                    <option value="">Select An Item...</option>
+                                    <option value="delete">Delete Selected Grid</option>
+                                    <option value="enable">Enable Seleted Grid</option>
+                                    <option value="disable">Disable Seleted Grid</option>
+                                </select>
+
+                                <input class="btn btn-xs btn-success" type="submit" value="Confirm Operation">
+
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-plus-sign"></span> New Graphic <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% for model, _ in select_models_list.items %}
+                                        <li><a href="/grid/create/?model={{ model }}">{{ model }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </caption>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Enabled</th>
+                        <th>Last Modify</th>
+                        <th>Target Model</th>
+                    </tr>
+                    {% for grid in defined_grids_list %}
+                    <tr>
+                        <th><input type="checkbox" name="grid_ids" value="{{ grid.id }}"></th>
+                        <th>{{ forloop.counter }}</th>
+
+                        <th>
+                            <a target="_blank" href="/grid/show/{{ grid.id }}/?name={{ grid.name }}&control=1" title="Preview {{ grid.name }}">{{ grid.name }}</a>
+                        </th>
+                        <th>
+                            {% if grid.enabled %}
+                                <span class="text-success glyphicon glyphicon-ok-circle"></span>
+                            {% else %}
+                                <span class="text-warning glyphicon glyphicon-ban-circle"></span>
+                            {% endif %}
+                        </th>
+                        <th>{{ grid.born }}</th>
+                        <th><a href="/grid/create/?model={{ grid.target }}" title="create more grid with {{ grid.target }}">{{ grid.target }}</a></th>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

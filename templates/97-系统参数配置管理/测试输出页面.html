@@ -1,0 +1,63 @@
+{% extends "theme/base-0-12-0.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}当前事件{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <div class="row">
+        <div class="col-xs-2">
+            {% include "97-系统参数配置管理/base-设置导航栏.html" %}
+        </div>
+        <div class="col-xs-9">
+            <div class="row">
+                <div class="col-xs-11">
+                    <h1>{{ processor.title }}</h1>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="{{ request.path }}" method="post">
+            {% for item in processor.items_list %}
+                <div class="row">
+                    {{ item | safe }}
+                <hr>
+                </div>
+            {% endfor %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

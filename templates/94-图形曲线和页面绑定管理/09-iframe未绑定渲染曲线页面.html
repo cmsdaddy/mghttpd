@@ -1,0 +1,58 @@
+{% extends "theme/base-0-12-0.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}bind首页{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <span style="font-size: 40px;">没有可显示的图表</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <a class="btn btn-primary" href="/grid/bind/?target={{ request.GET.path }}" target="_blank">
+                <b><span class="glyphicon glyphicon-link"></span></b>
+                Bind a Graphic to this Page Now
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <small style="font-size: 15px;">
+                <a title="What this means?" target="_blank" href="/dev/faq/?next={{ request.path }}#还没有绑定相关的曲线页面">
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                    我为什么会看到这个?
+                </a>
+            </small>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

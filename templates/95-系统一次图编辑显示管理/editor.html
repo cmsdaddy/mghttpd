@@ -1,0 +1,46 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}{% endblock %}
+
+{% block title %}系统一次图编辑器{% endblock %}
+
+{% block js_library %}
+{% include "theme/01-js-library.html" %}
+    <script src="/static/js/jmodels/jmodels.js"></script>
+    <script src="/static/js/jmodels/jmodels-editor.js"></script>
+{% endblock %}
+
+{% block css_library %}
+{% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+    <script>
+        let default_profile = {
+            background_color: "#f2f8fc"
+        };
+
+        $(document).ready(function () {
+            $.getJSON("/linkage/json/", '', function (data, status, xhr) {
+                let painter = new JPaintbord('painter_box', 1000, 600, data, default_profile);
+                initialize_jmodels_editor(painter);
+            });
+        });
+    </script>
+{% endblock %}
+{% block inline_css %}{% endblock %}
+
+{% block page_header %}
+    {% include "95-系统一次图编辑显示管理/base-linkage-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+{# 在这里添加你的代码 #}
+    <canvas id="painter_box"></canvas>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

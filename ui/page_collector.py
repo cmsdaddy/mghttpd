@@ -20,7 +20,7 @@ def show_general_collector_profile_page(request):
         "PROJECT_NAME": '"1',
         "TIMESTAMP_FORMAT": '%Y-%m-%d %H:%M%:S.%f',
     }
-    return render(request, "collector/index.html", context=context)
+    return render(request, "93-采集器控制管理/index.html", context=context)
 
 
 collector_url_map = [

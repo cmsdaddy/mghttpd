@@ -1,0 +1,57 @@
+{% extends "theme/base-0-12-0.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}bind首页{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "theme/04-顶级选项卡.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    {% if binder_count == 0 %}
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10">
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1 class="text-center">NO GRID TO DISPLAY!</h1>
+        </div>
+    </div>
+    {% elif binder_count >= 1 and binder_count <= 3 %}
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10">
+        {% for binder in binder_list %}
+        <iframe src="/grid/show/{{ binder.grid_id }}/?control=1" width="100%;" height="700px;" frameborder="0"></iframe>
+        {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    {% endif %}
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

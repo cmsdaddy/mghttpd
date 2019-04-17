@@ -40,8 +40,8 @@
                 </a>
             </li>{% endif %}
 
-            <li role="presentation">
-                <a href="/sample/location/">采样信息</a>
+            <li role="presentation"{% if request.path == '/sample/' %} class="active"{% endif %}>
+                <a href="/sample/">采样信息</a>
             </li>
             <!--li role="presentation"{% if request.path == '/firecontrol/' %} class="active"{% endif %}>
                 <a href="/ems/">
