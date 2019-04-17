@@ -1,0 +1,96 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}采集器基本信息{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "99-开发管理/base-devel-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "93-采集器控制管理/base-顶级选项卡.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <form method="post">
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="form-group">
+                    <label for="databus_ip">数据总线IP地址</label>
+                    <input class="form-control" type="text" required value="{{ databus_ip }}" placeholder="eg: 127.0.0.1" id="databus_ip" name="databus_ip">
+                </div>
+            </div>
+
+            <div class="col-xs-4">
+                <div class="form-group">
+                    <label for="databus_port">数据总线端口</label>
+                    <input class="form-control" type="number" required min="1" max="65535" value="{{ databus_port }}" placeholder="eg: 8084" id="databus_port" name="databus_port">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="form-group">
+                    <label for="redis_ip">Redis IP地址</label>
+                    <input class="form-control" type="text" required value="{{ redis_ip }}" placeholder="eg: 127.0.0.1" id="redis_ip" name="redis_ip">
+                </div>
+            </div>
+
+            <div class="col-xs-4">
+                <div class="form-group">
+                    <label for="redis_port">Redis 端口</label>
+                    <input class="form-control" type="number" required min="1" max="65535" value="{{ redis_port }}" placeholder="eg: 6379" id="redis_port" name="redis_port">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="form-group">
+                    <label for="live_db">实时数据存储点</label>
+                    <select id="live_db" name="live_db" class="form-control" required>
+                        <option value="">选择一个存储点</option>
+                        {% for db in "0123456789" %}
+                            <option value="{{ db }}"{% if live_db == db %} selected{% endif %}>{{ db }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-4 hidden">
+                <div class="form-group">
+                    <input id="live_db_expire" name="live_db_expire" value="180">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-offset-10 col-xs-2">
+                <input type="submit" class="btn btn-block btn-success" value="保存">
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

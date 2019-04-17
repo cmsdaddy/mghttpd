@@ -12,6 +12,7 @@ def api_read(host_address, path, visitor=None, wait=None):
 
     quoted_path = urllib.parse.quote(path)
     url = "".join(['http://', host_address, quoted_path, '?', "visitor=", visitor])
+    print("api read:", url)
     try:
         handle = urlopen(url)
         txt_bytes = handle.read()
@@ -34,6 +35,7 @@ def api_write(host_address, path, data, visitor=None, wait=None):
 
     quoted_path = urllib.parse.quote(path)
     url = "".join(['http://', host_address, quoted_path, '?', "visitor=", visitor])
+    print("api write:", url)
     try:
         data = json.dumps(data).encode('utf8')
         request = Request(url=url, data=data, method="POST")

@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-sm-12">
+        <ul class="nav nav-tabs">
+            <li role="presentation"{% if request.path == '/dev/collector/' %} class="active"{% endif %}>
+                <a href="/dev/collector/">采集器基本信息</a>
+            </li>
+
+            <li role="presentation"{% if request.path == '/dev/collector/env/' %} class="active"{% endif %}>
+                <a href="/dev/collector/env/">
+                    环境变量
+                </a>
+            </li>
+
+            <li role="presentation"{% if request.path == '/dev/collector/yaoce/' %} class="active"{% endif %}>
+                <a href="/dev/collector/yaoce/">
+                    遥测采集点
+                </a>
+            </li>
+
+            <li role="presentation"{% if request.path == '/dev/collector/yaoxin/' %} class="active"{% endif %}>
+                <a href="/dev/collector/yaoxin/">
+                    遥信采集点
+                </a>
+            </li>
+
+            <li role="presentation"{% if request.path == '/dev/collector/yaokong/' %} class="active"{% endif %}>
+                <a href="/dev/collector/yaokong/">
+                    遥控采集点
+                </a>
+            </li>
+
+            <li role="presentation"{% if request.path == '/dev/collector/yaotiao/' %} class="active"{% endif %}>
+                <a href="/dev/collector/yaotiao/">
+                    遥调采集点
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -289,9 +289,9 @@ def show_system_report(request):
     print(usb_state)
     return render(request, "96-系统报表管理/系统报表管理.html", context=context)
 
+
 #报表导出
 def system_report_export(request,start_times,end_times):
-
     excel_name = str(datetime.datetime.now().date()) + 'report.xls'
     response = HttpResponse(content_type='application/vnd.ms-excel')
     # response['Content-Disposition'] = 'attachment;filename=BMS.xls'
