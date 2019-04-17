@@ -2,11 +2,32 @@
 import ui.mg as mg
 from ui.models import *
 import datetime
+import ui.page_linux as linux
+import codecs
+import os
+
+
+try:
+    ui_source_dir = os.path.dirname(__file__)
+    project_dir = os.path.dirname(ui_source_dir)
+    profile_dir = project_dir + '/data'
+    logo_title_file_path = profile_dir + '/logo-title.txt'
+    with codecs.open(logo_title_file_path, encoding='utf8') as file:
+        logo_title = file.read().rstrip()
+except:
+    logo_title = 'SCADA'
 
 
 # for template
 def global_vars(request):
     content = dict()
+
+    login_list = linux.get_login_on_display_list()
+    if len(login_list):
+        request.user = login_list[0]
+    else:
+        # keep django anonymous user
+        pass
 
     if request.path.find("/settings") >= 0:
         content['pageclass'] = 'settings'
@@ -14,6 +35,7 @@ def global_vars(request):
         content['pageclass'] = 'normal'
 
     content["theme"] = 'default'
+    content['logo_title'] = logo_title
 
     content['bms_count'] = mg.get_bms_count()
     content['bms_id_list'] = [x for x in range(mg.get_bms_count())]

@@ -11,8 +11,14 @@ import os
 import sys
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mghttpd.settings")
 
+if 'runserver' not in sys.argv:
+    current_dir_path = os.path.dirname(os.path.abspath(__file__))
+    project_dir_path = os.path.dirname(current_dir_path)
+    sys.path.append(project_dir_path)
+
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mghttpd.settings")
 application = get_wsgi_application()
 
 if 'runserver' not in sys.argv:

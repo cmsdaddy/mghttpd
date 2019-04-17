@@ -1,0 +1,65 @@
+{% extends "theme/base.html" %}
+{% block title %}电池堆信息总览{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+{% endblock %}
+
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "theme/03-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <div class="col-lg-5">
+        <table class="table">
+            <caption>系统软件版本列表</caption>
+            {% for key, ver in version.items %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ ver }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="col-lg-offset-1 col-lg-6">
+        <div class="row">
+            <table class="table">
+                <caption>IP</caption>
+                {% for iface, ip in ifaces_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ iface }}</td>
+                        <td>{{ ip }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="row">
+            <a class="btn btn-xs btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                More
+            </a>
+            <div class="collapse" id="collapseExample">
+                <pre>{{ ifaces_more_information|safe  }}</pre>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+    {% include "theme/05-底部彩条.html" %}
+{% endblock %}

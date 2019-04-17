@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <a href="/"><img class="navbar-brand" style="padding: 5px" href="#" src="/static/imgs/logo.png" /></a>
-        <p class="nav navbar-nav" style="color:#013e98;font-size:28px;line-height: 170%">&nbsp;ESSBU</p>
+        <p class="nav navbar-nav" style="color:#013e98;font-size:28px;line-height: 170%">&nbsp;{{ logo_title }}</p>
         <ul class="nav navbar-nav navbar-right">
             {% if current_warnings_count > 0 %}
             <li>
@@ -37,14 +37,7 @@
                 </li>
             {% endif %}
 
-            {% if request.user.is_anonymous %}
-                <li>
-                    <a href="/admin/login/?next=/">
-
-                        <span class="glyphicon glyphicon-user text-danger">登录</span>
-                    </a>
-                </li>
-            {% elif request.user.is_superuser %}
+            {% if request.user.is_superuser %}
                 {% if pageclass != "settings"  %}
                 <li>
                     <a href="/settings/">
@@ -59,8 +52,9 @@
                     <span class="glyphicon glyphicon-user">{{ request.user.username }}</span>
                 </a>
             </li>
+
             <li>
-                <a href="/logout/?cancel={{ request.path }}">
+                <a href="/linux/?cancel={{ request.path }}">
                     <span class="glyphicon glyphicon-off text-danger"></span>
                 </a>
             </li>

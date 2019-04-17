@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>切换用户</title>
+    <style>
+        .logout_title {
+            font-size: 64px;
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+
+        body {
+            background-color: #1a69a4;
+            color: white;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .error {
+            font-size: 64px;
+        }
+
+        #fail_txt {
+            display: none;
+        }
+    </style>
+
+    <script>
+        var handle = setInterval(function () {
+            count ++;
+            let dot = ".....";
+            let n = count % 5;
+            let s = dot.slice(0, n);
+            let dot_dom = document.getElementById('dot');
+            dot_dom.innerHTML = s;
+        }, 350);
+
+        setTimeout(function () {
+            let fail = document.getElementById('fail_txt');
+            fail.style.display = 'block';
+
+            let tt = document.getElementsByClassName('logout_title')[0];
+            tt.style.display = 'none';
+
+            clearInterval(handle);
+        }, 3000);
+
+        var count = 0;
+    </script>
+</head>
+<body>
+    <h1>&nbsp;</h1>
+    <h1>&nbsp;</h1>
+    <h1>&nbsp;</h1>
+    <h1>&nbsp;</h1>
+    <div class="logout_title center">正在退出<span id="dot"></span></div>
+    <div class="center error" id="fail_txt">
+        <div>
+            退出异常，
+            <a title="重新尝试切换用户" href="/linux/logout/">重试</a> 或
+            <a href="/linux/reboot/">重新启动</a>
+        </div>
+    </div>
+</body>
+</html>

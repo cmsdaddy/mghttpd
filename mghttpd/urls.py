@@ -41,6 +41,7 @@ import ui.page_grid as grid
 import ui.devel as devel
 import ui.page_linkage as linkage
 import ui.page_control as control
+import ui.page_linux as linux
 
 
 admin.site.site_header = '用户登录'
@@ -78,6 +79,7 @@ def sendback_static_file(request):
     current_dir_path = os.path.dirname(os.path.abspath(__file__))
     project_dir_path = os.path.dirname(current_dir_path)
     filename = project_dir_path + "/ui" + request.path
+    print(filename)
 
     def file_iterator(file_name, chunk_size=512):
         with open(file_name, 'rb') as f:
@@ -98,7 +100,7 @@ urlpatterns = [
     path('favicon.ico', lambda request: HttpResponseRedirect("/static/favicon.ico")),
 
     # 静态文件
-    re_path(r'static/', sendback_static_file),
+    re_path('static/', sendback_static_file),
 
     # 管理页面重定向
     path('admin/', admin.site.urls),
@@ -141,10 +143,12 @@ urlpatterns = [
     path('', main.index),
     path('version/', main.version),
 
-    # 退出系统选择页面
-    path('logout/', main.show_logout_page),
-    path('change_user/', main.show_change_page),
-    path('reboot/', main.show_reboot_page),
+    # 操作系统管理页面
+    path('linux/', linux.urls),
+    path('logout/', lambda request: HttpResponseRedirect('/linux/logout/')),
+    path('change_user/', lambda request: HttpResponseRedirect('/linux/change_user/')),
+    path('reboot/', lambda request: HttpResponseRedirect('/linux/reboot/')),
+    path('halt/', lambda request: HttpResponseRedirect('/linux/halt/')),
 
     # 能量管理系统事件
     path('ems/', ems.show_ems_index),
