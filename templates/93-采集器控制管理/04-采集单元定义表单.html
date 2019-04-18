@@ -1,0 +1,173 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}采集器-采集单元{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+    <script>
+        function update_hot_path_choice() {
+            $.getJSON("{{ request.path }}hotpath/", {q: $('#path').val()}, function (data, status, xhr) {
+                let length = data.length;
+                let hot_path = $("#hot_path");
+                hot_path.html('');
+                for (let i =0; i < length; i ++) {
+                    let html = '<a href="javascript: hot_path_click(\'' + data[i] +'\')" class="hot_path_item list-group-item">' + data[i] + '</a>';
+                    hot_path.append(html);
+                }
+            });
+        }
+
+        function hot_path_click(v) {
+            $("#path").val(v);
+            update_hot_path_choice();
+        }
+
+        $(document).ready(function () {
+            $('.dropdown-menu').dropdown();
+
+            $(".cls_unit_name_template").click(function () {
+                let v = $(this).attr('data-value');
+                $("#name").val(v);
+            });
+
+            $(".cls_unit_user_template").click(function () {
+                let v = $(this).attr('data-value');
+                $("#user").val(v);
+            });
+
+            $(".cls_ttw_dropdwon").click(function () {
+                let v = $(this).attr('data-value');
+                $("#ttw").val(v);
+            });
+
+            $("#path")[0].oninput = update_hot_path_choice;
+
+            $("#path_confirm").click(function () {
+                $("#hot_path").html('');
+            });
+
+        });
+    </script>
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "99-开发管理/base-devel-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+    {% include "93-采集器控制管理/base-顶级选项卡.html" %}
+{% endblock %}
+
+{% block main_body %}
+    {# 在这里添加你的代码 #}
+    <form class="form" method="post">
+        <div class="form-group">
+            <label for="id">采集单元ID</label>
+            <input class="form-control" type="text" required readonly value="{{ unit.id }}" name="id" id="id">
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <label for="name">采集单元名</label>
+                <div class="input-group">
+                    <input class="form-control" type="text" required name="name" id="name" value="{{ unit.name }}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% for name in unit_name_template %}
+                            <li><a href="#" class="cls_unit_name_template" data-value="{{ name }}">{{ name }}</a></li>
+                            {% endfor%}
+                            <li><a href="#" class="cls_unit_name_template" data-value="collector">默认</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-2">
+                <label for="user">采集账号</label>
+                <div class="input-group">
+                    <input class="form-control" type="text" required name="user" id="user" value="{{ unit.user }}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% for user in unit_user_template %}
+                            <li><a href="#" class="cls_unit_user_template" data-value="{{ user }}">{{ user }}</a></li>
+                            {% endfor%}
+                            <li><a href="#" class="cls_unit_user_template" data-value="default-collector">默认</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-2">
+                <label for="type">采集方式</label>
+                <select class="form-control" id="type" name="type">
+                    <option value="init"{% if unit.type == 'init' %} selected{% endif %}>初始化采集</option>
+                    <option value="period"{% if unit.type == 'period' %} selected{% endif %}>周期采集</option>
+                    <option value="listen"{% if unit.type == 'listen' %} selected{% endif %}>监听采集</option>
+                </select>
+            </div>
+
+            <div class="col-xs-2">
+                <label for="ttw">采集等待/周期</label>
+                <div class="input-group">
+                    <input class="form-control" type="number" required name="ttw" id="ttw" value="{{ unit.ttw }}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#" class="cls_ttw_dropdwon" data-value="-1">不超时</a></li>
+                            <li><a href="#" class="cls_ttw_dropdwon" data-value="15">15 秒</a></li>
+                            <li><a href="#" class="cls_ttw_dropdwon" data-value="30">30 秒</a></li>
+                            <li><a href="#" class="cls_ttw_dropdwon" data-value="60">1 分钟</a></li>
+                            <li><a href="#" class="cls_ttw_dropdwon" data-value="120">2 分钟</a></li>
+                            <li><a href="#" class="cls_ttw_dropdwon" data-value="180">3 分钟</a></li>
+                            <li><a href="#" class="cls_ttw_dropdwon" data-value="300">5 分钟</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="path">目标路径, /v1.0/realtime</label>
+                <input type="text" hidden value="/v1.0/realtime" name="root">
+                <div class="input-group input-group-sm">
+                    <input class="form-control input-sm" type="text" required value="{{ unit.path }}" id="path" name="path">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" id="path_confirm">确认</button>
+                    </div>
+                </div>
+                <div class="list-group" id="hot_path">
+                    <!--a href="#" class="list-group-item"></a>
+                    <a href="#" class="list-group-item"></a-->
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-xs-offset-10 col-xs-2">
+                <input type="submit" class="btn btn-block btn-success" value="保存">
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

@@ -11,27 +11,15 @@
                 </a>
             </li>
 
-            <li role="presentation"{% if request.path == '/dev/collector/yaoce/' %} class="active"{% endif %}>
-                <a href="/dev/collector/yaoce/">
-                    遥测采集点
+            <li role="presentation"{% if request.path == '/dev/collector/list/' %} class="active"{% endif %}>
+                <a href="/dev/collector/list/">
+                    采集点列表
                 </a>
             </li>
 
-            <li role="presentation"{% if request.path == '/dev/collector/yaoxin/' %} class="active"{% endif %}>
-                <a href="/dev/collector/yaoxin/">
-                    遥信采集点
-                </a>
-            </li>
-
-            <li role="presentation"{% if request.path == '/dev/collector/yaokong/' %} class="active"{% endif %}>
-                <a href="/dev/collector/yaokong/">
-                    遥控采集点
-                </a>
-            </li>
-
-            <li role="presentation"{% if request.path == '/dev/collector/yaotiao/' %} class="active"{% endif %}>
-                <a href="/dev/collector/yaotiao/">
-                    遥调采集点
+            <li role="presentation"{% if request.path == '/dev/collector/define/' %} class="active"{% endif %}>
+                <a href="/dev/collector/define/">
+                    定义采集点
                 </a>
             </li>
         </ul>
