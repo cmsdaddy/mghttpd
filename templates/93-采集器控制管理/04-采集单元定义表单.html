@@ -17,15 +17,36 @@
 {% block inline_js %}
     <script>
         function update_hot_path_choice() {
-            $.getJSON("{{ request.path }}hotpath/", {q: $('#path').val()}, function (data, status, xhr) {
-                let length = data.length;
-                let hot_path = $("#hot_path");
-                hot_path.html('');
-                for (let i =0; i < length; i ++) {
-                    let html = '<a href="javascript: hot_path_click(\'' + data[i] +'\')" class="hot_path_item list-group-item">' + data[i] + '</a>';
-                    hot_path.append(html);
-                }
-            });
+            let q = $('#path').val();
+
+            if (q[q.length-1] === '$') {
+                $.getJSON("{{ request.path }}hotenv/", null, function (data, status, xhr) {
+                    let length = data.length;
+                    let hot_path = $("#hot_path");
+                    hot_path.html('');
+                    for (let i = 0; i < length; i++) {
+                        let html = '<a href="javascript: hot_env_click(\'' + data[i] + '\')" class="hot_env_item list-group-item">' + q + '(' + data[i] + ')' + '</a>';
+                        hot_path.append(html);
+                    }
+                });
+            } else {
+                $.getJSON("{{ request.path }}hotpath/", {q: q}, function (data, status, xhr) {
+                    let length = data.length;
+                    let hot_path = $("#hot_path");
+                    hot_path.html('');
+                    for (let i = 0; i < length; i++) {
+                        let html = '<a href="javascript: hot_path_click(\'' + data[i] + '\')" class="hot_path_item list-group-item">' + data[i] + '</a>';
+                        hot_path.append(html);
+                    }
+                });
+            }
+        }
+
+        function hot_env_click(v) {
+            let path = $('#path');
+            let txt = path.val() + '(' + v + ')';
+            path.val(txt);
+            update_hot_path_choice();
         }
 
         function hot_path_click(v) {
@@ -89,10 +110,10 @@
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
                         <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#" class="cls_unit_name_template" data-value="collector">默认</a></li>
                             {% for name in unit_name_template %}
                             <li><a href="#" class="cls_unit_name_template" data-value="{{ name }}">{{ name }}</a></li>
                             {% endfor%}
-                            <li><a href="#" class="cls_unit_name_template" data-value="collector">默认</a></li>
                         </ul>
                     </div>
                 </div>
@@ -105,10 +126,10 @@
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
                         <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#" class="cls_unit_user_template" data-value="default-collector">默认</a></li>
                             {% for user in unit_user_template %}
                             <li><a href="#" class="cls_unit_user_template" data-value="{{ user }}">{{ user }}</a></li>
                             {% endfor%}
-                            <li><a href="#" class="cls_unit_user_template" data-value="default-collector">默认</a></li>
                         </ul>
                     </div>
                 </div>
@@ -117,9 +138,9 @@
             <div class="col-xs-2">
                 <label for="type">采集方式</label>
                 <select class="form-control" id="type" name="type">
-                    <option value="init"{% if unit.type == 'init' %} selected{% endif %}>初始化采集</option>
-                    <option value="period"{% if unit.type == 'period' %} selected{% endif %}>周期采集</option>
-                    <option value="listen"{% if unit.type == 'listen' %} selected{% endif %}>监听采集</option>
+                    <option value="初始化采集"{% if unit.type == '初始化采集' %} selected{% endif %}>初始化采集</option>
+                    <option value="周期采集"{% if unit.type == '周期采集' %} selected{% endif %}>周期采集</option>
+                    <option value="监听采集"{% if unit.type == '监听采集' %} selected{% endif %}>监听采集</option>
                 </select>
             </div>
 
@@ -148,7 +169,7 @@
                 <label for="path">目标路径, /v1.0/realtime</label>
                 <input type="text" hidden value="/v1.0/realtime" name="root">
                 <div class="input-group input-group-sm">
-                    <input class="form-control input-sm" type="text" required value="{{ unit.path }}" id="path" name="path">
+                    <input class="form-control input-sm" type="text" autocomplete="off" required value="{{ unit.path }}" id="path" name="path">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default" id="path_confirm">确认</button>
                     </div>

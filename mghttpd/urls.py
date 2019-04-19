@@ -34,6 +34,7 @@ import ui.page_devel as devel
 import ui.page_linkage as linkage
 import ui.page_scada as scada
 import ui.page_linux as linux
+import ui.page_log as log
 
 
 def mg_started(request):
@@ -75,6 +76,9 @@ urlpatterns = [
 
     # 错误重定位
     path("error/", error.urls),
+
+    # 日志管理
+    path("log/", log.urls),
 
     # 显示BMS信息
     path('bms/', bms.urls),

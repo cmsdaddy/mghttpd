@@ -15,7 +15,7 @@ import ui.scada as scada
 import codecs
 import xlrd
 import re
-
+import uuid
 
 profile_path = scada.profile_dir_path + '/collector.json'
 
@@ -25,7 +25,9 @@ def read_collector_profile_without_error():
         with codecs.open(profile_path, encoding='utf8') as file:
             profile = json.loads(file.read(), encoding='utf8')
     except:
-        profile = dict()
+        profile = {
+            'unit_list': dict()
+        }
 
     return profile
 
@@ -35,9 +37,55 @@ def write_collector_profile_without_error(new_profile):
         with codecs.open(profile_path, encoding='utf8') as file:
             profile = json.loads(file.read(), encoding='utf8')
     except:
-        profile = dict()
+        profile = {
+            'unit_list': dict()
+        }
 
     profile = dict(profile, **new_profile)
+
+    with codecs.open(profile_path, mode='w', encoding='utf8') as file:
+        json.dump(profile, file, ensure_ascii=False, indent=2)
+
+    return profile
+
+
+def read_collector_unit_without_error():
+    try:
+        with codecs.open(profile_path, encoding='utf8') as file:
+            profile = json.loads(file.read(), encoding='utf8')['unit_list']
+    except:
+        profile = dict()
+
+    return profile
+
+
+def merge_collector_unit_without_error(unit_profile):
+    try:
+        with codecs.open(profile_path, encoding='utf8') as file:
+            profile = json.loads(file.read(), encoding='utf8')
+    except:
+        profile = {
+            'unit_list': dict()
+       }
+
+    profile['unit_list'] = dict(profile['unit_list'], **unit_profile)
+
+    with codecs.open(profile_path, mode='w', encoding='utf8') as file:
+        json.dump(profile, file, ensure_ascii=False, indent=2)
+
+    return profile
+
+
+def write_collector_unit_without_error(unit_profile):
+    try:
+        with codecs.open(profile_path, encoding='utf8') as file:
+            profile = json.loads(file.read(), encoding='utf8')
+    except:
+        profile = {
+            'unit_list': dict()
+       }
+
+    profile['unit_list'] = unit_profile
 
     with codecs.open(profile_path, mode='w', encoding='utf8') as file:
         json.dump(profile, file, ensure_ascii=False, indent=2)
@@ -56,22 +104,102 @@ def show_general_collector_profile_page(request):
 
 
 def show_collector_env_page(request):
+    try:
+        with codecs.open(profile_path, encoding='utf8') as file:
+            profile = json.loads(file.read(), encoding='utf8')
+    except:
+        profile = {
+            'unit_list': dict()
+        }
+
+    if 'env' not in profile:
+        profile['env'] = ""
+
+    if request.method == 'POST':
+        profile['env'] = request.POST['env'].split('\r\n')
+
+        with codecs.open(profile_path, mode='w', encoding='utf8') as file:
+            json.dump(profile, file, ensure_ascii=False, indent=2)
+
+        return HttpResponseRedirect(request.path)
+
     context = dict()
-    context['const_env_list'] = {
-        "PROJECT_NAME": '"1',
-        "TIMESTAMP_FORMAT": '%Y-%m-%d %H:%M%:S.%f',
-    }
+    context['env'] = "\r\n".join(profile['env'])
     return render(request, "93-采集器控制管理/03-采集器环境变量.html", context=context)
+
+
+def send_back_env_matcher(request):
+    try:
+        with codecs.open(profile_path, encoding='utf8') as file:
+            profile = json.loads(file.read(), encoding='utf8')
+    except:
+        profile = dict()
+
+    if 'env' not in profile:
+        profile['env'] = ""
+
+    match = [env.split('=')[0] for env in profile['env']]
+    return JsonResponse(match, safe=False)
 
 
 def show_collector_unit_list_page(request):
     context = dict()
+    context['unit_list'] = read_collector_unit_without_error()
     return render(request, "93-采集器控制管理/02-采集单元列表.html", context=context)
 
 
+def delete_collector_unit(request):
+    try:
+        id = request.GET['id']
+        units = read_collector_unit_without_error()
+        del units[id]
+        write_collector_unit_without_error(units)
+    except:
+        pass
+
+    return HttpResponseRedirect('/dev/collector/list/')
+
+
 def show_define_collector_unit_page(request):
-    context = dict()
-    return render(request, "93-采集器控制管理/04-采集单元定义表单.html", context=context)
+    if request.method == 'GET':
+        context = dict()
+        user_list = list()
+        name_list = list()
+
+        try:
+            profile = read_collector_unit_without_error()
+
+            for id, unit in profile.items():
+                user_list.append(unit['user'])
+                name_list.append(unit['name'])
+            id = request.GET['id']
+            unit = profile[id]
+        except:
+            unit = {
+                'id': uuid.uuid4()
+            }
+        context['unit'] = unit
+
+        context['unit_user_template'] = set(user_list) - {'default-collector'}
+        context['unit_name_template'] = set(name_list) - {'collector'}
+        return render(request, "93-采集器控制管理/04-采集单元定义表单.html", context=context)
+    else:
+        unit = dict()
+
+        unit['id'] = request.POST['id']
+        unit['name'] = request.POST['name']
+        unit['user'] = request.POST['user']
+        unit['type'] = request.POST['type']
+        unit['ttw'] = request.POST['ttw']
+        unit['root'] = request.POST['root']
+        unit['path'] = request.POST['path']
+
+        unit_profile = {
+            unit['id']: unit
+        }
+        merge_collector_unit_without_error(unit_profile)
+
+        return HttpResponseRedirect(request.path.replace('define', 'list'))
 
 
 def show_all_matched(excel, sheet_name, node_list):
@@ -100,9 +228,10 @@ def show_all_matched(excel, sheet_name, node_list):
                     nodes.append(prefix + row[0].value)
             else:
                 if int(row[1].value) > 1:
-                    nodes.append(prefix + row[0].value + '/$(?)')
+                    nodes.append(prefix + row[2].value + '/$(?)')
                 else:
-                    nodes.append(prefix + row[0].value)
+                    nodes.append(prefix + row[2].value)
+        return nodes
     else:
         try:
             next_node_list = node_list[1:]
@@ -111,8 +240,6 @@ def show_all_matched(excel, sheet_name, node_list):
 
         nodes = show_all_matched(excel, node_list[0], next_node_list)
         return [prefix + node_list[0] + '/' + node for node in nodes]
-
-    return nodes
 
 
 databus_profile = scada.profile_dir_path + '/' + '实时中心数据 V1.0T1-20181219(对外版).xlsx'
@@ -138,11 +265,14 @@ def send_back_path_matcher(request):
 
 collector_url_map = [
     path('', show_general_collector_profile_page),
-    path('env/', show_collector_env_page),
 
+    path('env/', show_collector_env_page),
     path('define/', show_define_collector_unit_page),
+
     path('define/hotpath/', send_back_path_matcher),
+    path('define/hotenv/', send_back_env_matcher),
 
     path('list/', show_collector_unit_list_page),
+    path('list/delete/', delete_collector_unit),
 ]
 urls = (collector_url_map, 'collector', 'collector')

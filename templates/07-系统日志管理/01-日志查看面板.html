@@ -1,0 +1,60 @@
+{% extends "theme/base-userdefine.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}日志查看页面{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+    {% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+    <script>
+        $(document).ready(function () {
+            $(".log-select").click(function () {
+                let file = $(this).attr('data-value');
+                $('#log-panel').attr('src', '/log/read/?file=' + file);
+            });
+        });
+    </script>
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+    {% include "99-开发管理/base-devel-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block user_define_block %}
+    {# 在这里添加你的代码 #}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-2">
+                <h3>日志文件列表</h3>
+                <hr>
+                <div class="list-group">
+                    {% for file in log_files %}
+                    <a href="#" data-value="{{ file }}" class="log-select list-group-item">{{ file|cut:log_dir_path }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xs-10">
+                <iframe id="log-panel" src="/log/help/" width="100%" height="800px"></iframe>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

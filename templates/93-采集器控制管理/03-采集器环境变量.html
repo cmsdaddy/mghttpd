@@ -31,6 +31,19 @@
 
 {% block main_body %}
     {# 在这里添加你的代码 #}
+    <form method="post">
+        <h4>环境变量，一行一条</h4>
+
+        <label for="env"></label>
+        <textarea name="env" rows="20" class="form-control" id="env">{{ env|safe }}</textarea>
+
+        <br>
+        <div class="row">
+            <div class="col-xs-offset-10 col-xs-2">
+                <input type="submit" value="更新" class="btn btn-block">
+            </div>
+        </div>
+    </form>
 {% endblock %}
 
 {% block bottom_color_bar %}

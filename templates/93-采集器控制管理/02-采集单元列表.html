@@ -31,6 +31,41 @@
 
 {% block main_body %}
     {# 在这里添加你的代码 #}
+    <table class="table table-striped table-bordered table-hover">
+        <caption>
+            <div class="row">
+                <div class="col-xs-8">
+                    采集单元列表
+                </div>
+                <div class="col-xs-4 text-right">
+                    <a href="/dev/collector/define/" class="btn btn-success btn-xs">定义新采集点</a>
+                </div>
+            </div>
+        </caption>
+        <tr>
+            <th>#</th>
+            <th>采集单元名</th>
+            <th>用户</th>
+            <th>类型</th>
+            <th>周期/延时</th>
+            <th>路径</th>
+            <th>操作</th>
+        </tr>
+        {% for id, u in unit_list.items %}
+            <tr>
+                <th>{{ forloop.counter }}</th>
+                <td class="text-center">{{ u.name }}</td>
+                <td class="text-center">{{ u.user }}</td>
+                <td class="text-center">{{ u.type }}</td>
+                <td class="text-center">{{ u.ttw }}</td>
+                <td class="text-center">{{ u.root }}{{ u.path }}</td>
+                <td class="text-center">
+                    <a href="{{ request.path }}delete/?id={{ id }}" class="btn btn-danger btn-xs">删除</a>
+                    <a href="/dev/collector/define/?id={{ id }}" class="btn btn-default btn-xs">编辑</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
 
 {% block bottom_color_bar %}

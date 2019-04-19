@@ -62,5 +62,9 @@ def global_vars(request):
         "2-Weeks",
         "4-Weeks",
     ]
+    content['project_dir_path'] = scada.profile_dir_path
+    content['profile_dir_path'] = scada.profile_dir_path
+    content['documents_dir_path'] = scada.documents_dir_path
+    content['log_dir_path'] = scada.log_dir_path
 
     return content

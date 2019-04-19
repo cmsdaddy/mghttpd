@@ -1,0 +1,36 @@
+{% extends "theme/base-userdefine.html" %}
+
+{% block meta_block %}
+{% endblock %}
+
+{% block title %}日志文件{% endblock %}
+
+{% block js_library %}
+{% endblock %}
+
+{% block css_library %}
+{% endblock %}
+
+{# <script></script> 标签 #}
+{% block inline_js %}
+{% endblock %}
+
+{# <style></style> 标签 #}
+{% block inline_css %}
+{% endblock %}
+
+{% block page_header %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block user_define_block %}
+    {# 在这里添加你的代码 #}
+    <pre>
+    {% for line in txt_file_generator %}[{{ forloop.counter }}] {{ line|safe }}{% endfor %}
+    </pre>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}
