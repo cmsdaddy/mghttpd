@@ -21,12 +21,24 @@
                 let file = $(this).attr('data-value');
                 $('#log-panel').attr('src', '/log/read/?file=' + file);
             });
+
+            let new_height = window.innerHeight - 80 + 'px';
+            $("#log-panel").css("height", new_height);
+
+            new_height = window.innerHeight - 170 + 'px';
+            $(".list-group").css("height", new_height);
+            $(".list-group").css("overflow", "auto");
         });
     </script>
 {% endblock %}
 
 {# <style></style> 标签 #}
 {% block inline_css %}
+    <style>
+        body {
+            height: 100%;
+        }
+    </style>
 {% endblock %}
 
 {% block page_header %}
@@ -43,14 +55,14 @@
             <div class="col-xs-2">
                 <h3>日志文件列表</h3>
                 <hr>
-                <div class="list-group">
+                <div class="list-group" style="border: #1a69a4 dashed 1px;">
                     {% for file in log_files %}
                     <a href="#" data-value="{{ file }}" class="log-select list-group-item">{{ file|cut:log_dir_path }}</a>
                     {% endfor %}
                 </div>
             </div>
             <div class="col-xs-10">
-                <iframe id="log-panel" src="/log/help/" width="100%" height="800px"></iframe>
+                <iframe id="log-panel" src="/log/help/" width="100%"></iframe>
             </div>
         </div>
     </div>

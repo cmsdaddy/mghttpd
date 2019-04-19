@@ -27,9 +27,7 @@
 
 {% block user_define_block %}
     {# 在这里添加你的代码 #}
-    <pre>
-    {% for line in txt_file_generator %}[{{ forloop.counter }}] {{ line|safe }}{% endfor %}
-    </pre>
+    <pre>{% for line in txt_file_generator %}[{{ forloop.counter }}] {{ line|safe }}{% endfor %}</pre>
 {% endblock %}
 
 {% block bottom_color_bar %}

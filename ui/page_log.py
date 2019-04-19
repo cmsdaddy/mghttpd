@@ -9,7 +9,6 @@ from django.http import *
 from django.urls import path
 import datetime
 import ui.scada as scada
-import itertools
 
 
 def show_log_main_page(request):
@@ -36,7 +35,11 @@ def show_text_file(request):
     def read_file_iter(path):
         with codecs.open(path, encoding='utf8') as file:
             while True:
-                yield file.readline()
+                line = file.readline()
+                if line:
+                    yield line
+                else:
+                    raise StopIteration
 
     context = dict()
     context['txt_file_generator'] = read_file_iter(full_path)
