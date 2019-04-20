@@ -3,6 +3,7 @@ import random
 import time
 import datetime
 from django.shortcuts import render
+from django.urls import path
 from django.http import *
 from ui.models import *
 from django.db.models import *
@@ -38,3 +39,10 @@ def show_aircondition(request, aid):
     context['air'] = air
 
     return render(request, "03-空调设备管理/空调详细数据.html", context=context)
+
+
+urlpatterns = [
+    path('', show_all_list),
+    path('<int:aid>/', show_aircondition),
+]
+urls = (urlpatterns, 'air', 'air')

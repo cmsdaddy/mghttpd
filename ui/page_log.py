@@ -50,11 +50,11 @@ def show_help_page(request):
     return render(request, "07-系统日志管理/02-日志帮助页面.html")
 
 
-url_patterns = [
+urlpatterns = [
     path('', show_log_main_page),
     path('read/', show_text_file),
     path('help/', show_help_page),
 ]
 
 
-urls = (url_patterns, "log", "log")
+urls = (urlpatterns, "log", "log")

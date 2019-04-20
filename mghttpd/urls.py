@@ -13,28 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from django.http import *
 import mimetypes
 import os
-
-import ui.page_history as history
 import ui.page_bms as bms
-import ui.page_main as main
-import ui.page_pcs as pcs
-import ui.page_collector as collector
-import ui.page_settings as app_settings
-import ui.page_error as error
 import ui.page_report as report
-import ui.page_aircondition as air
-import ui.page_sample as sample
-import ui.page_grid as grid
-import ui.page_devel as devel
-import ui.page_linkage as linkage
-import ui.page_scada as scada
-import ui.page_linux as linux
-import ui.page_log as log
 
 
 def mg_started(request):
@@ -66,61 +50,40 @@ def sendback_static_file(request):
 urlpatterns = [
     # 静态文件
     re_path('static/', sendback_static_file),
+    # favicon 路由
     path('favicon.ico', lambda request: HttpResponseRedirect("/static/favicon.ico")),
-
-    # 管理页面重定向
-    path('admin/', admin.site.urls),
-
-    # 系统状态控制展示区
-    path("scada/", scada.urls),
-
-    # 错误重定位
-    path("error/", error.urls),
-
-    # 日志管理
-    path("log/", log.urls),
-
-    # 显示BMS信息
-    path('bms/', bms.urls),
-
-    # 显示PCS信息
-    path('pcs/', pcs.urls),
-
-    # 图形曲线
-    path('grid/', grid.urls),
-
-    # 开发参数
-    path("dev/", devel.urls),
-
-    # 历史记录
-    path("history/", history.urls),
-
-    # 系统参数配置页面
-    path("settings/", app_settings.urls),
-
-    # 系统一次图
-    path("linkage/", linkage.urls),
-
     # 系统启动标识
     path('mg-started.json', mg_started),
 
-    # 首页重定向
-    path('', main.index),
-    path('version/', main.version),
+    # 系统状态控制展示区
+    path("scada/", include('ui.page_scada')),
+    # 错误重定位
+    path("error/", include('ui.page_error')),
+    # 日志管理
+    path("log/", include('ui.page_log')),
+
+    # 显示BMS信息
+    path('bms/', include('ui.page_bms')),
+    # 显示PCS信息
+    path('pcs/', include('ui.page_pcs')),
+    # 空调
+    path('air-conditioner/', include('ui.page_aircondition')),
+    # 采样信息页面
+    path("sample/", include('ui.page_sample')),
+
+    # 图形曲线
+    path('grid/', include('ui.page_grid')),
+    # 开发参数
+    path("dev/", include('ui.page_devel')),
+    # 历史记录
+    path("history/", include('ui.page_history')),
+    # 系统参数配置页面
+    path("settings/", include('ui.page_settings')),
+    # 系统一次图
+    path("linkage/", include('ui.page_linkage')),
 
     # 操作系统管理页面
-    path('linux/', linux.urls),
-    path('logout/', lambda request: HttpResponseRedirect('/linux/logout/')),
-    path('change_user/', lambda request: HttpResponseRedirect('/linux/change_user/')),
-    path('reboot/', lambda request: HttpResponseRedirect('/linux/reboot/')),
-    path('halt/', lambda request: HttpResponseRedirect('/linux/halt/')),
-
-    # 采样信息页面
-    path("sample/", sample.urls),
-
-    # 空调
-    path('air-conditioner/', air.show_all_list),
-    path('air-conditioner/<int:aid>/', air.show_aircondition),
+    path('linux/', include('ui.page_linux')),
 
     # 报表
     path('report/system/', report.show_system_report),
@@ -128,5 +91,7 @@ urlpatterns = [
 
     #功率曲线
     path('power/grid/', bms.show_bms_grid),
+
+    path('', include('ui.page_main')),
 ]
 

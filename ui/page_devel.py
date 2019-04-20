@@ -64,10 +64,10 @@ def show_faq_page(request):
     return render(request, "99-开发管理/FAQ.html", context=context)
 
 
-develop_url_map = [
+urlpatterns = [
     path('', show_develop_main_page),
     path('faq/', show_faq_page),
 
     path("collector/", collector.urls)
 ]
-urls = (develop_url_map, 'develop', 'develop')
+urls = (urlpatterns, 'develop', 'develop')

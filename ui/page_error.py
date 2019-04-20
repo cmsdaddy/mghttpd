@@ -72,7 +72,7 @@ def backup_and_cleanup(request):
     return render(request, "98-表单提交中间过渡页面/notimplement.html", context=context)
 
 
-url_patterns = [
+urlpatterns = [
     path("noerror/", noerror),
     path("formok/", form_commit_success),
     path("formerror/", form_commit_fail),
@@ -81,4 +81,4 @@ url_patterns = [
 ]
 
 
-urls = (url_patterns, "error", "error")
+urls = (urlpatterns, "error", "error")

@@ -1,0 +1,182 @@
+{% extends "theme/base-userdefine.html" %}
+{% block title %}数据采集与监视控制系统{% endblock %}
+
+{% block js_library %}
+    {% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+{% endblock %}
+
+{% block inline_js %}
+    <script>
+        let callback = null;
+        let count = 0;
+        let success_color = 'green';
+        let fail_color = 'red';
+
+        function toggle_500() {
+            count += 1;
+            if ( callback ) callback(count);
+        }
+
+        function stage1_checking_service_status(count) {
+            let stage1 = $('.stage-1');
+            if (count%2) {
+                stage1.css('background-color', '#67bbff');
+            } else {
+                stage1.css('background-color', '#0d71bb');
+            }
+        }
+
+        setInterval(toggle_500, 300);
+
+        $(document).ready(function () {
+            let information = $(".scada-information");
+
+            information.html("系统正在启动...");
+            information.toggle();
+
+            $('.scada-status').show(500);
+
+            // check service status
+            callback = stage1_checking_service_status;
+        });
+    </script>
+{% endblock %}
+
+{% block inline_css %}
+    <style>
+        body {
+            padding: 0;
+            color: white;
+            overflow: hidden;
+            background-color: #0d71bb;
+            margin: 0;
+        }
+
+        .scada-title {
+            font-size: 95px;
+            font-weight: bold;
+        }
+
+        .scada-title-head {
+            color: red;
+        }
+
+        .scada-title-append {
+            border-top: white dashed 3px;
+            padding-top: 5px;
+            font-size: 20px;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .scada-title-ex {
+            width: 100%;
+            height: 5px;
+            margin-bottom: 4px;
+            border-top: white solid 4px;
+            border-bottom: red solid 4px;
+        }
+
+        .scada-body {
+            text-align: center;
+            width: 100%;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 75px;
+            position: absolute;
+            top: 40%;
+        }
+
+        .scada-status {
+            display: none;
+            position: absolute;
+            float: bottom;
+            bottom: 0;
+            text-align: center;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        .stage {
+            width: 25%;
+            text-align: center;
+            float: left;
+            position: relative;
+
+            border-top: white solid 1px;
+            border-bottom: white solid 1px;
+            border-left: white solid 1px;
+        }
+        .stage-1 {
+            border-left: white solid 1px;
+            //background-color: #0ea432;
+        }
+
+        .stage-2, .stage-3, .stage-4 {
+            margin-left: -2px;
+            //background-color: red;
+        }
+
+        .stage-4 {
+            border-right: white solid 1px;
+        }
+
+        .scada-version {
+            position: absolute;
+            float: top;
+            top: 20px;
+            right: 10px
+        }
+
+        .scada-information {
+            font-size: 20px;
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block page_header %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block user_define_block %}
+    {# 在这里添加你的代码 #}
+    <div class="scada-title">
+        <span class="scada-title-head">S</span>CADA
+    </div>
+    <span class="scada-title-append">
+        Supervisory Control and Data Acquisition
+    </span>
+    <br>
+    <br>
+    <div class="scada-title-ex"></div>
+    <div class="scada-title-ex"></div>
+    <div class="scada-title-ex"></div>
+
+    <div class="scada-body">
+        <div>数据采集与监视控制系统</div>
+        <div class="scada-information"></div>
+    </div>
+
+
+    <div class="scada-version">
+        OS: {{ system_name }}
+        <br>
+        服务器版本: 201911121.2121 beta
+        <br>
+        采集器版本: 201911121.2121 beta
+    </div>
+
+    <div class="scada-status">
+        <div class="stage stage-1">检查服务状态</div>
+        <div class="stage stage-2">检查数据总线</div>
+        <div class="stage stage-3">检查配置参数</div>
+        <div class="stage stage-4">完成</div>
+    </div>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

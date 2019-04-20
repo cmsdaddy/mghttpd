@@ -487,7 +487,7 @@ def show_bms_group_yaoxin(request, bms_sn, group_sn):
     return render(request, "01-BMS设备管理/组-遥信.html", context=context)
 
 
-grid_url_map = [
+urlpatterns = [
     path('', lambda request: HttpResponseRedirect(request.path + "0/")),
     path('<int:bms_sn>/', show_bms_heap),
     path('<int:bms_sn>/yaotiao/', show_bms_heap_yaotiao),
@@ -503,4 +503,4 @@ grid_url_map = [
     path('<int:bms_sn>/group/<int:group_sn>/yaoce/', show_bms_group_yaoce),
     path('<int:bms_sn>/group/<int:group_sn>/yaoxin/', show_bms_group_yaoxin),
 ]
-urls = (grid_url_map, 'bms', 'bms')
+urls = (urlpatterns, 'bms', 'bms')

@@ -6,7 +6,7 @@ from datetime import datetime
 import ui.cache_path as cpath
 
 
-pool = redis.ConnectionPool(host='192.168.1.107', port=6379)
+pool = redis.ConnectionPool(host='192.168.1.42', port=6379)
 
 
 def get_now_time_str():

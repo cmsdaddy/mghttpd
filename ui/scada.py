@@ -1,9 +1,13 @@
 # -*- coding: UTF-8 -*-
 __author__ = 'lijie'
 import os
+import platform
 
 # scada UI 服务器版本
 __version__ = "ui-v1.1"
+
+# 系统名称
+system_name = platform.system().lower()
 
 
 # 当前文件目录

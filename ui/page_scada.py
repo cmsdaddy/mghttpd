@@ -44,11 +44,11 @@ def show_alarm_control_page(request):
     return render(request, "06-SCADA设备/01-全局状态及控制.html", context=context)
 
 
-url_patterns = [
+urlpatterns = [
     # 蜂鸣器状态展示
     path('', lambda request: show_alarm_control_page(request)),
     path('beep/control/', lambda request: show_alarm_control_page(request)),
 ]
 
 
-urls = (url_patterns, "scada", "scada")
+urls = (urlpatterns, "scada", "scada")

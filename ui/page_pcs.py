@@ -151,13 +151,13 @@ def show_pcs_yaokong_page(request, pcs_sn):
     return render(request, "02-PCS设备管理/PCS遥控模板.html", context=context)
 
 
-url_patterns = [
+urlpatterns = [
     path('', lambda request: show_pcs_page(request, 0)),
-    path('<int:pcs_sn>/', show_pcs_page),
-    path('<int:pcs_sn>/yaotiao/', show_pcs_yaotiao_page),
-    path('<int:pcs_sn>/yaokong/', show_pcs_yaokong_page),
-    path('<int:pcs_sn>/grid/', show_pcs_grid),
+    path('<int:pcs_sn>/', show_pcs_page, name="pcs_page"),
+    path('<int:pcs_sn>/yaotiao/', show_pcs_yaotiao_page, name="pcs_yaotiao_url"),
+    path('<int:pcs_sn>/yaokong/', show_pcs_yaokong_page, name="pcs_yaokong_url"),
+    path('<int:pcs_sn>/grid/', show_pcs_grid, name="pcs_grid_url"),
 ]
 
 
-urls = (url_patterns, "pcs", "pcs")
+urls = (urlpatterns, "pcs", "pcs")

@@ -263,7 +263,7 @@ def send_back_path_matcher(request):
     return JsonResponse(paths_list, safe=False)
 
 
-collector_url_map = [
+urlpatterns = [
     path('', show_general_collector_profile_page),
 
     path('env/', show_collector_env_page),
@@ -275,4 +275,4 @@ collector_url_map = [
     path('list/', show_collector_unit_list_page),
     path('list/delete/', delete_collector_unit),
 ]
-urls = (collector_url_map, 'collector', 'collector')
+urls = (urlpatterns, 'collector', 'collector')

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import path
 from django.http import *
 from ui.models import *
 from django.db.models import *
@@ -8,12 +9,22 @@ import random
 import ui.api as api
 import ui.systerecords as sysrecords
 import socket
-import fcntl
+import ui.scada as scada
+
+if scada.system_name == 'windows':
+    pass
+else:
+    import fcntl
+
 import struct
 
 
 # 显示首页
 def index(request):
+    return render(request, "06-SCADA设备/00-StartUp页面.html")
+
+
+def show_scada_main(request):
     context = {}
 
     context['request'] = request
@@ -27,12 +38,15 @@ def index(request):
 
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    inet_address = fcntl.ioctl(
-        s.fileno(),
-        0x8915,  # SIOCGIFADDR
-        struct.pack('256s', ifname[:15])
-    )
-    return socket.inet_ntoa(inet_address[20:24])
+    if scada.system_name == 'windows':
+        return 'n/a'
+    else:
+        inet_address = fcntl.ioctl(
+            s.fileno(),
+            0x8915,  # SIOCGIFADDR
+            struct.pack('256s', ifname[:15])
+        )
+        return socket.inet_ntoa(inet_address[20:24])
 
 
 def version(request):
@@ -63,3 +77,14 @@ def version(request):
     return render(request, "06-SCADA设备/00-SCADA程序版本信息.html", context=context)
 
 
+urlpatterns = [
+    path('', index),
+    path('main/', show_scada_main, name="scada_main_url"),
+    path('version/', version),
+
+    path('logout/', lambda request: HttpResponseRedirect('/linux/logout/')),
+    path('change_user/', lambda request: HttpResponseRedirect('/linux/change_user/')),
+    path('reboot/', lambda request: HttpResponseRedirect('/linux/reboot/')),
+    path('halt/', lambda request: HttpResponseRedirect('/linux/halt/')),
+]
+urls = (urlpatterns, 'main', 'main')

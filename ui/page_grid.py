@@ -373,7 +373,7 @@ def grid_and_path_binder_list(request):
         return HttpResponseRedirect(request.path)
 
 
-grid_url_map = [
+urlpatterns = [
     path('', show_grid_page),
     path('show/<int:gid>/', show_graphic_by_id),
     path('show/', show_graphic_by_path),
@@ -384,4 +384,4 @@ grid_url_map = [
     path('bind/', bind_graphic_to_url_path),
     path('bind/list/', grid_and_path_binder_list),
 ]
-urls = (grid_url_map, 'grid', 'grid')
+urls = (urlpatterns, 'grid', 'grid')
