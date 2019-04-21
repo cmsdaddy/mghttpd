@@ -56,7 +56,7 @@ def show_faq_page(request):
     for filename in os.listdir(document_dir_path):
         faq = dict()
         faq['title'] = filename
-        with codecs.open(document_dir_path + '/' + filename) as file:
+        with codecs.open(document_dir_path + '/' + filename, encoding='utf-8') as file:
             faq['body'] = file.read()
         faq_list.append(faq)
 

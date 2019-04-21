@@ -68,4 +68,5 @@ def global_vars(request):
     content['log_dir_path'] = scada.log_dir_path
 
     content['system_name'] = scada.system_name
+    content['server_version'] = scada.__version__
     return content

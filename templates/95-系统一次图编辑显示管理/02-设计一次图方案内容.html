@@ -1,0 +1,187 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}{% endblock %}
+
+{% block title %}系统一次图编辑器{% endblock %}
+
+{% block js_library %}
+{% include "theme/01-js-library.html" %}
+<script src="/static/js/jmodels/jmodels.js"></script>
+<script src="/static/js/jmodels/jmodels-editor.js"></script>
+{% endblock %}
+
+{% block css_library %}
+{% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+    <script>
+        let default_profile = {
+            background_color: "{{ profile.background_color }}"
+        };
+
+        $(document).ready(function () {
+            let painter = new JPaintbord('painter_box', {{ profile.width }}, {{ profile.height }}, {}, default_profile);
+            initialize_jmodels_editor(painter);
+        });
+    </script>
+{% endblock %}
+{% block inline_css %}{% endblock %}
+
+{% block page_header %}
+    {% include "95-系统一次图编辑显示管理/base-linkage-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+{# 在这里添加你的代码 #}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="btn-group">
+                <button class="btn btn-default disabled text-primary">{{ profile.name }}</button>
+
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-file"></span>
+                        方 案
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{% url 'save linkage profile' profile.id %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-floppy-saved text-primary"></span>
+                                保 存
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'edit linkage profile' profile.id %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-fullscreen text-primary"></span>
+                                编辑画布尺寸
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'edit linkage profile' profile.id %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-text-background text-primary"></span>
+                                编辑画布背景色
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'edit linkage profile' profile.id %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                编辑方案名称
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        编 辑
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Dropdown link</a></li>
+                        <li><a href="#">Dropdown link</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <a href="#" class="btn btn-default">节点管理</a>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-th"></span>
+                        节 点
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Dropdown link</a></li>
+                        <li><a href="#">Dropdown link</a></li>
+                    </ul>
+                </div>
+
+                <a href="#" class="btn btn-default">连接管理</a>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-link"></span>
+                        连 接
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Dropdown link</a></li>
+                        <li><a href="#">Dropdown link</a></li>
+                    </ul>
+                </div>
+
+                <a href="#" class="btn btn-default">库文件管理</a>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-picture"></span>
+                        库文件
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Dropdown link</a></li>
+                        <li><a href="#">Dropdown link</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <a href="#" class="btn btn-default">已注册函数管理</a>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-gbp"></span>
+                        函数注册
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">初始化函数</a></li>
+                        <li><a href="#">单击事件函数</a></li>
+                        <li><a href="#">双击事件函数</a></li>
+                        <li><a href="#">光标移入事件函数</a></li>
+                        <li><a href="#">光标移出事件函数</a></li>
+                        <li><a href="#">光标悬浮事件函数</a></li>
+                    </ul>
+                </div>
+
+                <a href="#" class="btn btn-default">已绑定事件管理</a>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-bell"></span>
+                        绑定事件
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">左键-单击</a></li>
+                        <li><a href="#">左键-双击</a></li>
+                        <li><a href="#">光标-移入</a></li>
+                        <li><a href="#">光标-移出</a></li>
+                        <li><a href="#">光标-悬浮</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        关 于
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">About Jmodel</a></li>
+                        <li><a href="#">Dropdown link</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <canvas id="painter_box"></canvas>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

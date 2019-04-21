@@ -4,7 +4,7 @@ import os
 import platform
 
 # scada UI 服务器版本
-__version__ = "ui-v1.1"
+__version__ = "v1.1 beta"
 
 # 系统名称
 system_name = platform.system().lower()
@@ -21,11 +21,24 @@ print("项目根目录: {}".format(project_dir_path))
 # 项目配置文件根目录
 profile_dir_path = project_dir_path + '/data'
 print("项目配置文件目录: {}".format(project_dir_path))
+if not os.path.exists(profile_dir_path):
+    os.mkdir(profile_dir_path)
+
 
 # 项目文档存放目录
 documents_dir_path = project_dir_path + '/doc'
 print("项目文档存放目录: {}".format(documents_dir_path))
+if not os.path.exists(documents_dir_path):
+    os.mkdir(documents_dir_path)
 
 # 日志文件存放目录
 log_dir_path = os.path.dirname(project_dir_path) + '/log'
 print("日志存放目录: {}".format(log_dir_path))
+if not os.path.exists(log_dir_path):
+    os.mkdir(log_dir_path)
+
+# 回收站目录
+trash_dir_path = profile_dir_path + '/.trash'
+print("回收站目录: {}".format(trash_dir_path))
+if not os.path.exists(trash_dir_path):
+    os.mkdir(trash_dir_path)

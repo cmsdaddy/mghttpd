@@ -1,0 +1,84 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}{% endblock %}
+
+{% block title %}系统一次图编辑器{% endblock %}
+
+{% block js_library %}
+{% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+{% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+{% endblock %}
+{% block inline_css %}{% endblock %}
+
+{% block page_header %}
+    {% include "95-系统一次图编辑显示管理/base-linkage-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+{# 在这里添加你的代码 #}
+    <table class="table table-bordered table-striped">
+        <caption>
+            <div class="row">
+                <div class="col-xs-6">
+                    一次图方案列表
+                </div>
+                <div class="col-xs-6 text-right">
+                    <a href="{% url "create linkage profile" %}" title="创建一个新的一次图" class="btn btn-success btn-xs">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span>新建一次图</span>
+                    </a>
+                </div>
+            </div>
+        </caption>
+        <tr>
+            <th>#</th>
+            <th>名称</th>
+
+            <th>宽<small>(px)</small></th>
+            <th>高<small>(px)</small></th>
+
+            <th>背景色</th>
+            <th>状态</th>
+            <th>编辑</th>
+        </tr>
+        {% for linkage in linkage_profiles_list %}
+        <tr>
+            <th>{{ forloop.counter }}</th>
+            <th>{{ linkage.name }}</th>
+
+            <th>{{ linkage.width }}</th>
+            <th>{{ linkage.height }}</th>
+
+            <th><input class="form-control" type="color" value="{{ linkage.background_color }}" disabled></th>
+            <th>{{ linkage.active }}</th>
+
+            <th>
+                <a href="{% url 'delete linkage profile' linkage.id %}" class="btn btn-xs btn-danger">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>删除方案</span>
+                </a>
+                <a href="{% url 'edit linkage profile' linkage.id %}" class="btn btn-xs btn-primary">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    <span>编辑画布</span>
+                </a>
+                <a href="{% url 'design linkage profile' linkage.id %}" class="btn btn-xs btn-success">
+                    <span class="glyphicon glyphicon-wrench"></span>
+                    <span>设计内容</span>
+                </a>
+            </th>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

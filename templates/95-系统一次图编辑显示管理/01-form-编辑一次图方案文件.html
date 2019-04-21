@@ -1,0 +1,51 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}{% endblock %}
+
+{% block title %}系统一次图编辑器{% endblock %}
+
+{% block js_library %}
+{% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+{% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+{% endblock %}
+{% block inline_css %}{% endblock %}
+
+{% block page_header %}
+    {% include "95-系统一次图编辑显示管理/base-linkage-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+{# 在这里添加你的代码 #}
+    <form class="form" method="post">
+        <label for="id">ID</label>
+        <input class="form-control" type="text" readonly required name="id" id="id" value="{{ id }}" />
+
+        <label for="name">方案名</label>
+        <input class="form-control" type="text" required name="name" id="name" value="{{ name }}" placeholder="方案名称" />
+
+        <label for="width">画布宽度(px)</label>
+        <input class="form-control" type="number" required min="100" max="3000" id="width" name="width" value="{{ width }}" />
+
+        <label for="height">画布高度(px)</label>
+        <input class="form-control" type="number" required min="100" max="3000" id="height" name="height" value="{{ height }}" />
+
+        <label for="background_color">画布背景色</label>
+        <input class="form-control" type="color" required id="background_color" name="background_color" value="{{ background_color }}" />
+
+        <br>
+        <input class="btn btn-success btn-block" type="submit" value="保存" />
+        <a href="{% if request.GET.next %}{{ request.GET.next }}{% else %}{% url "list linkage profile" %}{% endif %}" class="btn btn-default btn-block">取消</a>
+    </form>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

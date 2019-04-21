@@ -11,13 +11,56 @@
 {% block inline_js %}
     <script>
         let callback = null;
+        let handle = null;
         let count = 0;
         let success_color = 'green';
         let fail_color = 'red';
+        let now = null;
 
         function toggle_500() {
             count += 1;
             if ( callback ) callback(count);
+        }
+
+        function getNowFormatDate() {
+            let date = new Date();
+            let date_separator = "-";
+            let time_separator = ":";
+            let month = date.getMonth() + 1;
+            let strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            let hour = date.getHours();
+            let mini = date.getMinutes();
+            let sec = date.getSeconds();
+
+            if (hour < 10) {
+                hour = "0" + hour;
+            }
+            if (mini < 10) {
+                mini = "0" + mini;
+            }
+            if (sec < 10) {
+                sec = "0" + sec;
+            }
+
+            return date.getFullYear() + date_separator + month + date_separator + strDate
+                    + " " + hour + time_separator + mini + time_separator + sec;
+        }
+
+        function refresh_now() {
+            if ( !now ) {
+                now = $('#id_now');
+            }
+            now.html(getNowFormatDate())
+        }
+
+        function flip_help() {
+            $(".scada-help").toggle();
         }
 
         function stage1_checking_service_status(count) {
@@ -27,11 +70,63 @@
             } else {
                 stage1.css('background-color', '#0d71bb');
             }
+
+            if ( count > 6 ) {
+                stage1.css("background-color", success_color);
+                callback = stage2_checking_service_status;
+                $(".scada-information").html("检查数据总线...");
+            }
         }
 
-        setInterval(toggle_500, 300);
+        function stage2_checking_service_status(count) {
+            let stage1 = $('.stage-2');
+            if (count%2) {
+                stage1.css('background-color', '#67bbff');
+            } else {
+                stage1.css('background-color', '#0d71bb');
+            }
+            if ( count > 12 ) {
+                stage1.css("background-color", success_color);
+                callback = stage3_checking_service_status;
+                $(".scada-information").html("检查配置参数...");
+            }
+        }
+
+        function stage3_checking_service_status(count) {
+            let stage1 = $('.stage-3');
+            if (count%2) {
+                stage1.css('background-color', '#67bbff');
+            } else {
+                stage1.css('background-color', '#0d71bb');
+            }
+            if ( count > 18 ) {
+                stage1.css("background-color", success_color);
+                callback = stage4_checking_service_status;
+                $(".scada-information").html("即将完成...");
+            }
+        }
+
+        function stage4_checking_service_status(count) {
+            let stage4 = $('.stage-4');
+            stage4.css('background-color', 'green');
+            clearInterval(handle);
+            $('.scada-status').toggle();
+            $("#scada_name").toggle();
+            $(".scada-information").toggle();
+
+            setInterval(flip_help, 800);
+
+            $(document).click(function () {
+                window.location.href = '/main/'
+            });
+        }
+
+        handle = setInterval(toggle_500, 300);
 
         $(document).ready(function () {
+            refresh_now();
+            setInterval(refresh_now, 1000);
+
             let information = $(".scada-information");
 
             information.html("系统正在启动...");
@@ -40,6 +135,7 @@
             $('.scada-status').show(500);
 
             // check service status
+            $(".scada-information").html("检查服务状态...");
             callback = stage1_checking_service_status;
         });
     </script>
@@ -121,6 +217,10 @@
         .stage-4 {
             border-right: white solid 1px;
         }
+        
+        #scada_name {
+            display: none;
+        }
 
         .scada-version {
             position: absolute;
@@ -133,6 +233,15 @@
             font-size: 20px;
             display: none;
         }
+
+        .scada-help {
+            display: none;
+            position: absolute;
+            float: bottom;
+            right: 10px;
+            bottom: 10px;
+        }
+
     </style>
 {% endblock %}
 
@@ -157,17 +266,18 @@
     <div class="scada-title-ex"></div>
 
     <div class="scada-body">
-        <div>数据采集与监视控制系统</div>
+        <div id="scada_name">数据采集与监视控制系统</div>
         <div class="scada-information"></div>
     </div>
 
-
     <div class="scada-version">
-        OS: {{ system_name }}
+        <span id="id_now"></span>
         <br>
-        服务器版本: 201911121.2121 beta
+        <span><small>OS: {{ system_name }}</small></span>
         <br>
-        采集器版本: 201911121.2121 beta
+        <span><small>服务器版本: {{ server_version }}</small></span>
+        <br>
+        <span><small>采集器版本: beta</small></span>
     </div>
 
     <div class="scada-status">
@@ -176,6 +286,8 @@
         <div class="stage stage-3">检查配置参数</div>
         <div class="stage stage-4">完成</div>
     </div>
+
+    <div class="scada-help">点击任意区域进入系统</div>
 {% endblock %}
 
 {% block bottom_color_bar %}
