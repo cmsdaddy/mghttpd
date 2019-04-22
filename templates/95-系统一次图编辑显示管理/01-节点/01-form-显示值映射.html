@@ -1,0 +1,68 @@
+{% extends "theme/base-0-12-0.html" %}
+
+{% block meta_block %}{% endblock %}
+
+{% block title %}节点编辑{% endblock %}
+
+{% block js_library %}
+{% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+{% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+{% endblock %}
+{% block inline_css %}{% endblock %}
+
+{% block page_header %}
+    {% include "95-系统一次图编辑显示管理/base-linkage-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+{# 在这里添加你的代码 #}
+    <h1>节点{{ model.name }}映射值编辑</h1>
+    <hr>
+    <form method="post">
+        <input class="form-control" type="text" readonly name="{{ lid }}">
+        <input class="form-control" type="text" readonly name="{{ nid }}">
+        <input class="form-control" type="text" readonly name="{{ vid }}">
+
+        <select class="form-control" name="type">
+            <option value="float">数值</option>
+            <option value="bool">布尔</option>
+            <option value="string">字串</option>
+        </select>
+
+        <input class="form-control" type="file" name="img">
+
+        <input class="form-control" type="text" name="mask">
+
+        <input class="form-control" type="text" name="k">
+
+        <input class="form-control" type="text" name="b">
+
+        <label class="radio-inline">
+            <input type="radio" title="不旋转" name="flip" value="none"{% if model.style.show_boarder %} checked{% endif %}>
+            不旋转
+        </label>
+        <label class="radio-inline">
+            <input type="radio" title="水平旋转" name="flip" value="horizon"{% if model.style.show_boarder %} checked{% endif %}>
+            水平旋转
+        </label>
+        <label class="radio-inline">
+          <input type="radio" title="垂直旋转" name="flip" value="vertical"{% if not model.style.show_boarder %} checked{% endif %}>
+            垂直旋转
+        </label>
+
+        <input type="submit" value="保存" class="btn btn-primary btn-block">
+        <a href="{% url 'edit linkage node' lid nid %}" class="btn btn-default btn-block">取消并返回</a>
+    </form>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}

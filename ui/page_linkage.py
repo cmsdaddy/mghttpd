@@ -340,6 +340,33 @@ def linkage_model_edit(request, lid, nid):
         context['model'] = models[nid]
         return render(request, "95-系统一次图编辑显示管理/01-节点/00-form-节点编辑.html", context=context)
 
+    return HttpResponseRedirect(request.path)
+
+
+def linkage_model_vmap_edit(request, lid, nid, vid):
+    if request.method == 'GET':
+        context = dict()
+
+        try:
+            models = read_linkage_profile(lid)['models']
+        except FileNotFoundError:
+            context['id'] = lid
+            return render(request, "95-系统一次图编辑显示管理/00-error-设计的文件不存在.html", context=context)
+        except KeyError:
+            context['id'] = lid
+            context['nid'] = nid
+            return render(request, "95-系统一次图编辑显示管理/00-error-节点不存在.html", context=context)
+
+        context['id'] = lid
+        context['model'] = models[nid]
+        try:
+            context['vmap'] = models[nid]['vmap'][vid]
+        except KeyError:
+            context['vmap'] = dict()
+
+        context['vid'] = vid
+        return render(request, "95-系统一次图编辑显示管理/01-节点/01-form-显示值映射.html", context=context)
+
 
 urlpatterns = [
     path('', show_all_linage_profile),
@@ -367,6 +394,8 @@ urlpatterns = [
 
     # 编辑节点的详细属性
     path('<str:lid>/model/<str:nid>/edit/', linkage_model_edit, name="edit linkage node"),
+    # 编辑节点的映射值
+    path('<str:lid>/model/<str:nid>/vmap/<str:vid>/edit/', linkage_model_vmap_edit, name="edit node v_map"),
 
     path("list/", show_all_linage_profile, name="list linkage profile"),
     path("create/", create_new_linage_profile, name="create linkage profile"),
