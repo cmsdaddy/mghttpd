@@ -17,12 +17,91 @@
 {% block inline_js %}
     <script>
         let default_profile = {
-            background_color: "{{ profile.background_color }}"
+            background_color: "{{ profile.background_color }}",
+            name: "{{ profile.name }}",
+            id: "{{ profile.id }}"
         };
 
         $(document).ready(function () {
             let painter = new JPaintbord('painter_box', {{ profile.width }}, {{ profile.height }}, {}, default_profile);
-            initialize_jmodels_editor(painter);
+
+            $.getJSON("{% url "linkage node json" profile.id %}", '', function(data, status, xhr){
+                for (let id in data) {
+                    if (data.hasOwnProperty(id)) {
+                        let model = data[id];
+                        painter.load_model(Number(id), model.name, model.x_offset, model.y_offset, model.width, model.height, model.style);
+                    }
+                }
+
+                $.getJSON("{% url "linkage anchors json" profile.id %}", '', function(data, status, xhr){
+                    for (let id in data) {
+                        if (data.hasOwnProperty(id)) {
+                            let anchor = data[id];
+                            let model = painter.search_model(anchor.model);
+                            painter.load_anchor(Number(id), model, anchor.x_offset, anchor.y_offset, anchor.style);
+                        }
+                    }
+
+                    $.getJSON("{% url "linkage links json" profile.id %}", '', function(data, status, xhr){
+                        for (let id in data) {
+                            if (data.hasOwnProperty(id)) {
+                                let l = data[id];
+                                let begin_anchor = painter.search_anchor(l.begin);
+                                let end_anchor = painter.search_anchor(l.end);
+                                painter.load_link(Number(l.id), begin_anchor, end_anchor, l.style);
+                            }
+                        }
+                    });
+                });
+            });
+
+            let editor = initialize_jmodels_editor(painter);
+            let painter_box = $('#painter_box');
+
+            editor.onlink(function (p, link, begin, end) {
+                $.post("{% url "linkage links json" profile.id %}", {obj: JSON.stringify(link.save())});
+            });
+
+            $("#save").click(function () {
+                let pack = editor.save();
+                console.log(pack);
+                $.post("{% url 'linkage profile json' profile.id %}", {profile: JSON.stringify(pack)});
+            });
+
+            // 新建节点
+            $(".new_node").click(function () {
+                painter_box.css('cursor', 'crosshair');
+                painter_box.bind('click', new_empty_node);
+
+                let width = Number($(this).attr('data-width'));
+                let height = Number($(this).attr('data-height'));
+                let anchors = $(this).attr('data-anchor');
+                let withborder = $(this).attr('data-withborder') === "true";
+                function new_empty_node(ev) {
+                    painter_box.unbind('click', new_empty_node);
+                    let model = editor.create_model(ev.offsetX, ev.offsetY, width, height, {show_boarder: withborder});
+                    if (anchors.indexOf('C') >= 0) {
+                        let anchor = editor.create_anchor(model, 0, 0, {name: 'C'});
+                        console.log("创建中心锚点：", anchor);
+                    }
+                    if (anchors.indexOf('W') >= 0) {
+                        let anchor = editor.create_anchor(model, width/2, 0, {name: 'W'});
+                        console.log("创建W锚点：", anchor);
+                    }
+                    if (anchors.indexOf('E') >= 0) {
+                        let anchor = editor.create_anchor(model, -width/2, 0, {name: 'E'});
+                        console.log("创建E锚点：", anchor);
+                    }
+                    if (anchors.indexOf('S') >= 0) {
+                        let anchor = editor.create_anchor(model, 0, height/2, {name: 'S'});
+                        console.log("创建S锚点：", anchor);
+                    }
+                    if (anchors.indexOf('N') >= 0) {
+                        let anchor = editor.create_anchor(model, 0, -height/2, {name: 'N'});
+                        console.log("创建N锚点：", anchor);
+                    }
+                }
+            });
         });
     </script>
 {% endblock %}
@@ -50,21 +129,15 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{% url 'save linkage profile' profile.id %}?next={{ request.path }}">
+                            <a href="#" id="save">
                                 <span class="glyphicon glyphicon-floppy-saved text-primary"></span>
                                 保 存
                             </a>
                         </li>
                         <li>
-                            <a href="{% url 'edit linkage profile' profile.id %}?next={{ request.path }}">
-                                <span class="glyphicon glyphicon-fullscreen text-primary"></span>
-                                编辑画布尺寸
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'edit linkage profile' profile.id %}?next={{ request.path }}">
-                                <span class="glyphicon glyphicon-text-background text-primary"></span>
-                                编辑画布背景色
+                            <a href="{% url 'save linkage profile' profile.id %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                查看效果
                             </a>
                         </li>
                         <li>
@@ -79,12 +152,22 @@
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-edit"></span>
-                        编 辑
+                        编 辑 画 布
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Dropdown link</a></li>
-                        <li><a href="#">Dropdown link</a></li>
+                        <li>
+                            <a href="{% url 'edit linkage profile' profile.id %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-fullscreen text-primary"></span>
+                                编辑画布尺寸
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'edit linkage profile' profile.id %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-text-background text-primary"></span>
+                                编辑画布背景色
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -98,8 +181,24 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Dropdown link</a></li>
-                        <li><a href="#">Dropdown link</a></li>
+                        <li><a class="new_node" data-anchor="" data-width="80" data-height="80" data-withborder="true" href="#">新建空节点1（0anchor-80x80-with-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="" data-width="150" data-height="150" data-withborder="true" href="#">新建空节点2（0anchor-150x150-with-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="" data-width="80" data-height="80" data-withborder="false" href="#">新建空节点3（0anchor-80x80-no-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="" data-width="150" data-height="150" data-withborder="false" href="#">新建空节点4（0anchor-150x150-no-boarder）</a></li>
+
+                        <li class="divider"></li>
+                        <li><a class="new_node" data-anchor="C" data-width="30" data-height="30" data-withborder="false" href="#">新建分/汇流点（1anchor-30x30-no-boarder）</a></li>
+                        <li class="divider"></li>
+
+                        <li><a class="new_node" data-anchor="C" data-width="50" data-height="50" data-withborder="true" href="#">新建设备节点1（1anchor-50x50-with-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="WESNC" data-width="150" data-height="150" data-withborder="true" href="#">新建设备节点2（5anchor-50x50-with-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="C" data-width="50" data-height="50" data-withborder="false" href="#">新建设备节点3（1anchor-50x50-no-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="WESNC" data-width="150" data-height="150" data-withborder="false" href="#">新建设备节点4（5anchor-50x50-no-boarder）</a></li>
+
+                        <li><a class="new_node" data-anchor="C" data-width="150" data-height="150" data-withborder="true" href="#">新建设备节点5（1anchor-150x150-with-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="WESNC" data-width="150" data-height="150" data-withborder="true" href="#">新建设备节点6（5anchor-150x150-with-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="C" data-width="150" data-height="150" data-withborder="false" href="#">新建设备节点7（1anchor-150x150-no-boarder）</a></li>
+                        <li><a class="new_node" data-anchor="WESNC" data-width="150" data-height="150" data-withborder="false" href="#">新建设备节点8（5anchor-150x150-no-boarder）</a></li>
                     </ul>
                 </div>
 
@@ -124,6 +223,8 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
+                        <li><a href="#">新建库文件</a></li>
+                        <li class="divider" role="separator"></li>
                         <li><a href="#">Dropdown link</a></li>
                         <li><a href="#">Dropdown link</a></li>
                     </ul>

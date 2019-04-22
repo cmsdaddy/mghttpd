@@ -11,6 +11,7 @@ import os
 import uuid
 import codecs
 import ui.scada as scada
+import threading
 
 
 filename = 'save.json'
@@ -111,8 +112,12 @@ def read_linkage_profile(lid):
     if not os.path.exists(full_file_path):
         raise FileNotFoundError
 
+    print("++ read_linkage_profile", time.time(), threading.get_ident())
+
     with codecs.open(full_file_path, encoding='utf8') as file:
         linkage = json.load(file)
+
+    print("-- read_linkage_profile", time.time(), threading.get_ident())
 
     return linkage
 
@@ -120,8 +125,17 @@ def read_linkage_profile(lid):
 def write_linkage_profile(lid, profile):
     full_file_path = get_linkage_profile_full_path(lid)
 
-    with codecs.open(full_file_path, mode='w', encoding='utf8') as file:
-        json.dump(profile, file, ensure_ascii=False, indent=2)
+    print("++ write_linkage_profile", time.time())
+
+    try:
+        with codecs.open(full_file_path, mode='w', encoding='utf8') as file:
+            json.dump(profile, file, ensure_ascii=False, indent=2)
+    except json.decoder.JSONDecodeError:
+        print("JSONDecodeError")
+    finally:
+        print("11111111")
+
+    print("-- write_linkage_profile", time.time())
 
     return profile
 
@@ -237,14 +251,100 @@ def save_linkage_profile(request, lid):
     return HttpResponseRedirect(next_url)
 
 
+def process_linkage_object_as_json(request, lid, kind):
+    context = dict()
+    if request.method == 'GET':
+        try:
+            profile = read_linkage_profile(lid)
+            objs = profile[kind]
+        except FileNotFoundError:
+            context['id'] = lid
+            return render(request, "95-系统一次图编辑显示管理/00-error-设计的文件不存在.html", context=context)
+        except KeyError:
+            objs = dict()
+
+        return JsonResponse(objs, safe=False)
+    else:
+        try:
+            profile = read_linkage_profile(lid)
+        except FileNotFoundError:
+            context['id'] = lid
+            return render(request, "95-系统一次图编辑显示管理/00-error-设计的文件不存在.html", context=context)
+
+        try:
+            _ = profile[kind]
+        except KeyError:
+            profile[kind] = dict()
+
+        obj = json.loads(request.POST['obj'], encoding='utf8')
+        profile[kind][obj['id']] = obj
+        write_linkage_profile(lid, profile)
+        return HttpResponseRedirect(request.path)
+
+
+def linkage_profile_as_json(request, lid):
+    context = dict()
+
+    if request.method == 'GET':
+        try:
+            profile = read_linkage_profile(lid)
+            return JsonResponse(profile, safe=False)
+        except FileNotFoundError:
+            context['id'] = lid
+            return render(request, "95-系统一次图编辑显示管理/00-error-设计的文件不存在.html", context=context)
+    else:
+        profile = json.loads(request.POST['profile'], encoding='utf8')
+        write_linkage_profile(lid, profile)
+        return HttpResponseRedirect(request.path)
+
+
+def linkage_models_as_json(request, lid):
+    return process_linkage_object_as_json(request, lid, 'models')
+
+
+def linkage_links_as_json(request, lid):
+    return process_linkage_object_as_json(request, lid, 'links')
+
+
+def linkage_anchors_as_json(request, lid):
+    return process_linkage_object_as_json(request, lid, 'anchors')
+
+
+def linkage_libraries_as_json(request, lid):
+    return process_linkage_object_as_json(request, lid, 'libraries')
+
+
+def linkage_events_as_json(request, lid):
+    return process_linkage_object_as_json(request, lid, 'events')
+
+
+def linkage_functions_as_json(request, lid):
+    return process_linkage_object_as_json(request, lid, 'functions')
+
+
 urlpatterns = [
-    path('', show_linkage_page),
+    path('', show_all_linage_profile),
     path('edit/', show_editor_page),
     path('preview/', show_preview_page),
     path('show/', show_linkage_page),
 
     path('model/<int:id>/change/', show_change_model_page),
     path('json/', edit_models),
+
+    # 将方案全都放回
+    path('<str:lid>/json/', linkage_profile_as_json, name="linkage profile json"),
+    # 将方案中的节点全都放回
+    path('models/<str:lid>/json/', linkage_models_as_json, name="linkage node json"),
+    # 将方案中的锚点全都返回
+    path('anchors/<str:lid>/json/', linkage_anchors_as_json, name="linkage anchors json"),
+    # 将方案中的连接全都返回
+    path('links/<str:lid>/json/', linkage_links_as_json, name="linkage links json"),
+    # 将方案中的库全都返回
+    path('libraries/<str:lid>/json/', linkage_libraries_as_json, name="linkage libraries json"),
+    # 将方案中的事件全都返回
+    path('events/<str:lid>/json/', linkage_events_as_json, name="linkage events json"),
+    # 将方案中的函数全都返回
+    path('functions/<str:lid>/json/', linkage_functions_as_json, name="linkage functions json"),
 
     path("list/", show_all_linage_profile, name="list linkage profile"),
     path("create/", create_new_linage_profile, name="create linkage profile"),

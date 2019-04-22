@@ -67,6 +67,19 @@ let JEditor = function (painter) {
     window.requestAnimationFrame(this.animation_render);
     window.editor = this;
 
+    this._onlink = [];
+    this.onlink = function (callback) {
+        if (this._onlink.indexOf(callback) === -1) {
+            this._onlink.push(callback);
+        }
+    };
+    this.notify_link = function (link, begin, end) {
+        let length = this._onlink.length;
+        for (let i = 0; i < length; i ++) {
+            this._onlink[i](this, link, begin, end)
+        }
+    };
+
     // 编辑区空白处点击事件, 点击空白区域后清空选择栈中的全部对象
     //painter.empty_event_listener.onmousedown(this.select_stack.empty);
 
@@ -304,6 +317,9 @@ JEditor.prototype.create_link = function (begin, end, style) {
     let id = ++ this.painter._id_pool;
     let link = new JLink(id, begin, end, style);
     this.painter.links_list[id] = link;
+
+    this.notify_link(link, begin, end);
+
     return link;
 };
 
@@ -340,37 +356,42 @@ JEditor.prototype.create_model = function(x_offset, y_offset, width, height, sty
  * 将画板中的对象保存起来
  * */
 JEditor.prototype.save = function () {
-    let models = [];
-    let links = [];
-    let anchors = [];
-    let libraries = [];
+    let models = {};
+    let links = {};
+    let anchors = {};
+    let libraries = {};
 
     for (let i in this.painter.image_libraries_list) {
         if ( ! this.painter.image_libraries_list.hasOwnProperty(i) ) {
             continue;
         }
-        libraries.push(this.painter.image_libraries_list[i].save())
+
+        let pack = this.painter.image_libraries_list[i].save();
+        libraries[pack.id] = pack;
     }
 
     for (let i in this.painter.links_list) {
         if ( ! this.painter.links_list.hasOwnProperty(i) ) {
             continue;
         }
-        links.push(this.painter.links_list[i].save())
+        let pack = this.painter.links_list[i].save();
+        links[pack.id] = pack;
     }
 
     for (let i in this.painter.anchors_list) {
         if ( ! this.painter.anchors_list.hasOwnProperty(i) ) {
             continue;
         }
-        anchors.push(this.painter.anchors_list[i].save())
+        let pack = this.painter.anchors_list[i].save();
+        anchors[pack.id] = pack;
     }
 
     for (let i in this.painter.models_list) {
         if ( ! this.painter.models_list.hasOwnProperty(i) ) {
             continue;
         }
-        models.push(this.painter.models_list[i].save())
+        let pack = this.painter.models_list[i].save();
+        models[pack.id] = pack;
     }
 
     return {
@@ -378,6 +399,9 @@ JEditor.prototype.save = function () {
         links: links,
         anchors: anchors,
         libraries: libraries,
+        id: this.painter.id,
+        name: this.painter.name,
+        background_color: this.painter.background_color,
         width: this.painter.width,
         height: this.painter.height
     };
@@ -775,4 +799,6 @@ function initialize_jmodels_editor(painter) {
             console.log("select model", model, ev);
         }
     });
+
+    return editor;
 }

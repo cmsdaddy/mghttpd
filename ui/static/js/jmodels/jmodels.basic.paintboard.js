@@ -17,7 +17,10 @@ let JPaintbord = function (dom_id, width, height, options, profile) {
     this.editor = undefined;
     this.profile = profile;
 
+    this.name = profile.name;
+    this.id = profile.id;
     this.flush_background_color = profile.background_color ? profile.background_color : "#eeeeee";
+    this.background_color = this.flush_background_color;
 
     // 请求重绘次数
     this.commit_counter = 0;
