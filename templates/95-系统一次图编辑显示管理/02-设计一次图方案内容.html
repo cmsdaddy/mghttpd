@@ -55,6 +55,11 @@
                 });
             });
 
+            painter.model_event_listener.ondblclick(function (ev, model) {
+                let url = "{% url 'edit linkage node' profile.id 'gold_is_a_girl' %}";
+                window.location.href = url.replace('gold_is_a_girl', String(model.id));
+            });
+
             let editor = initialize_jmodels_editor(painter);
             let painter_box = $('#painter_box');
 

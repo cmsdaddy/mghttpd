@@ -322,6 +322,25 @@ def linkage_functions_as_json(request, lid):
     return process_linkage_object_as_json(request, lid, 'functions')
 
 
+def linkage_model_edit(request, lid, nid):
+    """编辑模型详细内容"""
+    if request.method == 'GET':
+        context = dict()
+        try:
+            models = read_linkage_profile(lid)['models']
+        except FileNotFoundError:
+            context['id'] = lid
+            return render(request, "95-系统一次图编辑显示管理/00-error-设计的文件不存在.html", context=context)
+        except KeyError:
+            context['id'] = lid
+            context['nid'] = nid
+            return render(request, "95-系统一次图编辑显示管理/00-error-节点不存在.html", context=context)
+
+        context['id'] = lid
+        context['model'] = models[nid]
+        return render(request, "95-系统一次图编辑显示管理/01-节点/00-form-节点编辑.html", context=context)
+
+
 urlpatterns = [
     path('', show_all_linage_profile),
     path('edit/', show_editor_page),
@@ -345,6 +364,9 @@ urlpatterns = [
     path('events/<str:lid>/json/', linkage_events_as_json, name="linkage events json"),
     # 将方案中的函数全都返回
     path('functions/<str:lid>/json/', linkage_functions_as_json, name="linkage functions json"),
+
+    # 编辑节点的详细属性
+    path('<str:lid>/model/<str:nid>/edit/', linkage_model_edit, name="edit linkage node"),
 
     path("list/", show_all_linage_profile, name="list linkage profile"),
     path("create/", create_new_linage_profile, name="create linkage profile"),

@@ -7,7 +7,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li>
                 <a href="{% if request.GET.next %}{{ request.GET.next }}{% else %}/{% endif %}">
-                    <span class="glyphicon glyphicon-share-alt"> 返回</span>
+                    <span class="glyphicon glyphicon-share-alt"> 返回{% if not request.GET.next %}运行模式{% endif %}</span>
                 </a>
             </li>
         </ul>
