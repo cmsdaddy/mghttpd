@@ -78,8 +78,8 @@ def version(request):
 
 
 urlpatterns = [
-    path('', index),
-    path('main/', show_scada_main, name="scada_main_url"),
+    path('', show_scada_main, name="scada_main_url"),
+    path('main/', index),
     path('version/', version),
 
     path('logout/', lambda request: HttpResponseRedirect('/linux/logout/')),

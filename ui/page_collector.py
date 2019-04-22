@@ -208,6 +208,7 @@ def show_all_matched(excel, sheet_name, node_list):
     except:
         return list()
 
+    # 匹配环境变量
     r = re.compile(r'\$\(\S+\)')
 
     if len(node_list) > 0 and r.match(node_list[0]):
@@ -228,9 +229,10 @@ def show_all_matched(excel, sheet_name, node_list):
                     nodes.append(prefix + row[0].value)
             else:
                 if int(row[1].value) > 1:
-                    nodes.append(prefix + row[2].value + '/$(?)')
+                    nodes.append(prefix + row[0].value + '/$')
                 else:
-                    nodes.append(prefix + row[2].value)
+                    nodes.append(prefix + row[0].value)
+
         return nodes
     else:
         try:
@@ -238,7 +240,13 @@ def show_all_matched(excel, sheet_name, node_list):
         except IndexError:
             next_node_list = list()
 
-        nodes = show_all_matched(excel, node_list[0], next_node_list)
+        sheet_name = '不可能产生的表名称234nnjkndf'
+        for row in sheet.get_rows():
+            if row[0].value == node_list[0]:
+                sheet_name = row[2].value
+                break
+
+        nodes = show_all_matched(excel, sheet_name, next_node_list)
         return [prefix + node_list[0] + '/' + node for node in nodes]
 
 
