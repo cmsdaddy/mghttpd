@@ -71,11 +71,37 @@
                     <span class="input-group-addon">px</span>
                 </div>
             </div>
+            <div class="col-xs-2">
+                <label for="style.font_color">字体颜色</label>
+                <input class="form-control" type="color" required id="style.font_color" name="style.font_color" value="{{ style.font_color }}">
+            </div>
+            <div class="col-xs-2">
+                <label for="style.font_size">字体尺寸</label>
+                <div class="input-group">
+                    <input class="form-control" type="number" min="8" max="30" required id="style.font_size" name="style.font_size" value="{{ style.font_size }}">
+                    <span class="input-group-addon">px</span>
+                </div>
+                <span class="help-block">推荐尺寸：10px</span>
+            </div>
+            <div class="col-xs-2">
+                <label for="style.unit">计量单位</label>
+                <input class="form-control" type="text" id="style.unit" name="style.unit" value="{{ style.unit }}">
+                <span class="help-block">例如：V，A，℃，KW</span>
+            </div>
         </div>
 
         <label for="style.datasource">数据源</label>
         <input class="form-control" type="text" id="style.datasource" name="style.datasource" value="{{ model.style.datasource }}">
         <span class="help-block">关联采集器中的某一个采集点，只能关联单个点，不能使数组或object对象</span>
+
+        <label>显示动作映射表</label>
+        <table class="table table-bordered">
+            <tr>
+                <th>值</th>
+                <th>显示值</th>
+                <th>操作</th>
+            </tr>
+        </table>
 
         <input type="submit" value="保存" class="btn btn-primary btn-block">
         <a href="{% url 'design linkage profile' id %}" class="btn btn-default btn-block">取消并返回</a>
