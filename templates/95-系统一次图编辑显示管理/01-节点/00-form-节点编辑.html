@@ -27,25 +27,25 @@
 {# 在这里添加你的代码 #}
     <h1>节点{{ model.name }}编辑</h1>
     <hr>
-    <form method="post">
+    <form method="post" action="{{ request.path }}?next={% url 'design linkage profile' id %}">
         <div class="row">
             <div class="col-xs-2">
                 <label for="id">节点ID</label>
                 <input class="form-control" type="text" required readonly id="id" name="id" value="{{ model.id }}">
             </div>
             <div class="col-xs-3">
-                <label for="style.title">显示标题</label>
-                <input class="form-control" type="text" id="style.title" name="style.title" value="{{ model.style.title }}">
+                <label for="title">显示标题</label>
+                <input class="form-control" type="text" id="title" name="title" value="{{ model.title|default:"未命名标题" }}">
                 <span class="help-block">边框旁边的显示名，例如SCADA，1#PCS，2#BMS等</span>
             </div>
             <div class="col-xs-3">
                 <label for="name">名称(变量名)</label>
-                <input class="form-control" type="text" required id="name" name="name" value="{{ model.name }}">
+                <input class="form-control" type="text" required id="name" name="name" value="{{ model.name|default:"var_" }}">
                 <span class="help-block">用于变量索引，最好用一个有意义的名字，例如bms1, pcs1等</span>
             </div>
             <div class="col-xs-4">
-                <label for="style.comment">名称备注说明</label>
-                <input class="form-control" type="text" id="style.comment" name="style.comment" value="{{ model.style.comment }}">
+                <label for="comment">名称备注说明</label>
+                <input class="form-control" type="text" id="comment" name="comment" value="{{ model.comment }}" placeholder="备注说明可以再特殊场景使用">
                 <span class="help-block">解释这个变量的用法及用途</span>
             </div>
         </div>
@@ -54,114 +54,96 @@
             <div class="col-xs-3 col-sm-2">
                 <label>边框控制</label>
                 <label class="radio-inline">
-                    <input type="radio" id="style.show_boarder" name="style.show_boarder" value="true"{% if model.style.show_boarder %} checked{% endif %}>
+                    <input type="radio" id="show_boarder" name="show_boarder" value="true"{% if model.show_boarder or not model.show_boarder %} checked{% endif %}>
                     显示
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" id="style.show_boarder" name="style.show_boarder" value="false"{% if not model.style.show_boarder %} checked{% endif %}>
+                  <input type="radio" id="show_boarder" name="show_boarder" value="false"{% if not model.show_boarder %} checked{% endif %}>
                      隐藏
                 </label>
             </div>
             <div class="col-xs-2">
                 <label for="width">节点宽度</label>
                 <div class="input-group">
-                    <input class="form-control" type="number" min="30" max="300" required id="width" name="width" value="{{ model.width }}">
+                    <input class="form-control" type="number" min="30" max="300" required id="width" name="width" value="{{ model.width|default:50 }}">
                     <span class="input-group-addon">px</span>
                 </div>
             </div>
             <div class="col-xs-2">
                 <label for="height">节点高度</label>
                 <div class="input-group">
-                    <input class="form-control" type="number" min="30" max="300" required id="height" name="height" value="{{ model.height }}">
+                    <input class="form-control" type="number" min="30" max="300" required id="height" name="height" value="{{ model.height|default:50 }}">
                     <span class="input-group-addon">px</span>
                 </div>
             </div>
             <div class="col-xs-2">
-                <label for="style.font_color">字体颜色</label>
-                <input class="form-control" type="color" required id="style.font_color" name="style.font_color" value="{{ style.font_color }}">
+                <label for="font_color">字体颜色</label>
+                <input class="form-control" type="color" required id="font_color" name="font_color" value="{{ model.font_color|default:"#0f0f0f" }}">
             </div>
             <div class="col-xs-2">
-                <label for="style.font_size">字体尺寸</label>
+                <label for="font_size">字体尺寸</label>
                 <div class="input-group">
-                    <input class="form-control" type="number" min="8" max="30" required id="style.font_size" name="style.font_size" value="{{ style.font_size|default:10 }}">
+                    <input class="form-control" type="number" min="8" max="30" required id="font_size" name="font_size" value="{{ model.font_size|default:10 }}">
                     <span class="input-group-addon">px</span>
                 </div>
                 <span class="help-block">推荐尺寸：10px</span>
             </div>
             <div class="col-xs-2">
-                <label for="style.unit">计量单位</label>
-                <input class="form-control" type="text" id="style.unit" name="style.unit" value="{{ style.unit }}">
+                <label for="unit">计量单位</label>
+                <input class="form-control" type="text" id="unit" name="unit" value="{{ model.unit }}">
                 <span class="help-block">例如：V，A，℃，KW</span>
             </div>
         </div>
 
-        <label for="style.datasource">数据源</label>
-        <input class="form-control" type="text" id="style.datasource" name="style.datasource" value="{{ model.style.datasource }}">
+        <label for="datasource">数据源</label>
+        <input class="form-control" type="text" id="datasource" name="datasource" value="{{ model.datasource }}">
         <span class="help-block">关联采集器中的某一个采集点，只能关联单个点，不能使数组或object对象</span>
 
-        <label>显示动作映射表</label>
+        <hr>
+        <div class="row">
+            <div class="col-xs-6">显示动作映射</div>
+            <div class="col-xs-6 text-right">
+                <a class="btn btn-sm btn-success" href="{% url 'create node v_map' id model.id %}">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    <span>添加一个映射值</span>
+                </a>
+            </div>
+        </div>
         <table class="table table-bordered">
             <tr>
+                <th>#</th>
+                <th>名称</th>
                 <th>值</th>
-                <th>类型</th>
-                <th>显示值</th>
-                <th>掩码(hex)</th>
-                <th>因数</th>
-                <th>偏移</th>
+                <th>图片</th>
                 <th>翻转</th>
                 <th>旋转</th>
                 <th>操作</th>
             </tr>
-            <tr>
-                <td>
-                    <input class="form-control" type="text" name="style.v_map.value[]">
-                </td>
-                <td>
-                    <select class="form-control" name="style.v_map.type[]">
-                        <option value="float">数值</option>
-                        <option value="bool">布尔</option>
-                        <option value="string">字串</option>
-                    </select>
-                </td>
-                <td>
-                    <input class="form-control" type="file" name="style.v_map.img[]">
-                </td>
-                <td>
-                    <input class="form-control" type="text" name="style.v_map.mask[]">
-                </td>
-                <td>
-                    <input class="form-control" type="text" name="style.v_map.k[]">
-                </td>
-                <td>
-                    <input class="form-control" type="text" name="style.v_map.b[]">
-                </td>
-                <td>
-                    <label>
-                        <input type="radio" title="不旋转" name="style.v_map.flip[]" value="none"{% if model.style.show_boarder %} checked{% endif %}>
-                        N
-                    </label>
-                    <label>
-                        <input type="radio" title="水平旋转" name="style.v_map.flip[]" value="horizon"{% if model.style.show_boarder %} checked{% endif %}>
-                        H
-                    </label>
-                    <label>
-                      <input type="radio" title="垂直旋转" name="style.v_map.flip[]" value="vertical"{% if not model.style.show_boarder %} checked{% endif %}>
-                        V
-                    </label>
-                </td>
-                <td>
-                    <input class="form-control" type="number" name="style.v_map.route[]">
-                </td>
-                <td class="text-center">
-                    <a class="btn btn-sm btn-danger">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        删除
-                    </a>
-                </td>
-            </tr>
+            {% for vid, vm in model.vmap.items %}
+                <tr>
+                    <th>{{ forloop.counter }}</th>
+                    <th>{{ vm.name }}</th>
+                    <th>{{ vm.value|default:"*" }}</th>
+                    <th>
+                        <img src="{{ vm.img }}" alt="显示值", style="width: 30px; height: 30px; border: 1px">
+                    </th>
+                    <th>{{ vm.flip|default:"none" }}</th>
+                    <th>{{ vm.route|default:"0" }}</th>
+                    <td class="text-center">
+                        <a class="btn btn-xs btn-danger" href="{% url 'delete node v_map' id model.id vid %}?next={{ request.path }}">
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                            删除
+                        </a>
+                        <a class="btn btn-xs btn-success" href="{% url 'edit node v_map' id model.id vid %}?next={{ request.path }}">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            编辑
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
         </table>
 
-        <input type="submit" value="保存" class="btn btn-primary btn-block">
+        <input type="submit" value="保存并返回" class="btn btn-primary btn-block">
         <a href="{% url 'design linkage profile' id %}" class="btn btn-default btn-block">取消并返回</a>
     </form>
 {% endblock %}

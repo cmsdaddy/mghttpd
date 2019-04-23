@@ -26,6 +26,9 @@ if not os.path.exists(linkage_trash_dir):
     os.mkdir(linkage_trash_dir, 0o777)
 
 
+linkage_default_img = '/static/linkage.png'
+
+
 # Create your views here.
 def show_editor_page(request):
     return render(request, "95-系统一次图编辑显示管理/editor.html")
@@ -324,8 +327,9 @@ def linkage_functions_as_json(request, lid):
 
 def linkage_model_edit(request, lid, nid):
     """编辑模型详细内容"""
+    context = dict()
+
     if request.method == 'GET':
-        context = dict()
         try:
             models = read_linkage_profile(lid)['models']
         except FileNotFoundError:
@@ -340,7 +344,29 @@ def linkage_model_edit(request, lid, nid):
         context['model'] = models[nid]
         return render(request, "95-系统一次图编辑显示管理/01-节点/00-form-节点编辑.html", context=context)
 
-    return HttpResponseRedirect(request.path)
+    try:
+        profile = read_linkage_profile(lid)
+    except FileNotFoundError:
+        context['id'] = lid
+        return render(request, "95-系统一次图编辑显示管理/00-error-设计的文件不存在.html", context=context)
+
+    try:
+        model = profile['models'][nid]
+    except KeyError:
+        model = dict(id=nid)
+        profile['models'][nid] = model
+
+    model['name'] = request.POST['name']
+    model['width'] = int(request.POST['width'])
+    model['height'] = int(request.POST['height'])
+    model['title'] = request.POST['title']
+    model['comment'] = request.POST['comment']
+    model['show_board'] = True if request.POST['show_boarder'] == 'true' else False
+    model['font_size'] = int(request.POST['font_size'])
+    model['datasource'] = request.POST['datasource']
+
+    write_linkage_profile(lid, profile)
+    return HttpResponseRedirect(request.GET['next'])
 
 
 def linkage_model_vmap_edit(request, lid, nid, vid):
@@ -357,15 +383,70 @@ def linkage_model_vmap_edit(request, lid, nid, vid):
             context['nid'] = nid
             return render(request, "95-系统一次图编辑显示管理/00-error-节点不存在.html", context=context)
 
-        context['id'] = lid
+        context['lid'] = lid
+        context['nid'] = nid
+        context['vid'] = vid
         context['model'] = models[nid]
+
         try:
             context['vmap'] = models[nid]['vmap'][vid]
         except KeyError:
-            context['vmap'] = dict()
+            context['vmap'] = dict(id=vid)
 
-        context['vid'] = vid
         return render(request, "95-系统一次图编辑显示管理/01-节点/01-form-显示值映射.html", context=context)
+    else:
+        profile = read_linkage_profile(lid)
+        node = profile['models'][nid]
+
+        try:
+            vmap = node['vmap']
+        except KeyError:
+            vmap = dict()
+            node['vmap'] = vmap
+
+        try:
+            vm = vmap[vid]
+        except KeyError:
+            vm = dict(id=vid)
+            vmap[vid] = vm
+
+        vm['value'] = request.POST['value']
+        vm['flip'] = request.POST['flip']
+        vm['route'] = request.POST['route']
+        vm['name'] = request.POST['name']
+
+        solution_source_dir = scada.linkage_source_path + '/' + lid
+        if not os.path.exists(solution_source_dir):
+            os.mkdir(solution_source_dir, 0o777)
+
+        try:
+            img = request.FILES['img']
+            vmap_image_path = solution_source_dir + '/' + vid + '-' + img.name
+            vm['img'] = vmap_image_path[len(scada.static_dir_path)-len('/static'):]
+
+            with codecs.open(vmap_image_path, mode='wb') as file:
+                for chunk in img.chunks():
+                    file.write(chunk)
+        except:
+            if 'img' not in vm:
+                vm['img'] = ''
+
+        write_linkage_profile(lid, profile)
+        return HttpResponseRedirect(request.GET['next'])
+
+
+def linkage_model_vmap_delete(request, lid, nid, vid):
+    profile = read_linkage_profile(lid)
+    del profile['models'][nid]['vmap'][vid]
+    write_linkage_profile(lid, profile)
+    return HttpResponseRedirect(request.GET['next'])
+
+
+def linkage_model_vmap_create(request, lid, nid):
+    if request.method == 'GET':
+        return linkage_model_vmap_edit(request, lid, nid, uuid.uuid4())
+    else:
+        return linkage_model_vmap_edit(request, lid, nid, request.POST['id'])
 
 
 urlpatterns = [
@@ -396,6 +477,8 @@ urlpatterns = [
     path('<str:lid>/model/<str:nid>/edit/', linkage_model_edit, name="edit linkage node"),
     # 编辑节点的映射值
     path('<str:lid>/model/<str:nid>/vmap/<str:vid>/edit/', linkage_model_vmap_edit, name="edit node v_map"),
+    path('<str:lid>/model/<str:nid>/vmap/<str:vid>/delete/', linkage_model_vmap_delete, name="delete node v_map"),
+    path('<str:lid>/model/<str:nid>/vmap/create', linkage_model_vmap_create, name="create node v_map"),
 
     path("list/", show_all_linage_profile, name="list linkage profile"),
     path("create/", create_new_linage_profile, name="create linkage profile"),
