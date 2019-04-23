@@ -100,10 +100,14 @@ JEditor.prototype.delete_selected_model = function() {
                     continue;
                 }
 
-                let link = this.painter.search_link_by_anchor_object(anchor);
-                if (link) {
-                    delete this.painter.links_list[link.id];
-                    console.log("delete relation link:", link);
+                while (true) {
+                    let link = this.painter.search_link_by_anchor_object(anchor);
+                    if (link) {
+                        delete this.painter.links_list[link.id];
+                        console.log("delete relation link:", link);
+                    } else {
+                        break;
+                    }
                 }
 
                 console.log("delete relation anchor:", anchor);
@@ -157,6 +161,18 @@ JEditor.prototype.same_size = function(){
             continue;
         }
         this.update_model_size(model, stander.width, stander.height);
+    }
+};
+JEditor.prototype.eq_v_distance = function(){
+    let length = this.select_stack.models.length;
+    if (length < 3) {
+        return;
+    }
+};
+JEditor.prototype.eq_h_distance = function(){
+    let length = this.select_stack.models.length;
+    if (length < 3) {
+        return;
     }
 };
 
