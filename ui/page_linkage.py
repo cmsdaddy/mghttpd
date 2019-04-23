@@ -387,8 +387,10 @@ def linkage_model_edit(request, lid, nid):
     model['comment'] = request.POST['comment']
     model['show_boarder'] = True if request.POST['show_boarder'] == 'true' else False
     model['font_size'] = int(request.POST['font_size'])
+    model['font_color'] = request.POST['font_color']
     model['datasource'] = request.POST['datasource']
     model['init_value'] = request.POST['init_value']
+    model['href'] = request.POST['href']
 
     write_linkage_profile(lid, profile)
     return HttpResponseRedirect(request.GET['next'])
@@ -412,6 +414,7 @@ def linkage_model_vmap_edit(request, lid, nid, vid):
         context['nid'] = nid
         context['vid'] = vid
         context['model'] = models[nid]
+        context['lib_img_list'] = os.listdir(scada.linkage_source_path + '/' + lid)
 
         try:
             context['vmap'] = models[nid]['vmap'][vid]
@@ -441,21 +444,29 @@ def linkage_model_vmap_edit(request, lid, nid, vid):
         vm['degree'] = float(request.POST['degree'])
         vm['name'] = request.POST['name']
 
-        solution_source_dir = scada.linkage_source_path + '/' + lid
-        if not os.path.exists(solution_source_dir):
-            os.mkdir(solution_source_dir, 0o777)
-
         try:
-            img = request.FILES['img']
-            vmap_image_path = solution_source_dir + '/' + vid + '-' + img.name
-            vm['img'] = vmap_image_path[len(scada.static_dir_path)-len('/static'):]
-
-            with codecs.open(vmap_image_path, mode='wb') as file:
-                for chunk in img.chunks():
-                    file.write(chunk)
+            lib_img = request.POST['lib_img']
         except:
-            if 'img' not in vm:
-                vm['img'] = ''
+            lib_img = ''
+
+        if lib_img == '':
+            solution_source_dir = scada.linkage_source_path + '/' + lid
+            if not os.path.exists(solution_source_dir):
+                os.mkdir(solution_source_dir, 0o777)
+
+            try:
+                img = request.FILES['img']
+                vmap_image_path = solution_source_dir + '/' + vid + '-' + img.name
+                vm['img'] = vmap_image_path[len(scada.static_dir_path)-len('/static'):]
+
+                with codecs.open(vmap_image_path, mode='wb') as file:
+                    for chunk in img.chunks():
+                        file.write(chunk)
+            except:
+                if 'img' not in vm:
+                    vm['img'] = ''
+        else:
+            vm['img'] = lib_img
 
         write_linkage_profile(lid, profile)
         return HttpResponseRedirect(request.GET['next'])

@@ -87,6 +87,80 @@ let JEditor = function (painter) {
 };
 
 
+// 删除所选节点
+JEditor.prototype.delete_selected_model = function() {
+    let length = this.select_stack.models.length;
+    for (let i = 0; i < length; i ++) {
+        let model = this.select_stack.models[i];
+
+        for (let aid in this.painter.anchors_list) {
+            if (this.painter.anchors_list.hasOwnProperty(aid)) {
+                let anchor = this.painter.anchors_list[aid];
+                if (anchor.model !== model) {
+                    continue;
+                }
+
+                let link = this.painter.search_link_by_anchor_object(anchor);
+                if (link) {
+                    delete this.painter.links_list[link.id];
+                    console.log("delete relation link:", link);
+                }
+
+                console.log("delete relation anchor:", anchor);
+                delete this.painter.anchors_list[anchor.id];
+            }
+        }
+
+        console.log("delete model:", model);
+        delete this.painter.models_list[model.id];
+    }
+
+    this.select_stack.empty();
+};
+
+
+JEditor.prototype.align_left = function(){
+};
+JEditor.prototype.align_right = function(){
+};
+JEditor.prototype.align_h_center = function(){
+    let length = this.select_stack.models.length;
+    let stander = null;
+    for (let i = 0; i < length; i ++) {
+        let model = this.select_stack.models[i];
+        if (i === 0) {
+            stander = model;
+            continue;
+        }
+        this.update_model_location(model, model.x_offset, stander.y_offset);
+    }
+};
+JEditor.prototype.align_v_center = function(){
+    let length = this.select_stack.models.length;
+    let stander = null;
+    for (let i = 0; i < length; i ++) {
+        let model = this.select_stack.models[i];
+        if (i === 0) {
+            stander = model;
+            continue;
+        }
+        this.update_model_location(model, stander.x_offset, model.y_offset);
+    }
+};
+JEditor.prototype.same_size = function(){
+    let length = this.select_stack.models.length;
+    let stander = null;
+    for (let i = 0; i < length; i ++) {
+        let model = this.select_stack.models[i];
+        if (i === 0) {
+            stander = model;
+            continue;
+        }
+        this.update_model_size(model, stander.width, stander.height);
+    }
+};
+
+
 JEditor.prototype.animation_render = function() {
     console.log(this.editor);
 };
@@ -544,10 +618,11 @@ JEditor.prototype.update_model_size = function(model, new_width, new_height) {
 JEditor.prototype.onmousemove = function (ev) {
     let update_request = 0;
 
+    /*
     let link = this.select_link(ev);
     if (link) {
         console.log(link);
-    }
+    }*/
 
     // 跟踪热锚点位置, 光标移动至锚点上时用不同颜色的框描出边框
     let anchor = this.select_anchor(ev);

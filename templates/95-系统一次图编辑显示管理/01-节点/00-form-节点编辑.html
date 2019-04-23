@@ -35,7 +35,7 @@
             </div>
             <div class="col-xs-3">
                 <label for="title">显示标题</label>
-                <input class="form-control" type="text" id="title" name="title" value="{{ model.title|default:"未命名标题" }}">
+                <input class="form-control" type="text" id="title" name="title" value="{{ model.title}}">
                 <span class="help-block">边框旁边的显示名，例如SCADA，1#PCS，2#BMS等</span>
             </div>
             <div class="col-xs-3">
@@ -52,6 +52,11 @@
                 <label for="comment">名称备注说明</label>
                 <input class="form-control" type="text" id="comment" name="comment" value="{{ model.comment }}" placeholder="备注说明可以再特殊场景使用">
                 <span class="help-block">解释这个变量的用法及用途</span>
+            </div>
+            <div class="col-xs-4">
+                <label for="href">链接位置</label>
+                <input class="form-control" type="text" id="href" name="href" value="{{ model.href }}" placeholder="默认链接路径，不需要可以留空">
+                <span class="help-block">链接位置, 例如: /bms/0/</span>
             </div>
         </div>
 

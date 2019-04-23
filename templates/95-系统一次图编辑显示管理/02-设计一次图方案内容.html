@@ -94,6 +94,10 @@
                 $.post("{% url 'linkage profile json' profile.id %}", {profile: JSON.stringify(pack)});
             });
 
+            $("#id_delete_select_model").click(function () {
+                editor.delete_selected_model();
+            });
+
             // 新建节点
             $(".new_node").click(function () {
                 painter_box.css('cursor', 'crosshair');
@@ -137,6 +141,12 @@
                     }
                 }
             });
+
+            $("#id_align_left").click(function (){editor.align_left()});
+            $("#id_v_center").click(function (){editor.align_v_center()});
+            $("#id_h_center").click(function (){editor.align_h_center()});
+            $("#id_align_right").click(function (){editor.align_right()});
+            $("#id_same_size").click(function (){editor.same_size()});
         });
     </script>
 {% endblock %}
@@ -216,6 +226,8 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
+                        <li><a id="id_delete_select_model" href="#">删除所选节点</a></li>
+                        <li class="divider"></li>
                         <li><a class="new_node" data-anchor="" data-width="80" data-height="80" data-withborder="true" href="#">新建空节点1（0anchor-80x80-with-boarder）</a></li>
                         <li><a class="new_node" data-anchor="" data-width="150" data-height="150" data-withborder="true" href="#">新建空节点2（0anchor-150x150-with-boarder）</a></li>
                         <li><a class="new_node" data-anchor="" data-width="80" data-height="80" data-withborder="false" href="#">新建空节点3（0anchor-80x80-no-boarder）</a></li>
@@ -250,7 +262,7 @@
                     </ul>
                 </div>
 
-                <a href="#" class="btn btn-default">库文件管理</a>
+                <!--a href="#" class="btn btn-default">库文件管理</a>
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-picture"></span>
@@ -263,27 +275,31 @@
                         <li><a href="#">Dropdown link</a></li>
                         <li><a href="#">Dropdown link</a></li>
                     </ul>
-                </div>
+                </div-->
             </div>
 
             <div class="btn-group">
-                <a href="#" class="btn btn-default">已注册函数管理</a>
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-gbp"></span>
-                        函数注册
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">初始化函数</a></li>
-                        <li><a href="#">单击事件函数</a></li>
-                        <li><a href="#">双击事件函数</a></li>
-                        <li><a href="#">光标移入事件函数</a></li>
-                        <li><a href="#">光标移出事件函数</a></li>
-                        <li><a href="#">光标悬浮事件函数</a></li>
-                    </ul>
-                </div>
+                    <a class="btn btn-default disabled">对齐</a>
+                    <a class="btn btn-default" title="左对齐" id="id_align_left">
+                        <span class="glyphicon glyphicon-align-left"></span>
+                    </a>
+                    <a class="btn btn-default" title="垂直居中" id="id_v_center">
+                        <span class="glyphicon glyphicon-align-center"></span>
+                    </a>
+                    <a class="btn btn-default" title="水平居中" id="id_h_center">
+                        <span class="glyphicon glyphicon-align-center" style="transform: rotate(90deg)"></span>
+                    </a>
+                    <a class="btn btn-default" title="右对齐" id="id_align_right">
+                        <span class="glyphicon glyphicon-align-right"></span>
+                    </a>
 
+                    <a class="btn btn-default" title="一样大" id="id_same_size">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="btn-group">
                 <a href="#" class="btn btn-default">已绑定事件管理</a>
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

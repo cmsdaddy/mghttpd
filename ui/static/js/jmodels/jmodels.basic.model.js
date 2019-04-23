@@ -17,14 +17,18 @@ let JModel = function (id, painter, profile) {
     this.name = profile.name;
     this.showed = (profile.showed === true);
     this.show_boarder = (profile.show_boarder === true);
-    this.title = profile.title ? profile.title : '未命名标题';
+    this.title = profile.title ? profile.title : '';
     this.comment = profile.comment ? profile.comment : '';
     this.font_size = profile.font_size ? profile.font_size : 10;
+    this.font_color = profile.font_color? profile.font_color: "#000000";
     this.init_value = profile.init_value ? profile.init_value : 'n/a';
     this.datasource = profile.datasource ? profile.datasource: '';
+    this.href = profile.href ? profile.href: '';
+    this.default_href = this.href;
 
     this.value = profile.init_value;
     this.vmap = profile.vmap ? profile.vmap : {};
+
     // 显示图片
     this.h_scale = 0;
     this.v_scale = 0;
@@ -111,7 +115,10 @@ JModel.prototype.render = function (ctx) {
     // 控制外框显示
     if ( this.show_boarder ) {
         ctx.strokeRect(this.x-0.5, this.y-0.5, this.width, this.height);
-        //console.info(this.x, this.y);
+    }
+    if (this.title && this.title.length) {
+        ctx.fillStyle = this.font_color;
+        ctx.fillText(this.title, this.x-0.5, this.y + this.height + 12);
     }
 
     if ( this.image && this.image.complete ) {
@@ -159,6 +166,7 @@ JModel.prototype.save = function () {
         init_value: this.init_value,
         datasource: this.datasource,
         vmap: this.vmap,
+        href: this.href,
     }
 };
 

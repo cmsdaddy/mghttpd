@@ -81,6 +81,7 @@ JLink.prototype.save = function () {
 
 
 JLink.prototype.render = function (ctx) {
+    /*
     let delta_x = (this.end.x + this.end.width/2) - (this.begin.x + this.begin.width/2);
     let delta_y = (this.end.y + this.end.height/2) - (this.begin.y + this.begin.height/2);
 
@@ -103,13 +104,12 @@ JLink.prototype.render = function (ctx) {
     ctx.stroke();
 
     ctx.restore();
+    */
 
-    /*
     ctx.beginPath();
     ctx.moveTo(this.begin.x + this.begin.width/2, this.begin.y + this.begin.height/2);
     ctx.lineTo(this.end.x + this.end.width/2, this.end.y + this.end.height/2);
     ctx.stroke();
-    */
 };
 
 
