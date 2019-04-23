@@ -415,11 +415,17 @@ def linkage_model_vmap_edit(request, lid, nid, vid):
         context['vid'] = vid
         context['model'] = models[nid]
 
-        lib_path = scada.linkage_source_path + '/' + lid
+        solution_lib_path = scada.linkage_source_path + '/' + lid
         try:
-            context['lib_img_list'] = os.listdir(lib_path)
+            context['lib_img_list'] = os.listdir(solution_lib_path)
         except FileNotFoundError:
             context['lib_img_list'] = list()
+
+        linkage_lib_path = scada.linkage_source_path + '/library'
+        try:
+            context['linkage_lib_img_list'] = os.listdir(linkage_lib_path)
+        except FileNotFoundError:
+            os.mkdir(linkage_lib_path, 0o777)
 
         try:
             context['vmap'] = models[nid]['vmap'][vid]
