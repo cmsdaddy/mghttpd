@@ -29,7 +29,7 @@
                 for (let id in data) {
                     if (data.hasOwnProperty(id)) {
                         let model = data[id];
-                        painter.load_model(Number(id), model.name, model.x_offset, model.y_offset, model.width, model.height, model.style);
+                        painter.load_model(Number(id), model);
                     }
                 }
 
@@ -84,7 +84,16 @@
                 let withborder = $(this).attr('data-withborder') === "true";
                 function new_empty_node(ev) {
                     painter_box.unbind('click', new_empty_node);
-                    let model = editor.create_model(ev.offsetX, ev.offsetY, width, height, {show_boarder: withborder});
+                    let profile = {
+                        name: name,
+                        x_offset: ev.offsetX,
+                        y_offset: ev.offsetY,
+                        width: width,
+                        height: height,
+                        show_boarder: withborder
+                    };
+
+                    let model = editor.create_model(profile);
                     if (anchors.indexOf('C') >= 0) {
                         let anchor = editor.create_anchor(model, 0, 0, {name: 'C'});
                         console.log("创建中心锚点：", anchor);

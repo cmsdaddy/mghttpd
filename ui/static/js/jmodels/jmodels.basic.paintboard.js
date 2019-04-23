@@ -299,8 +299,8 @@ JPaintbord.prototype.render = function () {
 /**
  * 通过具体的数据加载模型
  * */
-JPaintbord.prototype.load_model = function(id, name, x_offset, y_offset, width, height, style) {
-    this.models_list[id] = new JModel(id, this, name, x_offset, y_offset, width, height, style);
+JPaintbord.prototype.load_model = function(id, profile) {
+    this.models_list[id] = new JModel(id, this, profile);
     this._id_pool = this._id_pool > id ? this._id_pool : id;
     return this.models_list[id];
 };
@@ -350,7 +350,7 @@ JPaintbord.prototype.load = function(width, height, models, anchors, links, libr
         let y_zoom_index = (true === true ? 1 : this.height / height);
         for ( let i = 0, len = models.length; i < len; i ++ ) {
             let m = models[i];
-            this.load_model(m.id, m.name, m.x_offset * x_zoom_index, m.y_offset * y_zoom_index, m.width, m.height, m.style);
+            this.load_model(m.id, m);
         }
     }
 

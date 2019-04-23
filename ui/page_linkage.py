@@ -361,9 +361,10 @@ def linkage_model_edit(request, lid, nid):
     model['height'] = int(request.POST['height'])
     model['title'] = request.POST['title']
     model['comment'] = request.POST['comment']
-    model['show_board'] = True if request.POST['show_boarder'] == 'true' else False
+    model['show_boarder'] = True if request.POST['show_boarder'] == 'true' else False
     model['font_size'] = int(request.POST['font_size'])
     model['datasource'] = request.POST['datasource']
+    model['init_value'] = request.POST['init_value']
 
     write_linkage_profile(lid, profile)
     return HttpResponseRedirect(request.GET['next'])
@@ -411,8 +412,9 @@ def linkage_model_vmap_edit(request, lid, nid, vid):
             vmap[vid] = vm
 
         vm['value'] = request.POST['value']
-        vm['flip'] = request.POST['flip']
-        vm['route'] = request.POST['route']
+        vm['h_scale'] = int(request.POST['h_scale'])
+        vm['v_scale'] = int(request.POST['v_scale'])
+        vm['degree'] = float(request.POST['degree'])
         vm['name'] = request.POST['name']
 
         solution_source_dir = scada.linkage_source_path + '/' + lid

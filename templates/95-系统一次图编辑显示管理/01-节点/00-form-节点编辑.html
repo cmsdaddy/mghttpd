@@ -43,6 +43,11 @@
                 <input class="form-control" type="text" required id="name" name="name" value="{{ model.name|default:"var_" }}">
                 <span class="help-block">用于变量索引，最好用一个有意义的名字，例如bms1, pcs1等</span>
             </div>
+            <div class="col-xs-2">
+                <label for="init_value">变量初始值</label>
+                <input class="form-control" type="text" required id="init_value" name="init_value" value="{{ model.init_value|default:"n/a" }}">
+                <span class="help-block">变量初始值，用于显示初始状态</span>
+            </div>
             <div class="col-xs-4">
                 <label for="comment">名称备注说明</label>
                 <input class="form-control" type="text" id="comment" name="comment" value="{{ model.comment }}" placeholder="备注说明可以再特殊场景使用">
@@ -115,7 +120,8 @@
                 <th>名称</th>
                 <th>值</th>
                 <th>图片</th>
-                <th>翻转</th>
+                <th>水平翻转</th>
+                <th>垂直翻转</th>
                 <th>旋转</th>
                 <th>操作</th>
             </tr>
@@ -127,8 +133,9 @@
                     <th>
                         <img src="{{ vm.img }}" alt="显示值", style="width: 30px; height: 30px; border: 1px">
                     </th>
-                    <th>{{ vm.flip|default:"none" }}</th>
-                    <th>{{ vm.route|default:"0" }}</th>
+                    <th>{{ vm.h_scale }}</th>
+                    <th>{{ vm.v_scale }}</th>
+                    <th>{{ vm.degree }}</th>
                     <td class="text-center">
                         <a class="btn btn-xs btn-danger" href="{% url 'delete node v_map' id model.id vid %}?next={{ request.path }}">
                             <span class="glyphicon glyphicon-remove-sign"></span>

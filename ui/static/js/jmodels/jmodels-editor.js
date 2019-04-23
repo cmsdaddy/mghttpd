@@ -344,10 +344,12 @@ JEditor.prototype.create_anchor = function (model, x_offset, y_offset, style) {
 /**
  * 在当前的模型列表终新建一个模型
  * */
-JEditor.prototype.create_model = function(x_offset, y_offset, width, height, style) {
+JEditor.prototype.create_model = function(profile) {
     let id = ++ this.painter._id_pool;
-    let name = "model_" + id;
-    let model = new JModel(id, this.painter, name, x_offset, y_offset, width, height, style);
+
+    profile.name = "model_" + id;
+
+    let model = new JModel(id, this.painter, profile);
     this.painter.models_list[id] = model;
     return model;
 };

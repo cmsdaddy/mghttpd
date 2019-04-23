@@ -1,40 +1,36 @@
 /**
  * 模型对象
  * */
-let JModel = function (id, painter, name, x_offset, y_offset, width, height, style) {
+let JModel = function (id, painter, profile) {
     this.id = id;
 
     this.painter = painter;
-    this.x_offset = x_offset;
-    this.y_offset = y_offset;
-    this.x = Math.round(this.x_offset - width/2);
-    this.y = Math.round(this.y_offset - height/2);
-    this.width = width;
-    this.height = height;
-    this.name = name;
+    this.profile = profile;
 
-    if ( style === undefined ) style = {};
-    this.style = style;
-    if ( this.style.showed === undefined )
-        this.style.showed = true;
+    this.x_offset = profile.x_offset;
+    this.y_offset = profile.y_offset;
+    this.x = Math.round(this.x_offset - profile.width/2);
+    this.y = Math.round(this.y_offset - profile.height/2);
+    this.width = profile.width;
+    this.height = profile.height;
 
-    if ( this.style.row === undefined )
-        this.style.row = 0;
+    this.name = profile.name;
+    this.showed = (profile.showed === true);
+    this.show_boarder = (profile.show_boarder === true);
+    this.title = profile.title ? profile.title : '未命名标题';
+    this.comment = profile.comment ? profile.comment : '';
+    this.font_size = profile.font_size ? profile.font_size : 10;
+    this.init_value = profile.init_value ? profile.init_value : 'n/a';
+    this.datasource = profile.datasource ? profile.datasource: '';
 
-    if ( this.style.column === undefined )
-        this.style.column = 0;
-
-    if ( this.style.show_boarder === undefined )
-        this.style.show_boarder = true;
-
-    // 模型上绑定的图片列表，可以通过image_switch函数切换
-    this.images_list = {};
-
-    if ( this.style.library ) {
-        this.library = this.painter.search_image_library(this.style.library);
-    } else {
-        this.library = this.painter.search_image_library_by_name("Jmodel");
-    }
+    this.value = profile.init_value;
+    this.vmap = profile.vmap ? profile.vmap : {};
+    // 显示图片
+    this.h_scale = 0;
+    this.v_scale = 0;
+    this.degree = 0;
+    this.vm = null;
+    this.image = null;
 
     // 所有的锚点都需要注册在这里
     this.anchors = {};
@@ -51,7 +47,34 @@ let JModel = function (id, painter, name, x_offset, y_offset, width, height, sty
     // 新建一个鼠标事件监听器
     this.event_listener = new JEventListener(this);
 
+    // 设置初始状态值
+    this.set_value('n/a');
     return this;
+};
+
+/**
+ * 设置当前节点的值
+ * */
+JModel.prototype.set_value = function(value) {
+    for (let id in this.vmap) {
+        if (this.vmap.hasOwnProperty(id)) {
+            let vm = this.vmap[id];
+            if (!vm.img) {
+                continue;
+            }
+
+            if (vm.value == value || vm.value === '*') {
+                this.vm = vm;
+                this.h_scale = vm.h_scale;
+                this.v_scale = vm.v_scale;
+                this.degree = vm.degree;
+
+                this.image = new Image();
+                this.image.src = vm.img;
+                break
+            }
+        }
+    }
 };
 
 /**
@@ -86,37 +109,33 @@ JModel.prototype.do_onmousemove_callback = function(ev) {
  * */
 JModel.prototype.render = function (ctx) {
     // 控制外框显示
-    if ( this.style.show_boarder ) {
+    if ( this.show_boarder ) {
         ctx.strokeRect(this.x-0.5, this.y-0.5, this.width, this.height);
         //console.info(this.x, this.y);
     }
 
-    if ( this.library && this.library.image.complete ) {
+    if ( this.image && this.image.complete ) {
         ctx.save();
         // 将坐标转移到中心点上
         ctx.translate(this.x_offset, this.y_offset);
 
-        if ( this.style && this.style.degree ) {
+        if ( this.degree ) {
             // 旋转指定角度
-            ctx.rotate(Math.PI * 2 * this.style.degree / 360);
+            ctx.rotate(Math.PI * 2 * this.degree / 360);
         }
 
         let h_scale = 1,v_scale = 1;
-        if ( this.style && this.style.h_scale ) {
-            h_scale = this.style.h_scale;
+        if ( this.h_scale ) {
+            h_scale = this.h_scale;
         }
-        if ( this.style && this.style.v_scale ) {
-            v_scale = this.style.v_scale;
+        if ( this.v_scale ) {
+            v_scale = this.v_scale;
         }
         if ( h_scale + v_scale < 2 ) {
             ctx.scale(h_scale, v_scale);
         }
 
-        let sy = this.style.row * this.library.unit_height;
-        let sx = this.style.column * this.library.unit_width;
-
-        ctx.drawImage(this.library.image, sx, sy, this.library.unit_width, this.library.unit_height, -this.width/2, -this.height/2, this.width, this.height);
-
+        ctx.drawImage(this.image, -this.width/2, -this.height/2, this.width, this.height);
         ctx.restore();
     }
 };
@@ -128,12 +147,18 @@ JModel.prototype.save = function () {
     return {
         id: this.id,
         name: this.name,
-        painter: this.painter.id,
         x_offset: Math.round(this.x_offset),
-        y_offset: Math.round(this.y_offset),
+        y_offset: Math.round(Number(this.y_offset)),
         width: Math.round(this.width),
-        height: Math.round(this.height),
-        style: this.style
+        height: Math.round(Number(this.height)),
+        showed: this.showed,
+        show_boarder: this.show_boarder,
+        title: this.title,
+        comment: this.comment,
+        font_size: this.font_size,
+        init_value: this.init_value,
+        datasource: this.datasource,
+        vmap: this.vmap,
     }
 };
 
@@ -141,16 +166,16 @@ JModel.prototype.save = function () {
  * 显示模型
  * */
 JModel.prototype.hide = function () {
-    this.style.showed = false;
+    this.showed = false;
 };
 JModel.prototype.hidden = JModel.prototype.hide;
 
 JModel.prototype.show = function () {
-    this.style.showed = true;
+    this.showed = true;
 };
 
 JModel.prototype.toggle = function () {
-    this.style.showed = this.style.showed === false;
+    this.showed = this.showed === false;
 };
 
 JModel.prototype.blink = function (hz) {

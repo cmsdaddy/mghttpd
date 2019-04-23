@@ -54,27 +54,36 @@
                 <span class="help-block"><span class="text-danger">*</span> 表示任意值</span>
             </div>
             <div class="col-xs-3">
-                <label>翻转方式：</label>
+                <label>水平翻转：</label>
                 <div class="input-group">
                     <label class="radio-inline">
-                        <input type="radio" title="不翻转" name="flip" value="none"{% if vmap.flip == 'none' or not vmap.flip %} checked{% endif %}>
+                        <input type="radio" title="不翻转" name="h_scale" value="0"{% if vmap.h_scale == '0' or not vmap.h_scale %} checked{% endif %}>
                         不翻转
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" title="水平翻转" name="flip" value="horizon"{% if vmap.flip == 'horizon' %} checked{% endif %}>
-                        水平翻转
+                        <input type="radio" title="翻转" name="h_scale" value="1"{% if vmap.h_scale == '1' %} checked{% endif %}>
+                        翻转
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <label>垂直翻转：</label>
+                <div class="input-group">
+                    <label class="radio-inline">
+                        <input type="radio" title="不翻转" name="v_scale" value="0"{% if vmap.v_scale == 0 or not vmap.v_scale %} checked{% endif %}>
+                        不翻转
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" title="垂直翻转" name="flip" value="vertical"{% if vmap.flip == 'vertical' %} checked{% endif %}>
-                        垂直翻转
+                        <input type="radio" title="翻转" name="v_scale" value="-1"{% if vmap.v_scale == -1 %} checked{% endif %}>
+                        翻转
                     </label>
                 </div>
             </div>
 
             <div class="col-xs-2">
-                <label for="route">旋转角度:</label>
+                <label for="degree">旋转角度:</label>
                 <div class="input-group">
-                    <input class="form-control" type="number" name="route" min="-180" max="180" id="route" value="{{ vmap.route|default:0 }}">
+                    <input class="form-control" type="number" name="degree" min="-180" max="180" id="degree" value="{{ vmap.degree|default:0 }}">
                     <span class="input-group-addon">度</span>
                 </div>
                 <span class="help-block">图片显示时的旋转角度，-180～180</span>
@@ -85,7 +94,7 @@
             <div class="col-xs-6">
                 <div class="input-group">
                     <label for="img">显示内容:</label>
-                    <input type="file" name="img"{% if not vmap.img %} required{% endif %} />
+                    <input type="file" name="img" />
                     <span class="help-block">支持.jpg, gif, png, 建议尺寸 50x50或150x150</span>
                 </div>
             </div>
