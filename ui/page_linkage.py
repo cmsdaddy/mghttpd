@@ -11,8 +11,8 @@ import os
 import uuid
 import codecs
 import ui.scada as scada
+import ui.mg as mg
 import threading
-
 
 filename = 'save.json'
 linkage_profile_dir = scada.profile_dir_path + '/linkage'
@@ -301,6 +301,30 @@ def linkage_profile_as_json(request, lid):
         return HttpResponseRedirect(request.path)
 
 
+def linkage_collector_value_as_json(request, lid):
+    try:
+        profile = read_linkage_profile(lid)
+    except FileNotFoundError:
+        return JsonResponse({"status": "error", "reason": "solution file not found"}, safe=False)
+
+    try:
+        models = profile['models']
+    except KeyError:
+        return JsonResponse({"status": "error", "reason": "collector not available"}, safe=False)
+
+    data = dict()
+    collector = dict(status='ok', data=data)
+    for nid, model in models.items():
+        if model['datasource'] == '':
+            continue
+
+        path = model['datasource']
+        data[nid] = mg.read(path)
+        print(nid, model['name'], model['datasource'])
+
+    return JsonResponse(collector, safe=False)
+
+
 def linkage_models_as_json(request, lid):
     return process_linkage_object_as_json(request, lid, 'models')
 
@@ -460,8 +484,11 @@ urlpatterns = [
     path('model/<int:id>/change/', show_change_model_page),
     path('json/', edit_models),
 
-    # 将方案全都放回
+    # 将方案全都返回
     path('<str:lid>/json/', linkage_profile_as_json, name="linkage profile json"),
+    # 将方案变量值全都返回
+    path('<str:lid>/collector/', linkage_collector_value_as_json, name="linkage collector value json"),
+
     # 将方案中的节点全都放回
     path('models/<str:lid>/json/', linkage_models_as_json, name="linkage node json"),
     # 将方案中的锚点全都返回

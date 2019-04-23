@@ -415,3 +415,11 @@ def get_aircondition(aid):
     path = get_datacenter_root() + '/空调数据块/%d/' % aid
     X = api.api_read(host, path)
     return {} if X is None else X
+
+
+# 读取数据
+def read(path):
+    host = get_datacenter_address()
+    path = get_datacenter_root() + path
+    X = api.api_read(host, path)
+    return None if X is None else X

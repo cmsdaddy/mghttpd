@@ -114,6 +114,18 @@ let JPaintbord = function (dom_id, width, height, options, profile) {
 };
 
 
+// 将data字典中的数据更新到模型中
+JPaintbord.prototype.update_all_model_value = function(data) {
+    for (let id in data) {
+        let model = this.search_model(id);
+
+        if (model && data.hasOwnProperty(id)) {
+            model.set_value(data[id])
+        }
+    }
+};
+
+
 JPaintbord.prototype.onmousemove = function(ev) {
     let anchor = this.select_anchor(ev);
     if (anchor) {

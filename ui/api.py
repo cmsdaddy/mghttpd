@@ -9,7 +9,6 @@ import json
 def api_read(host_address, path, visitor=None, wait=None):
     if visitor is None:
         visitor = 'UI'
-    return None
 
     quoted_path = urllib.parse.quote(path)
     url = "".join(['http://', host_address, quoted_path, '?', "visitor=", visitor])

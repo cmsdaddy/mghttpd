@@ -21,6 +21,7 @@
             name: "{{ profile.name }}",
             id: "{{ profile.id }}"
         };
+        let update_model_handle = null;
 
         $(document).ready(function () {
             let painter = new JPaintbord('painter_box', {{ profile.width }}, {{ profile.height }}, {}, default_profile);
@@ -54,6 +55,26 @@
                     });
                 });
             });
+
+            function update_all_mode() {
+                if ( update_model_handle) {
+                    clearTimeout(update_model_handle);
+                }
+
+                $.getJSON("{% url 'linkage collector value json' profile.id %}", '', function(data, status, xhr){
+                    if (status === 'success') {
+                        painter.update_all_model_value(data.data);
+                        update_model_handle = setTimeout(update_all_mode, 3000);
+                    } else {
+                        update_model_handle = setTimeout(update_all_mode, 8000);
+                    }
+                }).fail(function () {
+                    update_model_handle = setTimeout(update_all_mode, 10000);
+                });
+            }
+
+            // 启动数据更新循环
+            update_model_handle = setTimeout(update_all_mode, 1000);
 
             painter.model_event_listener.ondblclick(function (ev, model) {
                 let url = "{% url 'edit linkage node' profile.id 'gold_is_a_girl' %}";
