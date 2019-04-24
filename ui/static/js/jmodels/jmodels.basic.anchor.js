@@ -6,20 +6,16 @@
  * @param y_offset: 当前锚点在模型的中心点的y偏移值
  * @param style: 当前锚点的风格定义结构
  * */
-let JAnchor = function (id, model, x_offset, y_offset, style) {
+let JAnchor = function (id, model, profile) {
     this.id = id;
     this.model = model;
 
-    if ( style === undefined ) style = {};
-    if ( style.name === undefined ) style.name = 'default';
+    model.anchors[profile.name] = this;
 
-    model.anchors[style.name] = this;
-
-    this.x_offset = x_offset;
-    this.y_offset = y_offset;
+    this.x_offset = profile.x_offset;
+    this.y_offset = profile.y_offset;
     this.height = 6;
     this.width = 6;
-    this.style = style;
 
     this.x = model.x_offset + this.x_offset - this.width/2;
     this.y = model.y_offset + this.y_offset - this.height/2;
@@ -66,6 +62,5 @@ JAnchor.prototype.save = function () {
         name: this.name,
         x_offset: this.x_offset,
         y_offset: this.y_offset,
-        style: this.style
     }
 };

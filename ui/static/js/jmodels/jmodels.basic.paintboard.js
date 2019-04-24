@@ -329,8 +329,8 @@ JPaintbord.prototype.load_link = function(id, begin, end, style) {
 /**
  * 通过具体数据加载锚点
  * */
-JPaintbord.prototype.load_anchor = function(id, model, x_offset, y_offset, style) {
-    this.anchors_list[id] = new JAnchor(id, model, x_offset, y_offset, style);
+JPaintbord.prototype.load_anchor = function(id, model, profile) {
+    this.anchors_list[id] = new JAnchor(id, model, profile);
     this._id_pool = this._id_pool > id ? this._id_pool : id;
     return this.anchors_list[id];
 };
@@ -368,9 +368,9 @@ JPaintbord.prototype.load = function(width, height, models, anchors, links, libr
 
     if ( anchors ) {
         for ( let i = 0, len = anchors.length; i < len; i ++ ) {
-            let a = anchors[i];
-            let model = this.search_model(a.model);
-            this.load_anchor(a.id, model, a.x_offset, a.y_offset, a.style);
+            let profile = anchors[i];
+            let model = this.search_model(profile.model);
+            this.load_anchor(profile.id, model, profile);
         }
     }
 
@@ -490,6 +490,15 @@ JPaintbord.prototype.search_anchor = function (id) {
 };
 JPaintbord.prototype.search_anchor_by_id = JPaintbord.prototype.search_anchor;
 JPaintbord.prototype.search_anchor_by_name = function(name) {};
+JPaintbord.prototype.search_anchors_by_model = function(id) {
+    let anchors = [];
+    for (let i in this.anchors_list) {
+        if (this.anchors_list.hasOwnProperty(i) && this.anchors_list[i].model.id === id) {
+            anchors.push(this.anchors_list[i]);
+        }
+    }
+    return anchors;
+};
 
 /**
  * 根据ID搜索图片库

@@ -39,7 +39,7 @@
                         if (data.hasOwnProperty(id)) {
                             let anchor = data[id];
                             let model = painter.search_model(anchor.model);
-                            painter.load_anchor(Number(id), model, anchor.x_offset, anchor.y_offset, anchor.style);
+                            painter.load_anchor(Number(id), model, anchor);
                         }
                     }
 
@@ -165,7 +165,22 @@
                         profile.x_offset += delta_x;
                         profile.y_offset += delta_y;
 
+                        let old_model_id = profile.id;
+                        delete profile.id;
+
+                        let old_anchors = painter.search_anchors_by_model(old_model_id);
+
                         let model = editor.create_model(profile);
+
+                        for (let j = 0, alen = old_anchors.length; j < alen; j ++) {
+                            let old_anchor_profile = old_anchors[j].save();
+
+                            delete old_anchor_profile.id;
+                            old_anchor_profile.model = model.id;
+
+                            let anchor = editor.create_anchor(model, old_anchor_profile);
+                            console.log("duplicate anchor:", anchor);
+                        }
                         console.log("duplicate model:", model);
                     }
                 }

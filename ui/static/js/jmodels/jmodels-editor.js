@@ -128,7 +128,6 @@ JEditor.prototype.copy_select_model = function(){
     for (let i = 0; i < length; i ++) {
         let model = this.select_stack.models[i];
         let p = model.save();
-        delete p.id;
         profiles.push(p);
     }
     return profiles;
@@ -468,7 +467,7 @@ JEditor.prototype.create_link = function (begin, end, style) {
 /**
  * 在当前的模型列表终新建一个模型
  * */
-JEditor.prototype.create_anchor = function (model, x_offset, y_offset, style) {
+JEditor.prototype.create_anchor = function (model, profile) {
     let id = ++ this.painter._id_pool;
     if ( typeof model != 'object' ) {
         let target = this.painter.search_model(model);
@@ -478,7 +477,7 @@ JEditor.prototype.create_anchor = function (model, x_offset, y_offset, style) {
         }
         model = target;
     }
-    let anchor = new JAnchor(id, model, x_offset, y_offset, style);
+    let anchor = new JAnchor(id, model, profile);
     this.painter.anchors_list[id] = anchor;
     return anchor;
 };
