@@ -900,7 +900,7 @@ JEditor.prototype.onmouseup = function (ev) {
     this.model_selected = undefined;
     this.move_begin_point = undefined;
 
-    // 清空锚点选择栈,左键按下时选择，左键弹起时清空
+    // 清空锚点选择栈,左键按下时选择,左键弹起时清空
     this.anchor_stack_selected = [];
     // 动态显示的锚点, 光标移动到锚点上时可以高亮显示，光标移入范围选择，移出范围清空
     this.hot_anchors_stack = [];
@@ -931,7 +931,7 @@ function initialize_jmodels_editor(painter) {
     });
 
     // 在节点上检测到光标移动事件
-    painter.model_event_listener.onclick(function (ev, model) {
+    painter.model_event_listener.onmousedown(function (ev, model) {
         if (editor.select_stack.models.indexOf(model) === -1) {
             // 判定shift键用于多选
             if (!ev.shiftKey) {
@@ -945,7 +945,11 @@ function initialize_jmodels_editor(painter) {
 
     // 在节点上检测到了光标移动
     painter.model_event_listener.onmousemove(function (ev, model) {
-        //console.log("model mouse move", model);
+        // 左键按下
+        if (ev.buttons) {
+            if (editor.select_stack.models.length)
+            console.log("model mouse move", model, ev);
+        }
     });
 
     // 在锚点上检测到光标移动
