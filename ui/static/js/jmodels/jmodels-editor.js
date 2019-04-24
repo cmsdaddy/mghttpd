@@ -122,6 +122,17 @@ JEditor.prototype.delete_selected_model = function() {
     this.select_stack.empty();
 };
 
+JEditor.prototype.copy_select_model = function(){
+    let length = this.select_stack.models.length;
+    let profiles = [];
+    for (let i = 0; i < length; i ++) {
+        let model = this.select_stack.models[i];
+        let p = model.save();
+        delete p.id;
+        profiles.push(p);
+    }
+    return profiles;
+};
 
 JEditor.prototype.align_left = function(){
 };
@@ -168,11 +179,52 @@ JEditor.prototype.eq_v_distance = function(){
     if (length < 3) {
         return;
     }
+    this.select_stack.models.sort(function (a, b) {
+        return a.y_offset - b.y_offset;
+    });
+
+    let min_y_offset = this.select_stack.models[0].y_offset;
+    let max_y_offset = this.select_stack.models[length-1].y_offset;
+
+    if (max_y_offset - min_y_offset < 1) {
+        return;
+    }
+
+    let distance = (max_y_offset - min_y_offset) / (length -1);
+    let new_y_offset = min_y_offset + distance;
+    for (let i = 1; i < length - 1; i ++, new_y_offset += distance) {
+        let model = this.select_stack.models[i];
+        this.update_model_location(model, model.x_offset, new_y_offset);
+    }
 };
 JEditor.prototype.eq_h_distance = function(){
     let length = this.select_stack.models.length;
     if (length < 3) {
         return;
+    }
+    this.select_stack.models.sort(function (a, b) {
+        return a.x_offset - b.x_offset;
+    });
+
+    let min_x_offset = this.select_stack.models[0].x_offset;
+    let max_x_offset = this.select_stack.models[length-1].x_offset;
+
+    if (max_x_offset - min_x_offset < 1) {
+        return;
+    }
+
+    let distance = (max_x_offset - min_x_offset) / (length -1);
+    let new_x_offset = min_x_offset + distance;
+    for (let i = 1; i < length - 1; i ++, new_x_offset += distance) {
+        let model = this.select_stack.models[i];
+        this.update_model_location(model, new_x_offset, model.y_offset);
+    }
+};
+JEditor.prototype.toggle_boarder = function(){
+    let length = this.select_stack.models.length;
+    for (let i = 0; i < length; i ++) {
+        let model = this.select_stack.models[i];
+        model.show_boarder = !model.show_boarder;
     }
 };
 

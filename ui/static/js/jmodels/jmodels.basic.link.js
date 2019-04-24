@@ -106,10 +106,14 @@ JLink.prototype.render = function (ctx) {
     ctx.restore();
     */
 
+    ctx.save();
     ctx.beginPath();
+    ctx.fillStyle = 'red';
+    ctx.strokeStyle = 'red';
     ctx.moveTo(this.begin.x + this.begin.width/2, this.begin.y + this.begin.height/2);
     ctx.lineTo(this.end.x + this.end.width/2, this.end.y + this.end.height/2);
     ctx.stroke();
+    ctx.restore();
 };
 
 

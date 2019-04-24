@@ -141,6 +141,38 @@
                     }
                 }
             });
+            $("#id_copy_select_model").click(function () {
+                let profiles = editor.copy_select_model();
+                if (profiles.length===0) {
+                    return;
+                }
+                function paste_models(ev) {
+                    painter_box.unbind('click', paste_models);
+
+                    profiles.sort(function (a, b) {
+                        // 排序找到离原点最近的那个点
+                        let a_c = a.x_offset * a.x_offset + a.y_offset * a.y_offset;
+                        let b_c = b.x_offset * b.x_offset + b.y_offset * b.y_offset;
+                        return a_c - b_c;
+                    });
+
+                    let delta_x = ev.offsetX - profiles[0].x_offset;
+                    let delta_y = ev.offsetY - profiles[0].y_offset;
+
+                    let length = profiles.length;
+                    for (let i = 0; i < length; i ++) {
+                        let profile = profiles[i];
+                        profile.x_offset += delta_x;
+                        profile.y_offset += delta_y;
+
+                        let model = editor.create_model(profile);
+                        console.log("duplicate model:", model);
+                    }
+                }
+
+                painter_box.css('cursor', 'crosshair');
+                painter_box.bind('click', paste_models);
+            });
 
             $("#id_align_left").click(function (){editor.align_left()});
             $("#id_v_center").click(function (){editor.align_v_center()});
@@ -149,6 +181,7 @@
             $("#id_same_size").click(function (){editor.same_size()});
             $("#id_eq_v_distance").click(function (){editor.eq_v_distance()});
             $("#id_eq_h_distance").click(function (){editor.eq_h_distance()});
+            $("#id_toggle_boarder").click(function (){editor.toggle_boarder()});
         });
     </script>
 {% endblock %}
@@ -165,15 +198,15 @@
 {# 在这里添加你的代码 #}
     <div class="row">
         <div class="col-xs-12">
-            <div class="btn-group">
-                <button class="btn btn-default disabled text-primary">{{ profile.name }}</button>
+            <div class="btn-group btn-group-xs">
+                <button class="btn btn-xs btn-default disabled text-primary">{{ profile.name }}</button>
 
-                <div class="btn-group" role="group">
+                <div class="btn-group btn-group-xs" role="group">
                     <a href="#" id="save" class="btn btn-success">
                         <span class="glyphicon glyphicon-floppy-saved"></span>
                         保 存
                     </a>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-file"></span>
                         方 案
                         <span class="caret"></span>
@@ -196,8 +229,8 @@
                     </ul>
                 </div>
 
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="btn-group btn-group-xs" role="group">
+                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-edit"></span>
                         编 辑 画 布
                         <span class="caret"></span>
@@ -219,63 +252,69 @@
                 </div>
             </div>
 
-            <div class="btn-group">
-                <a href="#" class="btn btn-default disabled">节点</a>
-                <a class="btn btn-default" id="id_delete_select_model" href="#" title="删除选择的节点">
+            <div class="btn-group btn-group-xs">
+                <a href="#" class="btn btn-xs btn-default disabled">节点</a>
+                <a class="btn btn-xs btn-default" id="id_delete_select_model" href="#" title="删除选择的节点">
                     <span class="glyphicon glyphicon-remove text-danger"></span>
                     删除
                 </a>
-                <a class="btn btn-default" id="id_delete_select_model" href="#" title="拷贝选择的节点">
-                    <span class="glyphicon glyphicon-copy"></span>
-                    拷贝
+                <a class="btn btn-xs btn-default" id="id_copy_select_model" href="#" title="拷贝选择的节点">
+                    <span class="glyphicon glyphicon-duplicate"></span>
+                    克隆
                 </a>
-                <a class="btn btn-default" id="id_delete_select_model" href="#" title="粘贴选择的节点">
-                    <span class="glyphicon glyphicon-paste"></span>
-                    粘贴
-                </a>
-                <a title="新增0无锚点的节点" class="btn btn-default new_node" id="id_delete_select_model" href="#" data-anchor="" data-width="80" data-height="80" data-withborder="true">
+                <a title="新增0无锚点的节点" class="btn btn-xs btn-default new_node" id="id_delete_select_model" href="#" data-anchor="" data-width="80" data-height="80" data-withborder="true">
                     <span class="glyphicon glyphicon-link"></span>
                     x0
                 </a>
-                <a title="新增1锚点的节点" class="btn btn-default new_node" id="id_delete_select_model" href="#" data-anchor="C" data-width="80" data-height="80" data-withborder="true">
+                <a title="新增1锚点的节点" class="btn btn-xs btn-default new_node" id="id_delete_select_model" href="#" data-anchor="C" data-width="80" data-height="80" data-withborder="true">
                     <span class="glyphicon glyphicon-link"></span>
                     x1
                 </a>
-                <a title="新增5锚点的节点" class="btn btn-default new_node" id="id_delete_select_model" href="#" data-anchor="WESNC" data-width="80" data-height="80" data-withborder="true">
+                <a title="新增5锚点的节点" class="btn btn-xs btn-default new_node" id="id_delete_select_model" href="#" data-anchor="WESNC" data-width="80" data-height="80" data-withborder="true">
                     <span class="glyphicon glyphicon-link"></span>
                     x5
                 </a>
-
-                <a class="btn btn-default disabled">对齐</a>
-                <a class="btn btn-default" title="左对齐" id="id_align_left">
-                    <span class="glyphicon glyphicon-align-left"></span>
-                </a>
-                <a class="btn btn-default" title="垂直居中" id="id_v_center">
-                    <span class="glyphicon glyphicon-align-center"></span>
-                </a>
-                <a class="btn btn-default" title="水平居中" id="id_h_center">
-                    <span class="glyphicon glyphicon-align-center" style="transform: rotate(90deg)"></span>
-                </a>
-                <a class="btn btn-default" title="右对齐" id="id_align_right">
-                    <span class="glyphicon glyphicon-align-right"></span>
+                <a title="切换边框" class="btn btn-xs btn-default" id="id_toggle_boarder">
+                    <span class="glyphicon glyphicon-unchecked"></span>
                 </a>
 
-                <a class="btn btn-default" title="一样大" id="id_same_size">
+                <a class="btn btn-xs btn-default disabled">对齐</a>
+                <a class="btn btn-xs btn-default" title="顶部对齐" id="id_align_top">
+                    <span class="glyphicon glyphicon-object-align-top"></span>
+                </a>
+                <a class="btn btn-xs btn-default" title="底部对齐" id="id_align_bottom">
+                    <span class="glyphicon glyphicon-object-align-bottom"></span>
+                </a>
+
+                <a class="btn btn-xs btn-default" title="左对齐" id="id_align_left">
+                    <span class="glyphicon glyphicon-object-align-left"></span>
+                </a>
+                <a class="btn btn-xs btn-default" title="右对齐" id="id_align_right">
+                    <span class="glyphicon glyphicon-object-align-right"></span>
+                </a>
+                <a class="btn btn-xs btn-default" title="垂直居中" id="id_v_center">
+                    <span class="glyphicon glyphicon-object-align-vertical"></span>
+                </a>
+                <a class="btn btn-xs btn-default" title="水平居中" id="id_h_center">
+                    <span class="glyphicon glyphicon-object-align-horizontal"></span>
+                </a>
+
+                <a class="btn btn-xs btn-default" title="一样大" id="id_same_size">
                     <span class="glyphicon glyphicon-menu-hamburger"></span>
                 </a>
 
-                <a class="btn btn-default" title="垂直等距分布" id="id_eq_v_distance">
+                <a class="btn btn-xs btn-default" title="垂直等距分布" id="id_eq_v_distance">
                     <span class="glyphicon glyphicon-resize-vertical"></span>
                 </a>
 
-                <a class="btn btn-default" title="水平等距分布" id="id_eq_h_distance">
+                <a class="btn btn-xs btn-default" title="水平等距分布" id="id_eq_h_distance">
                     <span class="glyphicon glyphicon-resize-horizontal"></span>
                 </a>
             </div>
 
-            <div class="btn-group">
-                <a href="#" class="btn btn-default disabled">连线</a>
-                <div class="btn-group" role="group">
+            <div class="btn-group btn-group-xs">
+                <a href="#" class="btn btn-xs btn-default disabled">连线</a>
+                <div class="btn-group btn-group-xs" role="group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-link"></span>
                         连 接
@@ -286,34 +325,17 @@
                         <li><a href="#">Dropdown link</a></li>
                     </ul>
                 </div>
-
-                <!--a href="#" class="btn btn-default">库文件管理</a>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-picture"></span>
-                        库文件
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">新建库文件</a></li>
-                        <li class="divider" role="separator"></li>
-                        <li><a href="#">Dropdown link</a></li>
-                        <li><a href="#">Dropdown link</a></li>
-                    </ul>
-                </div-->
             </div>
 
-            <div class="btn-group">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        关 于
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">About Jmodel</a></li>
-                        <li><a href="#">Dropdown link</a></li>
-                    </ul>
-                </div>
+            <div class="btn-group btn-group-xs">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    关 于
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">About Jmodel</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                </ul>
             </div>
         </div>
     </div>
