@@ -13,6 +13,29 @@
 {% endblock %}
 
 {% block inline_js %}
+    <script>
+        $(document).ready(function () {
+            $(".color-picker").click(function () {
+                let color = $(this).css('background-color');
+                let shap_color = color.match(/rgb\((\d+),\s(\d+),\s(\d+)\)/);
+
+                let r = Number(shap_color[1]).toString(16);
+                if (r.length===1) {
+                    r = '0' + r;
+                }
+                let g = Number(shap_color[2]).toString(16);
+                if (g.length===1) {
+                    g = '0' + g;
+                }
+                let b = Number(shap_color[3]).toString(16);
+                if (b.length===1) {
+                    b = '0' + b;
+                }
+
+                $("#color").val(['#', r, g, b].join(''));
+            });
+        });
+    </script>
 {% endblock %}
 {% block inline_css %}{% endblock %}
 
@@ -38,18 +61,33 @@
         <input class="form-control" type="text" id="title" name="title" value="{{ link.title }}">
         <span class="help-block">连线名称，不需要可留空</span>
 
-        <label for="color">颜色</label>
-        <input class="form-control" type="color" id="color" name="color" value="{{ link.color|default:"#000000" }}">
-        <span class="help-block">连线颜色</span>
+        <div class="row">
+            <div class="col-xs-1">
+                <label for="color">颜色</label>
+                <input class="form-control" type="color" id="color" name="color" value="{{ link.color|default:"#000000" }}">
+                <span class="help-block">连线颜色</span>
+            </div>
+            <div class="col-xs-9">
+                <br>
+                <a href="#" class="color-picker btn" style="width: 40px; height: 40px; background-color: black"></a>
+                <a href="#" class="color-picker btn" style="width: 40px; height: 40px; background-color: red"></a>
+                <a href="#" class="color-picker btn" style="width: 40px; height: 40px; background-color: green"></a>
+                <a href="#" class="color-picker btn" style="width: 40px; height: 40px; background-color: #67bbff"></a>
+                <a href="#" class="color-picker btn" style="width: 40px; height: 40px; background-color: #ffa711"></a>
+                <a href="#" class="color-picker btn" style="width: 40px; height: 40px; background-color: #ff66a8"></a>
+                <a href="#" class="color-picker btn" style="width: 40px; height: 40px; background-color: #68ff41"></a>
+                <a href="#" class="color-picker btn" style="width: 40px; height: 40px; background-color: #2480ff"></a>
+            </div>
+        </div>
 
         <label for="width">线宽</label>
         <input class="form-control" type="number" id="width" name="width" value="{{ link.width|default:3 }}">
         <span class="help-block">连线宽度</span>
 
-        <label for="type">线型</label>
-        <select name="type" id="type" class="form-control">
-            <option value="solid">solid</option>
-            <option value="dashed">dashed</option>
+        <label for="style">线型</label>
+        <select name="style" id="style" class="form-control">
+            <option value="solid"{% if link.sytle == 'solid' %} selected{% endif %}>solid</option>
+            <option value="dashed"{% if link.sytle == 'dashed' %} selected{% endif %}>dashed</option>
         </select>
 
         <br>

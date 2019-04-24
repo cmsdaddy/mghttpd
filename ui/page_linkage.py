@@ -368,6 +368,26 @@ def linkage_link_edit(request, lid, linkid):
         context['link'] = links[linkid]
         return render(request, "95-系统一次图编辑显示管理/02-连接/00-form-连线编辑.html", context=context)
     else:
+        profile = read_linkage_profile(lid)
+        try:
+            links = profile['links']
+        except KeyError:
+            links = dict()
+            profile['links'] = links
+
+        try:
+            link = links[linkid]
+        except KeyError:
+            link = dict()
+            links[linkid] = link
+
+        link['id'] = linkid
+        link['title'] = request.POST['title']
+        link['color'] = request.POST['color']
+        link['width'] = int(request.POST['width'])
+        link['style'] = request.POST['style']
+
+        write_linkage_profile(lid, profile)
         return HttpResponseRedirect(request.GET['next'])
 
 

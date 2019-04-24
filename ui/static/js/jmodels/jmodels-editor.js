@@ -95,8 +95,8 @@ let JEditor = function (painter) {
 };
 
 
-// 删除所选节点
-JEditor.prototype.delete_selected_model = function() {
+// 删除所选
+JEditor.prototype.delete_selected = function() {
     let length = this.select_stack.models.length;
     for (let i = 0; i < length; i ++) {
         let model = this.select_stack.models[i];
@@ -125,6 +125,21 @@ JEditor.prototype.delete_selected_model = function() {
 
         console.log("delete model:", model);
         delete this.painter.models_list[model.id];
+    }
+
+    length = this.select_stack.links.length;
+    for (let i = 0; i < length; i ++) {
+        let link = this.select_stack.links[i];
+        for (let lid in this.painter.links_list) {
+            if (this.painter.links_list.hasOwnProperty(lid)) {
+                let target = this.painter.links_list[lid];
+                if (target.id === link.id) {
+                    console.log("delete link:", target);
+                    delete this.painter.links_list[lid];
+                    break;
+                }
+            }
+        }
     }
 
     this.select_stack.empty();
@@ -440,7 +455,7 @@ JEditor.prototype.update = function () {
 /**
  * 在当前的模型列表终新建一个模型
  * */
-JEditor.prototype.create_link = function (begin, end, style) {
+JEditor.prototype.create_link = function (begin, end, profile) {
     let linked = this.painter.is_linked(begin, end);
     if ( linked ) {
         console.warn("锚点已经有过连接!");
@@ -475,7 +490,7 @@ JEditor.prototype.create_link = function (begin, end, style) {
     }
 
     let id = ++ this.painter._id_pool;
-    let link = new JLink(id, begin, end, style);
+    let link = new JLink(id, begin, end, profile);
     this.painter.links_list[id] = link;
 
     this.notify_link(link, begin, end);

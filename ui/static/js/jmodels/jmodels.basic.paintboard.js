@@ -363,7 +363,7 @@ JPaintbord.prototype.load = function(width, height, models, anchors, links, libr
             let l = links[i];
             let begin_anchor = this.search_anchor(l.begin);
             let end_anchor = this.search_anchor(l.end);
-            this.load_link(l.id, begin_anchor, end_anchor, l.style);
+            this.load_link(l.id, begin_anchor, end_anchor, l);
         }
     }
 

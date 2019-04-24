@@ -5,11 +5,16 @@
  * @param end: 终点锚点
  * @param style: 连接线风格
  * */
-var JLink = function (id, begin, end, style) {
+var JLink = function (id, begin, end, profile) {
     this.id = id;
     this.begin = begin;
     this.end = end;
-    this.style = style;
+    this.profile = profile;
+
+    this.title = profile.title ? profile.title : "";
+    this.width = profile.width ? Number(profile.width) : 1;
+    this.style = profile.style ? profile.style : "solid";
+    this.color = profile.color ? profile.color : "#000000";
 
     this.idx_x = 0;
     return this;
@@ -79,7 +84,10 @@ JLink.prototype.save = function () {
         id: this.id,
         begin: this.begin.id,
         end: this.end.id,
-        style: this.style
+        style: this.style,
+        width: this.width,
+        color: this.color,
+        title: this.title,
     }
 };
 
@@ -112,8 +120,8 @@ JLink.prototype.render = function (ctx) {
 
     ctx.save();
     ctx.beginPath();
-    ctx.fillStyle = 'red';
-    ctx.strokeStyle = 'red';
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = this.width;
     ctx.moveTo(this.begin.x + this.begin.width/2, this.begin.y + this.begin.height/2);
     ctx.lineTo(this.end.x + this.end.width/2, this.end.y + this.end.height/2);
     ctx.stroke();

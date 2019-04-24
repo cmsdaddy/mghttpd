@@ -49,7 +49,7 @@
                                 let l = data[id];
                                 let begin_anchor = painter.search_anchor(l.begin);
                                 let end_anchor = painter.search_anchor(l.end);
-                                painter.load_link(Number(l.id), begin_anchor, end_anchor, l.style);
+                                painter.load_link(Number(l.id), begin_anchor, end_anchor, l);
                             }
                         }
                     });
@@ -108,8 +108,8 @@
                 $.post("{% url 'linkage profile json' profile.id %}", {profile: JSON.stringify(pack)});
             });
 
-            $("#id_delete_select_model").click(function () {
-                editor.delete_selected_model();
+            $("#id_delete_select").click(function () {
+                editor.delete_selected();
             });
 
             // 新建节点
@@ -308,7 +308,7 @@
 
             <div class="btn-group btn-group-xs">
                 <a href="#" class="btn btn-xs btn-default disabled">节点</a>
-                <a class="btn btn-xs btn-default" id="id_delete_select_model" href="#" title="删除选择的节点">
+                <a class="btn btn-xs btn-default" id="id_delete_select" href="#" title="删除选择的节点/连接">
                     <span class="glyphicon glyphicon-remove text-danger"></span>
                     删除
                 </a>
