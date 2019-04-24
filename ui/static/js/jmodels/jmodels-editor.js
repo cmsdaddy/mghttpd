@@ -14,6 +14,14 @@ let ClickSelectStack = function(obj) {
 ClickSelectStack.prototype.empty = function() {
     this.models = this.links = this.anchors = this.cursor = [];
 };
+// 激活节点选择
+ClickSelectStack.prototype.active_models = function() {
+    this.links = this.anchors = this.cursor = [];
+};
+// 激活连接选择
+ClickSelectStack.prototype.active_links = function() {
+    this.models = this.anchors = this.cursor = [];
+};
 
 
 /**
@@ -121,7 +129,6 @@ JEditor.prototype.delete_selected_model = function() {
 
     this.select_stack.empty();
 };
-
 JEditor.prototype.copy_select_model = function(){
     let length = this.select_stack.models.length;
     let profiles = [];
@@ -132,7 +139,6 @@ JEditor.prototype.copy_select_model = function(){
     }
     return profiles;
 };
-
 JEditor.prototype.align_left = function(){
 };
 JEditor.prototype.align_right = function(){
@@ -370,18 +376,18 @@ JEditor.prototype.render = function(ctx) {
     }
 
     // 绘制热线
+    ctx.save();
+    ctx.strokeStyle = 'blue';
     for ( let idx in this.hotlines_stack ) {
         if ( !this.hotlines_stack.hasOwnProperty(idx) ) {
             continue;
         }
         let hot_line = this.hotlines_stack[idx];
-        ctx.save();
-        ctx.strokeStyle = 'blue';
         ctx.moveTo(hot_line.begin_x, hot_line.begin_y);
         ctx.lineTo(hot_line.end_x, hot_line.end_y);
         ctx.stroke();
-        ctx.restore();
     }
+    ctx.restore();
 
     // 绘制加入选区的模型
     for (let i = 0, length = this.select_stack.models.length; i < length; i ++) {
@@ -389,6 +395,19 @@ JEditor.prototype.render = function(ctx) {
         ctx.strokeStyle = '#ff00ff';
         ctx.strokeRect(model.x - 5, model.y - 5, model.width + 10, model.height + 10);
     }
+
+    // 绘制加入选区的连接
+    ctx.save();
+    ctx.strokeStyle = '#3bff28';
+    ctx.lineWidth = 3;
+    for (let i = 0, length = this.select_stack.links.length; i < length; i ++) {
+        let link = this.select_stack.links[i];
+
+        ctx.moveTo(link.begin.x + link.begin.width/2, link.begin.y + link.begin.height/2);
+        ctx.lineTo(link.end.x + link.end.width/2, link.end.y + link.end.height/2);
+        ctx.stroke();
+    }
+    ctx.restore();
 
     // 绘制选择的模型, 有改变模型位置的选择对象
     for(let i = 0, length = this.change_location_models_statck.length; i < length; i ++) {
@@ -763,6 +782,8 @@ JEditor.prototype.onmousemove = function (ev) {
         console.log(update_request);
     }
 
+    this.painter.onmousemove(ev);
+
     // 整体重绘一次，提高效率
     return update_request ? this.update() : undefined;
 };
@@ -822,27 +843,6 @@ JEditor.prototype.onmousedown = function (ev) {
 
     this.attribute_of_selected_model_statck[model.id] = attribute;
     this.cursor_motion_stack.push(ev);
-
-    /*
-    if ( model ) {
-        this.down_point_while_move = ev;
-        this.model_selected = model;
-
-        this.model_x_offset_while_mousedown = model.x_offset;
-        this.model_y_offset_while_mousedown = model.y_offset;
-
-        this.model_width_while_mousedown = model.width;
-        this.model_height_while_mousedown = model.height;
-
-        if ( this.in_move_model_arae ) {
-            this.painter.dom.style.cursor = 'move';
-        }
-
-        if ( this.in_resize_model_arae ) {
-            this.painter.dom.style.cursor = 'nw-resize';
-        }
-    }
-    */
 };
 
 /***
@@ -903,23 +903,6 @@ JEditor.prototype.onmouseup = function (ev) {
     return this.painter.onmouseup(ev);
 };
 
-/***
- *
- * 鼠标单击事件
- */
-JEditor.prototype.onclick = function (ev) {
-    return this.painter.onclick(ev);
-};
-
-/***
- *
- * 鼠标双击事件
- */
-JEditor.prototype.ondblclick = function (ev) {
-    return this.painter.ondblclick(ev);
-};
-
-
 /**
  * 初始化jmodels编辑器
  * */
@@ -932,9 +915,10 @@ function initialize_jmodels_editor(painter) {
         console.log("select empty.");
     });
 
-    // 选择模型, 将鼠标左键点击的模型压入选择栈，按住shift键可选择多个模型
+    // 在节点上检测到光标移动事件
     painter.model_event_listener.onclick(function (ev, model) {
         if (editor.select_stack.models.indexOf(model) === -1) {
+            // 判定shift键用于多选
             if (!ev.shiftKey) {
                 editor.select_stack.models = [model]
             } else {
@@ -942,6 +926,34 @@ function initialize_jmodels_editor(painter) {
             }
             console.log("select model", model, ev);
         }
+    });
+
+    // 在节点上检测到了光标移动
+    painter.model_event_listener.onmousemove(function (ev, model) {
+        //console.log("model mouse move", model);
+    });
+
+    // 在锚点上检测到光标移动
+    painter.anchor_event_listener.onmousemove(function (ev, anchor) {
+        //console.log("在锚点上检测到光标移动", anchor);
+    });
+
+    // 在连接线上检测到鼠标单击
+    painter.link_event_listener.onclick(function (ev, link) {
+        console.log("在连接线上检测到鼠标单击", link);
+        if (editor.select_stack.links.indexOf(link) === -1) {
+            // 判定shift键用于多选
+            if (!ev.shiftKey) {
+                editor.select_stack.links = [link]
+            } else {
+                editor.select_stack.links.push(link);
+            }
+            console.log("select link", link, ev);
+        }
+    });
+    // 在连接线上检测到鼠标双击
+    painter.link_event_listener.ondblclick(function (ev, link) {
+        console.log("在连接线上检测到鼠标双击", link);
     });
 
     return editor;

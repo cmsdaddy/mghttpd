@@ -19,51 +19,55 @@ var JLink = function (id, begin, end, style) {
  * 判断指定的鼠标事件的光标范围在这个连接线范围内
  * */
 JLink.prototype.is_cursor_in = function(ev) {
-    let By = this.end.y;
-    let Bx = this.end.x;
+    let begin = null, end = null, probe = {x: ev.offsetX, y: ev.offsetY};
 
-    let Ay = this.begin.y;
-    let Ax = this.begin.x;
-
-    let offset = 0;
-
-    let delta_AB_x = Ax - Bx;
-    if ( delta_AB_x <= 5 ) {
-        offset = 5;
+    if ( this.end.x >= this.begin.x ) {
+        begin = {x: this.begin.x, y: this.begin.y};
+        end = {x: this.end.x, y: this.end.y};
+    } else {
+        begin = {x: this.end.x, y: this.end.y};
+        end = {x: this.begin.x, y: this.begin.y};
     }
 
-    let Cx = ev.offsetX;
-    let Cy = ev.offsetY;
+    let y_max = Math.max(begin.y, end.y);
+    let y_min = Math.min(begin.y, end.y);
+    let x_mid = (end.x + begin.x) / 2;
+    let y_mid = (begin.y + end.y) / 2;
 
-    if (Cx < Math.min(Ax, Bx) - offset) {
+    // 第一种情况
+    if (end.x - begin.x <= 10) {
+        if (x_mid - 5 <= probe.x && probe.x <= x_mid + 5 && y_min <= probe.y && probe.y <= y_max) {
+            return true;
+        }
+
         return false;
     }
 
-    if (Cx > Math.max(Ax, Bx) + offset) {
+    // 第二种情况
+    if (y_max - y_min <= 10) {
+        if (begin.x <= probe.x && probe.x <= end.x && y_mid - 5 <= probe.y && probe.y <= y_mid + 5) {
+            return true;
+        }
+
         return false;
     }
 
-    if ( offset ) {
-        if (Cy < Math.min(Ay, By)) {
-            return false;
-        }
+    if ( probe.y < y_min || probe.y > y_max) {
+        return false;
+    }
 
-        if (Cy > Math.max(Ay, By)) {
-            return false;
-        }
+    if ( probe.x < begin.x || probe.x > end.x) {
+        return false;
+    }
 
+    let k = (end.y - begin.y) / (end.x - begin.x);
+    let b = begin.y - k * begin.x;
+    let cross_y = k * probe.x + b;
+
+    if (Math.max(cross_y, probe.y) - Math.min(cross_y, probe.y) <= 5) {
         return true;
     }
-
-    let y = By - (Bx - Cx) * (By -Ay) / (Bx - Ax);
-
-    let delta = Math.max(y, Cy) - Math.min(y, Cy);
-
-    if ( delta > 5 ) {
-        return false;
-    }
-
-    return true;
+    return false;
 };
 
 

@@ -74,28 +74,12 @@ let JPaintbord = function (dom_id, width, height, options, profile) {
         return this.painter.editor && this.painter.editor.onmouseup ? this.painter.editor.onmouseup(ev) : this.painter.onmouseup(ev);
     };
     this.dom.onclick = function (ev) {
-        return this.painter.editor && this.painter.editor.onclick ? this.painter.editor.onclick(ev) : this.painter.onclick(ev);
-    };
-    this.dom.ondblclick = function (ev) {
-        return this.painter.editor && this.painter.editor.ondblclick ? this.painter.editor.ondblclick(ev) : this.painter.ondblclick(ev);
-    };
-/*
-    this.dom.onmousemove = function (ev) {
-        return this.painter.onmousemove(ev);
-    };
-    this.dom.onmousedown = function (ev) {
-        return this.painter.onmousedown(ev);
-    };
-    this.dom.onmouseup = function (ev) {
-        return this.painter.onmouseup(ev);
-    };
-    this.dom.onclick = function (ev) {
         return this.painter.onclick(ev);
     };
     this.dom.ondblclick = function (ev) {
-        return this.painter.ondblclick(ev);
+        this.painter.ondblclick(ev);
     };
-*/
+
     /*模型事件监听器*/
     this.model_event_listener = new JEventListener(this);
     /*锚点事件监听器*/

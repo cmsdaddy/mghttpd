@@ -349,6 +349,28 @@ def linkage_functions_as_json(request, lid):
     return process_linkage_object_as_json(request, lid, 'functions')
 
 
+def linkage_link_edit(request, lid, linkid):
+    """编辑连线详细内容"""
+    context = dict()
+
+    if request.method == 'GET':
+        try:
+            context['lid'] = lid
+            context['linkid'] = linkid
+            links = read_linkage_profile(lid)['links']
+        except FileNotFoundError:
+            context['id'] = lid
+            return render(request, "95-系统一次图编辑显示管理/00-error-设计的文件不存在.html", context=context)
+        except KeyError:
+            context['id'] = lid
+            return render(request, "95-系统一次图编辑显示管理/00-error-节点不存在.html", context=context)
+
+        context['link'] = links[linkid]
+        return render(request, "95-系统一次图编辑显示管理/02-连接/00-form-连线编辑.html", context=context)
+    else:
+        return HttpResponseRedirect(request.GET['next'])
+
+
 def linkage_model_edit(request, lid, nid):
     """编辑模型详细内容"""
     context = dict()
@@ -526,6 +548,9 @@ urlpatterns = [
 
     # 编辑节点的详细属性
     path('<str:lid>/model/<str:nid>/edit/', linkage_model_edit, name="edit linkage node"),
+    # 编辑连线的详细属性
+    path('<str:lid>/link/<str:linkid>/edit/', linkage_link_edit, name="edit linkage link"),
+
     # 编辑节点的映射值
     path('<str:lid>/model/<str:nid>/vmap/<str:vid>/edit/', linkage_model_vmap_edit, name="edit node v_map"),
     path('<str:lid>/model/<str:nid>/vmap/<str:vid>/delete/', linkage_model_vmap_delete, name="delete node v_map"),

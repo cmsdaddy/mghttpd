@@ -76,9 +76,23 @@
             // 启动数据更新循环
             update_model_handle = setTimeout(update_all_mode, 1000);
 
+            // 处理节点双击事件
             painter.model_event_listener.ondblclick(function (ev, model) {
                 let url = "{% url 'edit linkage node' profile.id 'gold_is_a_girl' %}";
-                window.location.href = url.replace('gold_is_a_girl', String(model.id));
+
+                let pack = editor.save();
+                $.post("{% url 'linkage profile json' profile.id %}", {profile: JSON.stringify(pack)}, function(){
+                    window.location.href = url.replace('gold_is_a_girl', String(model.id));
+                });
+            });
+            // 处理连接双击事件
+            painter.link_event_listener.ondblclick(function (ev, link) {
+                let url = "{% url 'edit linkage link' profile.id 'gold_is_a_girl' %}";
+
+                let pack = editor.save();
+                $.post("{% url 'linkage profile json' profile.id %}", {profile: JSON.stringify(pack)}, function(){
+                    window.location.href = url.replace('gold_is_a_girl', String(link.id));
+                });
             });
 
             let editor = initialize_jmodels_editor(painter);
@@ -101,14 +115,14 @@
             // 新建节点
             $(".new_node").click(function () {
                 painter_box.css('cursor', 'crosshair');
-                painter_box.bind('click', new_empty_node);
+                painter_box.bind('click', new_node);
 
                 let width = Number($(this).attr('data-width'));
                 let height = Number($(this).attr('data-height'));
                 let anchors = $(this).attr('data-anchor');
                 let withborder = $(this).attr('data-withborder') === "true";
-                function new_empty_node(ev) {
-                    painter_box.unbind('click', new_empty_node);
+                function new_node(ev) {
+                    painter_box.unbind('click', new_node);
                     let profile = {
                         name: name,
                         x_offset: ev.offsetX,
@@ -120,23 +134,48 @@
 
                     let model = editor.create_model(profile);
                     if (anchors.indexOf('C') >= 0) {
-                        let anchor = editor.create_anchor(model, 0, 0, {name: 'C'});
+                        let aprofile = {
+                            x_offset: 0,
+                            y_offset: 0,
+                            name: 'C'
+                        };
+                        let anchor = editor.create_anchor(model, aprofile);
                         console.log("创建中心锚点：", anchor);
                     }
                     if (anchors.indexOf('W') >= 0) {
-                        let anchor = editor.create_anchor(model, width/2, 0, {name: 'W'});
+                        let aprofile = {
+                            x_offset: width/2,
+                            y_offset: 0,
+                            name: 'W'
+                        };
+                        let anchor = editor.create_anchor(model, aprofile);
                         console.log("创建W锚点：", anchor);
                     }
                     if (anchors.indexOf('E') >= 0) {
-                        let anchor = editor.create_anchor(model, -width/2, 0, {name: 'E'});
+                        let aprofile = {
+                            x_offset: -width/2,
+                            y_offset: 0,
+                            name: 'E'
+                        };
+                        let anchor = editor.create_anchor(model, aprofile);
                         console.log("创建E锚点：", anchor);
                     }
                     if (anchors.indexOf('S') >= 0) {
-                        let anchor = editor.create_anchor(model, 0, height/2, {name: 'S'});
+                        let aprofile = {
+                            x_offset: 0,
+                            y_offset: height/2,
+                            name: 'S'
+                        };
+                        let anchor = editor.create_anchor(model, aprofile);
                         console.log("创建S锚点：", anchor);
                     }
                     if (anchors.indexOf('N') >= 0) {
-                        let anchor = editor.create_anchor(model, 0, -height/2, {name: 'N'});
+                        let aprofile = {
+                            x_offset: 0,
+                            y_offset: -height/2,
+                            name: 'N'
+                        };
+                        let anchor = editor.create_anchor(model, aprofile);
                         console.log("创建N锚点：", anchor);
                     }
                 }
@@ -277,15 +316,15 @@
                     <span class="glyphicon glyphicon-duplicate"></span>
                     克隆
                 </a>
-                <a title="新增0无锚点的节点" class="btn btn-xs btn-default new_node" id="id_delete_select_model" href="#" data-anchor="" data-width="80" data-height="80" data-withborder="true">
+                <a title="新增0无锚点的节点" class="btn btn-xs btn-default new_node" href="#" data-anchor="" data-width="80" data-height="80" data-withborder="true">
                     <span class="glyphicon glyphicon-link"></span>
                     x0
                 </a>
-                <a title="新增1锚点的节点" class="btn btn-xs btn-default new_node" id="id_delete_select_model" href="#" data-anchor="C" data-width="80" data-height="80" data-withborder="true">
+                <a title="新增1锚点的节点" class="btn btn-xs btn-default new_node" href="#" data-anchor="C" data-width="80" data-height="80" data-withborder="true">
                     <span class="glyphicon glyphicon-link"></span>
                     x1
                 </a>
-                <a title="新增5锚点的节点" class="btn btn-xs btn-default new_node" id="id_delete_select_model" href="#" data-anchor="WESNC" data-width="80" data-height="80" data-withborder="true">
+                <a title="新增5锚点的节点" class="btn btn-xs btn-default new_node" href="#" data-anchor="WESNC" data-width="80" data-height="80" data-withborder="true">
                     <span class="glyphicon glyphicon-link"></span>
                     x5
                 </a>
