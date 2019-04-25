@@ -1,0 +1,42 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}{% endblock %}
+
+{% block title %}SVG测试{% endblock %}
+
+{% block js_library %}
+{% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+{% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+    <script>
+        $(document).ready(function () {
+            $("#svg_1").onmousemove(function (ev) {
+                console.log(ev);
+            });
+        });
+    </script>
+{% endblock %}
+{% block inline_css %}{% endblock %}
+
+{% block page_header %}
+    {% include "95-系统一次图编辑显示管理/base-linkage-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+{# 在这里添加你的代码 #}
+    <svg width="800" height="800" xlinkns="http://www.w3.org/1999/xlink">
+        <line fill="none" stroke="#000" stroke-width="1.5" x1="159.5" y1="136.74861907958984" x2="514.5" y2="93.74861907958984"
+              id="svg_1" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-dasharray="1 2 5"></line>
+    </svg>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}
