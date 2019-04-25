@@ -546,6 +546,24 @@ def preview_linkage_page(request, lid):
     return render(request, "95-系统一次图编辑显示管理/03-预览方案内容.html", context={'profile': profile})
 
 
+def get_actived_linkage():
+    actived = None
+
+    for f in os.listdir(linkage_profile_dir):
+        with codecs.open(linkage_profile_dir + '/' + f, encoding='utf8') as file:
+            profile = json.load(file)
+            if actived is None:
+                actived = profile
+
+            try:
+                if profile['actived'] is True:
+                    actived = profile
+            except KeyError:
+                pass
+
+    return actived
+
+
 urlpatterns = [
     path('', show_all_linage_profile),
     path('edit/', show_editor_page),

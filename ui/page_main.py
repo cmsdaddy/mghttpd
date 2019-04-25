@@ -10,6 +10,8 @@ import ui.api as api
 import ui.systerecords as sysrecords
 import socket
 import ui.scada as scada
+import ui.page_linkage as linkage
+
 
 if scada.system_name == 'windows':
     pass
@@ -33,7 +35,12 @@ def show_scada_main(request):
     context['pcs_count'] = mg.get_pcs_count()
     context["pcs_id_list"] = [x for x in range(mg.get_pcs_count())]
 
-    return render(request, "06-SCADA设备/首页模板.html", context=context)
+    actived_profile = linkage.get_actived_linkage()
+    if actived_profile:
+        context['profile'] = actived_profile
+        return render(request, "95-系统一次图编辑显示管理/04-显示方案内容.html", context=context)
+    else:
+        return render(request, "06-SCADA设备/首页模板.html", context=context)
 
 
 def get_ip_address(ifname):
