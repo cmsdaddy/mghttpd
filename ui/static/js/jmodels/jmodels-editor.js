@@ -719,19 +719,19 @@ JEditor.prototype.update_model_size = function(model, new_width, new_height) {
     }
 
     // left anchor
-    let anchor = model.anchors.left;
+    let anchor = model.anchors['E'];
     anchor && relocation_anchor(model, anchor, - new_width / 2, 0);
 
     // top anchor
-    anchor = model.anchors.top;
+    anchor = model.anchors['N'];
     anchor && relocation_anchor(model, anchor, 0, - new_height / 2);
 
     // right anchor
-    anchor = model.anchors.right;
+    anchor = model.anchors['W'];
     anchor && relocation_anchor(model, anchor, new_width / 2, 0);
 
     // bottom anchor
-    anchor = model.anchors.bottom;
+    anchor = model.anchors['S'];
     anchor && relocation_anchor(model, anchor, 0, new_height / 2);
 };
 

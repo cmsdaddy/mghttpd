@@ -92,6 +92,8 @@ urlpatterns = [
     #功率曲线
     path('power/grid/', bms.show_bms_grid),
 
+    path('svg/', include("ui.page_svg")),
+
     path('', include('ui.page_main')),
 ]
 
