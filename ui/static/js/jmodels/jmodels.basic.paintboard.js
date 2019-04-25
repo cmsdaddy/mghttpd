@@ -88,6 +88,8 @@ let JPaintbord = function (dom_id, width, height, options, profile) {
     this.link_event_listener = new JEventListener(this);
     /*空白事件监听器*/
     this.empty_event_listener = new JEventListener(this);
+    /*固定事件监听器*/
+    this.const_event_listener = new JEventListener(this);
 
     // 添加动画支持
     window.painter = this;
@@ -111,6 +113,8 @@ JPaintbord.prototype.update_all_model_value = function(data) {
 
 
 JPaintbord.prototype.onmousemove = function(ev) {
+    this.const_event_listener.dispatch_mousemove_message(ev, this);
+
     let anchor = this.select_anchor(ev);
     if (anchor) {
         return this.anchor_event_listener.probe_mousemove(ev, anchor);
@@ -126,12 +130,13 @@ JPaintbord.prototype.onmousemove = function(ev) {
     this.model_event_listener.probe_mousemove(ev, model);
 
     if (!model) {
-        // 没有找到任何可以派发消息的对象时，派发一条消息给空消息监听器列表，用于清楚状态
-        return this.empty_event_listener.dispatch_mousemove_message(ev, this);
+        this.empty_event_listener.dispatch_mousemove_message(ev, this);
     }
 };
 
 JPaintbord.prototype.onmousedown = function(ev) {
+    this.const_event_listener.dispatch_mousedown_message(ev, this);
+
     let anchor = this.select_anchor(ev);
     if (anchor) {
         return this.anchor_event_listener.dispatch_mousedown_message(ev, anchor);
@@ -146,12 +151,13 @@ JPaintbord.prototype.onmousedown = function(ev) {
     if (model) {
         return this.model_event_listener.dispatch_mousedown_message(ev, model);
     } else {
-        // 没有找到任何可以派发消息的对象时，派发一条消息给空消息监听器列表，用于清楚状态
-        return this.empty_event_listener.dispatch_mousedown_message(ev, this);
+        this.empty_event_listener.dispatch_mousedown_message(ev, this);
     }
 };
 
 JPaintbord.prototype.onmouseup = function(ev) {
+    this.const_event_listener.dispatch_mouseup_message(ev, this);
+
     let anchor = this.select_anchor(ev);
     if (anchor) {
         return this.anchor_event_listener.dispatch_mouseup_message(ev, anchor);
@@ -166,12 +172,13 @@ JPaintbord.prototype.onmouseup = function(ev) {
     if (model) {
         return this.model_event_listener.dispatch_mouseup_message(ev, model);
     } else {
-        // 没有找到任何可以派发消息的对象时，派发一条消息给空消息监听器列表，用于清楚状态
-        return this.empty_event_listener.dispatch_mouseup_message(ev, this);
+        this.empty_event_listener.dispatch_mouseup_message(ev, this);
     }
 };
 
 JPaintbord.prototype.onclick = function(ev) {
+    this.const_event_listener.dispatch_click_message(ev, this);
+
     let anchor = this.select_anchor(ev);
     if (anchor) {
         return this.anchor_event_listener.dispatch_click_message(ev, anchor);
@@ -186,12 +193,13 @@ JPaintbord.prototype.onclick = function(ev) {
     if (model) {
         return this.model_event_listener.dispatch_click_message(ev, model);
     } else {
-        // 没有找到任何可以派发消息的对象时，派发一条消息给空消息监听器列表，用于清楚状态
-        return this.empty_event_listener.dispatch_click_message(ev, this);
+        this.empty_event_listener.dispatch_click_message(ev, this);
     }
 };
 
 JPaintbord.prototype.ondblclick = function(ev) {
+    this.const_event_listener.dispatch_dblclick_message(ev, this);
+
     let anchor = this.select_anchor(ev);
     if (anchor) {
         return this.anchor_event_listener.dispatch_dblclick_message(ev, anchor);
@@ -206,8 +214,7 @@ JPaintbord.prototype.ondblclick = function(ev) {
     if (model) {
         return this.model_event_listener.dispatch_dblclick_message(ev, model);
     } else {
-        // 没有找到任何可以派发消息的对象时，派发一条消息给空消息监听器列表，用于清楚状态
-        return this.empty_event_listener.dispatch_dblclick_message(ev, this);
+        this.empty_event_listener.dispatch_dblclick_message(ev, this);
     }
 };
 

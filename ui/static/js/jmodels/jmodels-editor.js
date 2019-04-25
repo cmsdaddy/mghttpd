@@ -12,15 +12,22 @@ let ClickSelectStack = function(obj) {
 
 // 清空所有选择的对象
 ClickSelectStack.prototype.empty = function() {
-    this.models = this.links = this.anchors = this.cursor = [];
+    this.models = [];
+    this.links = [];
+    this.anchors = [];
+    this.cursor = [];
 };
 // 激活节点选择
 ClickSelectStack.prototype.active_models = function() {
-    this.links = this.anchors = this.cursor = [];
+    this.links = [];
+    this.anchors = [];
+    this.cursor = [];
 };
 // 激活连接选择
 ClickSelectStack.prototype.active_links = function() {
-    this.models = this.anchors = this.cursor = [];
+    this.models = [];
+    this.anchors = [];
+    this.cursor = [];
 };
 
 
@@ -63,6 +70,8 @@ let JEditor = function (painter) {
 
     // 点击选择列表
     this.select_stack = new ClickSelectStack(this);
+    // 光标拖拽选择栈，左键按下时记录，弹起时清空，移动时更新第二个记录
+    this.area_selection_stack = [];
 
     // 开始移动的点
     this.move_begin_point = undefined;
@@ -436,6 +445,21 @@ JEditor.prototype.render = function(ctx) {
         let model = this.resize_models_stack[i];
         ctx.strokeStyle = 'blue';
         ctx.strokeRect(model.x - 5, model.y - 5, model.width + 10, model.height + 10);
+    }
+
+    // 绘制区域选择
+    if (this.area_selection_stack.length ===2) {
+        let a = this.area_selection_stack[0];
+        let b = this.area_selection_stack[1];
+        let min_x = Math.min(a.offsetX, b.offsetX);
+        let max_x = Math.max(a.offsetX, b.offsetX);
+        let min_y = Math.min(a.offsetY, b.offsetY);
+        let max_y = Math.max(a.offsetY, b.offsetY);
+
+        ctx.strokeStyle = '#ff14f3';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.strokeRect(min_x, min_y, max_x - min_x, max_y - min_y);
     }
 
     ctx.restore();
@@ -927,7 +951,49 @@ function initialize_jmodels_editor(painter) {
     // 左键点击任意空白区域后，选择区的所有对象都会被清空
     painter.empty_event_listener.onmousedown(function (ev, painter) {
         editor.select_stack.empty();
+        editor.area_selection_stack = [ev];
         console.log("select empty.");
+    });
+    // 无对象的左键弹起事件
+    painter.const_event_listener.onmouseup(function (ev, painter) {
+        // 有选择范围的情况下，将框选范围内的节点加入选中区域
+        if (editor.area_selection_stack.length === 2) {
+            let a = editor.area_selection_stack[0];
+            let b = editor.area_selection_stack[1];
+
+            let min_x = Math.min(a.offsetX, b.offsetX);
+            let max_x = Math.max(a.offsetX, b.offsetX);
+            let min_y = Math.min(a.offsetY, b.offsetY);
+            let max_y = Math.max(a.offsetY, b.offsetY);
+
+            let select_model_count = 0;
+            for (let id in painter.models_list) {
+                if (painter.models_list.hasOwnProperty(id)) {
+                    let model = painter.models_list[id];
+                    if (model.x_offset < min_x || model.x_offset > max_x) {
+                        continue;
+                    }
+                    if (model.y_offset < min_y || model.y_offset > max_y) {
+                        continue;
+                    }
+                    editor.select_stack.models.push(model);
+                    select_model_count ++;
+                }
+            }
+            if (select_model_count) {
+                editor.update();
+            }
+        }
+
+        editor.area_selection_stack = [];
+    });
+    // 无对象的光标移动事件
+    painter.const_event_listener.onmousemove(function (ev, painter) {
+        console.log("const mouse move.");
+        if (ev.buttons && editor.area_selection_stack.length) {
+            editor.area_selection_stack[1] = ev;
+            editor.update();
+        }
     });
 
     // 在节点上检测到光标移动事件
