@@ -24,7 +24,7 @@ let JModel = function (id, painter, profile) {
     this.init_value = profile.init_value ? profile.init_value : 'n/a';
     this.datasource = profile.datasource ? profile.datasource: '';
     this.href = profile.href ? profile.href: '';
-    this.default_href = this.href;
+    this.default_href = this.href ? this.href : '';
 
     this.value = profile.init_value;
     this.vmap = profile.vmap ? profile.vmap : {};
@@ -72,6 +72,7 @@ JModel.prototype.set_value = function(value) {
                 this.h_scale = vm.h_scale;
                 this.v_scale = vm.v_scale;
                 this.degree = vm.degree;
+                this.href = vm.href ? vm.href : '';
 
                 this.image = new Image();
                 this.image.src = vm.img;
@@ -166,7 +167,6 @@ JModel.prototype.save = function () {
         init_value: this.init_value,
         datasource: this.datasource,
         vmap: this.vmap,
-        href: this.href,
     }
 };
 

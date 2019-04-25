@@ -260,6 +260,10 @@
                         <span class="glyphicon glyphicon-floppy-saved"></span>
                         保 存
                     </a>
+                    <a href="{% url "preview linkage page" profile.id %}?next={{ request.path }}" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                        查 看
+                    </a>
                     <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-file"></span>
                         方 案

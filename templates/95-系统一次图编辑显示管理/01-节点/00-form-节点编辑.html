@@ -55,8 +55,8 @@
             </div>
             <div class="col-xs-4">
                 <label for="href">链接位置</label>
-                <input class="form-control" type="text" id="href" name="href" value="{{ model.href }}" placeholder="默认链接路径，不需要可以留空">
-                <span class="help-block">链接位置, 例如: /bms/0/</span>
+                <input type="text" class="form-control" name="href" id="href" value="{{ model.href }}">
+                <span class="help-block">当前值对应的链接位置</span>
             </div>
         </div>
 
@@ -123,11 +123,12 @@
             <tr>
                 <th>#</th>
                 <th>名称</th>
-                <th>值</th>
+                <th>显示条件</th>
                 <th>图片</th>
                 <th>水平翻转</th>
                 <th>垂直翻转</th>
                 <th>旋转</th>
+                <th>链接</th>
                 <th>操作</th>
             </tr>
             {% for vid, vm in model.vmap.items %}
@@ -141,6 +142,7 @@
                     <th>{{ vm.h_scale }}</th>
                     <th>{{ vm.v_scale }}</th>
                     <th>{{ vm.degree }}</th>
+                    <th>{{ vm.href }}</th>
                     <td class="text-center">
                         <a class="btn btn-xs btn-danger" href="{% url 'delete node v_map' id model.id vid %}?next={{ request.path }}">
                             <span class="glyphicon glyphicon-remove-sign"></span>

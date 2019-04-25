@@ -38,10 +38,6 @@ def show_preview_page(request):
     return render(request, "95-系统一次图编辑显示管理/preview.html")
 
 
-def show_linkage_page(request):
-    return render(request, "95-系统一次图编辑显示管理/show.html")
-
-
 def edit_models(request):
 
     if request.method == 'GET':
@@ -496,6 +492,7 @@ def linkage_model_vmap_edit(request, lid, nid, vid):
         vm['v_scale'] = int(request.POST['v_scale'])
         vm['degree'] = float(request.POST['degree'])
         vm['name'] = request.POST['name']
+        vm['href'] = request.POST['href']
 
         try:
             lib_img = request.POST['lib_img']
@@ -539,11 +536,24 @@ def linkage_model_vmap_create(request, lid, nid):
         return linkage_model_vmap_edit(request, lid, nid, request.POST['id'])
 
 
+def show_linkage_page(request, lid):
+    profile = read_linkage_profile(lid)
+    return render(request, "95-系统一次图编辑显示管理/04-显示方案内容.html", context={'profile': profile})
+
+
+def preview_linkage_page(request, lid):
+    profile = read_linkage_profile(lid)
+    return render(request, "95-系统一次图编辑显示管理/03-预览方案内容.html", context={'profile': profile})
+
+
 urlpatterns = [
     path('', show_all_linage_profile),
     path('edit/', show_editor_page),
     path('preview/', show_preview_page),
-    path('show/', show_linkage_page),
+
+    # 显示方案内容
+    path('show/<str:lid>/', show_linkage_page, name="display linkage page"),
+    path('preview/<str:lid>/', preview_linkage_page, name="preview linkage page"),
 
     path('model/<int:id>/change/', show_change_model_page),
     path('json/', edit_models),

@@ -531,3 +531,11 @@ JPaintbord.prototype.is_linked = function (a, b) {
 
     return undefined;
 };
+
+
+/**
+ * 设置光标
+ * */
+JPaintbord.prototype.set_cursor = function (cursor) {
+    this.dom.style.cursor = cursor;
+};

@@ -12,6 +12,7 @@ let JAnchor = function (id, model, profile) {
 
     model.anchors[profile.name] = this;
 
+    this.name = profile.name;
     this.x_offset = profile.x_offset;
     this.y_offset = profile.y_offset;
     this.height = 6;

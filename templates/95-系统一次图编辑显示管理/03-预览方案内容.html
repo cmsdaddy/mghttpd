@@ -1,0 +1,120 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}{% endblock %}
+
+{% block title %}系统一次图编辑器{% endblock %}
+
+{% block js_library %}
+{% include "theme/01-js-library.html" %}
+<script src="/static/js/jmodels/jmodels.js"></script>
+<script src="/static/js/jmodels/jmodels-editor.js"></script>
+{% endblock %}
+
+{% block css_library %}
+{% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+    <script>
+        let default_profile = {
+            background_color: "{{ profile.background_color }}",
+            name: "{{ profile.name }}",
+            id: "{{ profile.id }}"
+        };
+        let update_model_handle = null;
+
+        $(document).ready(function () {
+            let painter = new JPaintbord('painter_box', {{ profile.width }}, {{ profile.height }}, {}, default_profile);
+
+            $.getJSON("{% url "linkage node json" profile.id %}", '', function(data, status, xhr){
+                for (let id in data) {
+                    if (data.hasOwnProperty(id)) {
+                        let model = data[id];
+                        painter.load_model(Number(id), model);
+                    }
+                }
+
+                $.getJSON("{% url "linkage anchors json" profile.id %}", '', function(data, status, xhr){
+                    for (let id in data) {
+                        if (data.hasOwnProperty(id)) {
+                            let anchor = data[id];
+                            let model = painter.search_model(anchor.model);
+                            painter.load_anchor(Number(id), model, anchor);
+                        }
+                    }
+
+                    $.getJSON("{% url "linkage links json" profile.id %}", '', function(data, status, xhr){
+                        for (let id in data) {
+                            if (data.hasOwnProperty(id)) {
+                                let l = data[id];
+                                let begin_anchor = painter.search_anchor(l.begin);
+                                let end_anchor = painter.search_anchor(l.end);
+                                painter.load_link(Number(l.id), begin_anchor, end_anchor, l);
+                            }
+                        }
+                    });
+                });
+            });
+
+            function update_all_mode() {
+                if ( update_model_handle) {
+                    clearTimeout(update_model_handle);
+                }
+
+                $.getJSON("{% url 'linkage collector value json' profile.id %}", '', function(data, status, xhr){
+                    if (status === 'success') {
+                        painter.update_all_model_value(data.data);
+                        update_model_handle = setTimeout(update_all_mode, 3000);
+                    } else {
+                        update_model_handle = setTimeout(update_all_mode, 8000);
+                    }
+                }).fail(function () {
+                    update_model_handle = setTimeout(update_all_mode, 10000);
+                });
+            }
+
+            // 启动数据更新循环
+            update_model_handle = setTimeout(update_all_mode, 1000);
+
+            // 处理节点双击事件
+            painter.model_event_listener.onclick(function (ev, model) {
+            });
+            // 处理节点光标移入事件
+            painter.model_event_listener.onmousein(function (ev, model) {
+                if (model.href !== '') {
+                    painter.set_cursor('pointer');
+                }
+            });
+            // 处理节点光标移出事件
+            painter.model_event_listener.onmouseout(function (ev, model) {
+                    painter.set_cursor('default');
+            });
+            // 处理光标点击事件
+            painter.model_event_listener.onclick(function (ev, model) {
+                if (model.href !== '') {
+                    window.location.href = model.href;
+                }
+            });
+
+            // 处理连接双击事件
+            painter.link_event_listener.ondblclick(function (ev, link) {
+            });
+        });
+    </script>
+{% endblock %}
+{% block inline_css %}{% endblock %}
+
+{% block page_header %}
+    {% include "95-系统一次图编辑显示管理/base-linkage-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+{# 在这里添加你的代码 #}
+    <canvas id="painter_box"></canvas>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}
