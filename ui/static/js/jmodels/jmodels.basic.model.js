@@ -122,7 +122,7 @@ JModel.prototype.render = function (ctx) {
         ctx.fillText(this.title, this.x-0.5, this.y + this.height + 12);
     }
 
-    if ( this.image && this.image.complete ) {
+    if ( this.image && this.image.width && this.image.complete ) {
         ctx.save();
         // 将坐标转移到中心点上
         ctx.translate(this.x_offset, this.y_offset);

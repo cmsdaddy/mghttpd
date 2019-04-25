@@ -3,6 +3,7 @@
  * */
 
 let JEventListener = function(painter) {
+    // 绘图对象
     this.painter = painter;
     // 最后一次被激活的对象
     this._last_object = null;
