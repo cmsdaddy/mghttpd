@@ -1,0 +1,1383 @@
+{
+  "width": 1200,
+  "height": 600,
+  "anchors": {
+    "250": {
+      "id": 250,
+      "x_offset": -22,
+      "y_offset": 0,
+      "model": 247,
+      "name": "E"
+    },
+    "154": {
+      "id": 154,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 153
+    },
+    "234": {
+      "id": 234,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 233
+    },
+    "222": {
+      "id": 222,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 221
+    },
+    "200": {
+      "id": 200,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 199
+    },
+    "248": {
+      "id": 248,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 247,
+      "name": "C"
+    },
+    "231": {
+      "id": 231,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 230
+    },
+    "208": {
+      "id": 208,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 207
+    },
+    "238": {
+      "id": 238,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 237
+    },
+    "166": {
+      "id": 166,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 165
+    },
+    "220": {
+      "id": 220,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 219
+    },
+    "210": {
+      "id": 210,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 209
+    },
+    "249": {
+      "id": 249,
+      "x_offset": 22,
+      "y_offset": 0,
+      "model": 247,
+      "name": "W"
+    },
+    "168": {
+      "id": 168,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 167
+    },
+    "120": {
+      "id": 120,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 119
+    },
+    "176": {
+      "id": 176,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 175
+    },
+    "32": {
+      "id": 32,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 31
+    },
+    "252": {
+      "id": 252,
+      "x_offset": 0,
+      "y_offset": -32,
+      "model": 247,
+      "name": "N"
+    },
+    "196": {
+      "id": 196,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 195
+    },
+    "174": {
+      "id": 174,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 173
+    },
+    "212": {
+      "id": 212,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 211
+    },
+    "162": {
+      "id": 162,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 161
+    },
+    "172": {
+      "id": 172,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 171
+    },
+    "251": {
+      "id": 251,
+      "x_offset": 0,
+      "y_offset": 32,
+      "model": 247,
+      "name": "S"
+    },
+    "110": {
+      "id": 110,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 109
+    },
+    "160": {
+      "id": 160,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 159
+    },
+    "224": {
+      "id": 224,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 223
+    },
+    "198": {
+      "id": 198,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 197
+    },
+    "178": {
+      "id": 178,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 177
+    },
+    "53": {
+      "id": 53,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 52
+    },
+    "100": {
+      "id": 100,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 99
+    },
+    "164": {
+      "id": 164,
+      "x_offset": 0,
+      "y_offset": 0,
+      "model": 163
+    }
+  },
+  "id": "d10070e2-317e-4e22-a220-1a7148f82c40",
+  "background_color": "#f2f8fc",
+  "links": {
+    "185": {
+      "style": "solid",
+      "width": 2,
+      "begin": 154,
+      "title": "",
+      "color": "#67bbff",
+      "id": 185,
+      "end": 174
+    },
+    "216": {
+      "style": "solid",
+      "width": 4,
+      "begin": 210,
+      "title": "",
+      "color": "#ff0000",
+      "id": 216,
+      "end": 160
+    },
+    "276": {
+      "style": "solid",
+      "width": 4,
+      "begin": 251,
+      "title": "",
+      "color": "#ff0000",
+      "id": 276,
+      "end": 212
+    },
+    "253": {
+      "style": "solid",
+      "width": 1,
+      "begin": 200,
+      "title": "",
+      "color": "#000000",
+      "id": 253,
+      "end": 249
+    },
+    "193": {
+      "style": "solid",
+      "width": 2,
+      "begin": 166,
+      "title": "",
+      "color": "#67bbff",
+      "id": 193,
+      "end": 178
+    },
+    "189": {
+      "style": "solid",
+      "width": 2,
+      "begin": 178,
+      "title": "",
+      "color": "#67bbff",
+      "id": 189,
+      "end": 172
+    },
+    "190": {
+      "style": "solid",
+      "width": 2,
+      "begin": 164,
+      "title": "",
+      "color": "#67bbff",
+      "id": 190,
+      "end": 176
+    },
+    "204": {
+      "style": "solid",
+      "width": 1,
+      "begin": 198,
+      "title": "",
+      "color": "#000000",
+      "id": 204,
+      "end": 164
+    },
+    "186": {
+      "style": "solid",
+      "width": 2,
+      "begin": 162,
+      "title": "",
+      "color": "#67bbff",
+      "id": 186,
+      "end": 174
+    },
+    "214": {
+      "style": "solid",
+      "width": 4,
+      "begin": 208,
+      "title": "",
+      "color": "#ff0000",
+      "id": 214,
+      "end": 162
+    },
+    "201": {
+      "style": "solid",
+      "width": 1,
+      "begin": 120,
+      "title": "",
+      "color": "#000000",
+      "id": 201,
+      "end": 196
+    },
+    "227": {
+      "style": "solid",
+      "width": 3,
+      "begin": 162,
+      "title": "",
+      "color": "#ff66a8",
+      "id": 227,
+      "end": 220
+    },
+    "191": {
+      "style": "solid",
+      "width": 2,
+      "begin": 160,
+      "title": "",
+      "color": "#67bbff",
+      "id": 191,
+      "end": 176
+    },
+    "218": {
+      "style": "solid",
+      "width": 4,
+      "begin": 212,
+      "title": "",
+      "color": "#ff0000",
+      "id": 218,
+      "end": 100
+    },
+    "236": {
+      "style": "solid",
+      "width": 1,
+      "begin": 231,
+      "title": "",
+      "color": "#000000",
+      "id": 236,
+      "end": 234
+    },
+    "206": {
+      "style": "solid",
+      "width": 1,
+      "begin": 200,
+      "title": "",
+      "color": "#000000",
+      "id": 206,
+      "end": 166
+    },
+    "228": {
+      "style": "solid",
+      "width": 3,
+      "begin": 160,
+      "title": "",
+      "color": "#ff66a8",
+      "id": 228,
+      "end": 222
+    },
+    "192": {
+      "style": "solid",
+      "width": 2,
+      "begin": 100,
+      "title": "",
+      "color": "#67bbff",
+      "id": 192,
+      "end": 178
+    },
+    "226": {
+      "style": "solid",
+      "width": 3,
+      "begin": 222,
+      "title": "",
+      "color": "#ff66a8",
+      "id": 226,
+      "end": 224
+    },
+    "232": {
+      "style": "solid",
+      "width": 3,
+      "begin": 224,
+      "title": "",
+      "color": "#ff66a8",
+      "id": 232,
+      "end": 231
+    },
+    "203": {
+      "style": "solid",
+      "width": 1,
+      "begin": 168,
+      "title": "",
+      "color": "#000000",
+      "id": 203,
+      "end": 198
+    },
+    "188": {
+      "style": "solid",
+      "width": 2,
+      "begin": 176,
+      "title": "",
+      "color": "#67bbff",
+      "id": 188,
+      "end": 178
+    },
+    "213": {
+      "style": "solid",
+      "width": 4,
+      "begin": 120,
+      "title": "",
+      "color": "#ff0000",
+      "id": 213,
+      "end": 208
+    },
+    "225": {
+      "style": "solid",
+      "width": 3,
+      "begin": 220,
+      "title": "",
+      "color": "#ff66a8",
+      "id": 225,
+      "end": 222
+    },
+    "194": {
+      "style": "solid",
+      "width": 2,
+      "begin": 172,
+      "title": "",
+      "color": "#67bbff",
+      "id": 194,
+      "end": 53
+    },
+    "202": {
+      "style": "solid",
+      "width": 1,
+      "begin": 196,
+      "title": "",
+      "color": "#000000",
+      "id": 202,
+      "end": 154
+    },
+    "229": {
+      "style": "solid",
+      "width": 3,
+      "begin": 100,
+      "title": "",
+      "color": "#ff66a8",
+      "id": 229,
+      "end": 224
+    },
+    "215": {
+      "style": "solid",
+      "width": 4,
+      "begin": 168,
+      "title": "",
+      "color": "#ff0000",
+      "id": 215,
+      "end": 210
+    },
+    "187": {
+      "style": "solid",
+      "width": 2,
+      "begin": 174,
+      "title": "",
+      "color": "#67bbff",
+      "id": 187,
+      "end": 176
+    }
+  },
+  "models": {
+    "259": {
+      "width": 20,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 259,
+      "height": 20,
+      "title": "",
+      "x_offset": 593,
+      "y_offset": 176,
+      "name": "model_259",
+      "datasource": ""
+    },
+    "263": {
+      "width": 20,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 263,
+      "height": 20,
+      "title": "",
+      "x_offset": 890,
+      "y_offset": 384,
+      "name": "model_263",
+      "datasource": ""
+    },
+    "70": {
+      "width": 0,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 70,
+      "height": 0,
+      "title": "",
+      "x_offset": 0,
+      "y_offset": 0,
+      "name": "model_70",
+      "datasource": ""
+    },
+    "28": {
+      "width": 113,
+      "init_value": "n/a",
+      "vmap": {
+        "48802019-335a-4f3c-b6b5-d5cd8ff6c47e": {
+          "h_scale": 0,
+          "value": "*",
+          "img": "/static/imgs/linkage.png",
+          "v_scale": 0,
+          "id": "48802019-335a-4f3c-b6b5-d5cd8ff6c47e",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 28,
+      "height": 48,
+      "title": "powered by jmodel",
+      "x_offset": 65,
+      "y_offset": 554,
+      "name": "model_28",
+      "datasource": ""
+    },
+    "223": {
+      "width": 37,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 223,
+      "height": 36,
+      "title": "",
+      "x_offset": 833,
+      "y_offset": 528,
+      "name": "model_223",
+      "datasource": ""
+    },
+    "99": {
+      "width": 85,
+      "init_value": "n/a",
+      "vmap": {
+        "b04b5d2a-f855-41ec-b4e4-47b2373827b1": {
+          "h_scale": 0,
+          "value": "*",
+          "img": "/static/linkage/d10070e2-317e-4e22-a220-1a7148f82c40/b04b5d2a-f855-41ec-b4e4-47b2373827b1-2015129153226512_MUK7.jpg",
+          "v_scale": 0,
+          "id": "b04b5d2a-f855-41ec-b4e4-47b2373827b1",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 99,
+      "height": 90,
+      "title": "1#储能变流器-250KW",
+      "x_offset": 833,
+      "y_offset": 420,
+      "name": "model_99",
+      "datasource": ""
+    },
+    "211": {
+      "width": 80,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 211,
+      "height": 20,
+      "title": "550V直流母线",
+      "x_offset": 695,
+      "y_offset": 420,
+      "name": "model_211",
+      "datasource": ""
+    },
+    "161": {
+      "width": 85,
+      "init_value": "n/a",
+      "vmap": {
+        "b04b5d2a-f855-41ec-b4e4-47b2373827b1": {
+          "h_scale": 0,
+          "value": "*",
+          "img": "/static/linkage/d10070e2-317e-4e22-a220-1a7148f82c40/b04b5d2a-f855-41ec-b4e4-47b2373827b1-2015129153226512_MUK7.jpg",
+          "v_scale": 0,
+          "id": "b04b5d2a-f855-41ec-b4e4-47b2373827b1",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 161,
+      "height": 90,
+      "title": "3#储能变流器-250KW",
+      "x_offset": 238,
+      "y_offset": 420,
+      "name": "model_161",
+      "datasource": ""
+    },
+    "69": {
+      "width": 0,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 69,
+      "height": 0,
+      "title": "",
+      "x_offset": 0,
+      "y_offset": 0,
+      "name": "model_69",
+      "datasource": ""
+    },
+    "171": {
+      "width": 169,
+      "init_value": "n/a",
+      "vmap": {
+        "2c032e51-f759-48d3-b23b-3749579eb9c4": {
+          "h_scale": 0,
+          "value": "*",
+          "img": "/static/linkage/library/switch.png",
+          "v_scale": 0,
+          "id": "2c032e51-f759-48d3-b23b-3749579eb9c4",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 171,
+      "height": 67,
+      "title": "1000M交换机",
+      "x_offset": 1038,
+      "y_offset": 326,
+      "name": "model_171",
+      "datasource": ""
+    },
+    "221": {
+      "width": 45,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 221,
+      "height": 20,
+      "title": "300V交流母线",
+      "x_offset": 538,
+      "y_offset": 528,
+      "name": "model_221",
+      "datasource": ""
+    },
+    "195": {
+      "width": 35,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 195,
+      "height": 39,
+      "title": "",
+      "x_offset": 238,
+      "y_offset": 66,
+      "name": "model_195",
+      "datasource": ""
+    },
+    "68": {
+      "width": 0,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 68,
+      "height": 0,
+      "title": "",
+      "x_offset": 0,
+      "y_offset": 0,
+      "name": "model_68",
+      "datasource": ""
+    },
+    "177": {
+      "width": 33,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 177,
+      "height": 35,
+      "title": "",
+      "x_offset": 833,
+      "y_offset": 326,
+      "name": "model_177",
+      "datasource": ""
+    },
+    "153": {
+      "width": 85,
+      "init_value": "n/a",
+      "vmap": {
+        "b04b5d2a-f855-41ec-b4e4-47b2373827b1": {
+          "h_scale": 0,
+          "value": "*",
+          "href": "",
+          "img": "/static/linkage/library/audio-card.svg",
+          "v_scale": 0,
+          "id": "b04b5d2a-f855-41ec-b4e4-47b2373827b1",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 153,
+      "height": 90,
+      "title": "3#BMS",
+      "x_offset": 238,
+      "y_offset": 211,
+      "name": "model_153",
+      "datasource": ""
+    },
+    "167": {
+      "width": 44,
+      "init_value": "n/a",
+      "vmap": {
+        "03fe06d4-386b-4b6c-94df-9ccda4549c6a": {
+          "h_scale": 0,
+          "value": "*",
+          "href": "",
+          "img": "/static/linkage/library/battery-full.png",
+          "v_scale": 0,
+          "id": "03fe06d4-386b-4b6c-94df-9ccda4549c6a",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": true,
+      "comment": "",
+      "id": 167,
+      "height": 64,
+      "title": "2#电池堆 2MWh",
+      "x_offset": 393,
+      "y_offset": 66,
+      "name": "model_167",
+      "datasource": ""
+    },
+    "207": {
+      "width": 77,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 207,
+      "height": 20,
+      "title": "550V直流母线",
+      "x_offset": 102,
+      "y_offset": 420,
+      "name": "model_207",
+      "datasource": ""
+    },
+    "237": {
+      "width": 48,
+      "init_value": "n/a",
+      "vmap": {
+        "13cb0a17-5794-4315-bffa-e2a526bcb22c": {
+          "h_scale": 0,
+          "value": "1",
+          "href": "/history/current/all/",
+          "img": "/static/linkage/library/security-low.svg",
+          "v_scale": 0,
+          "id": "13cb0a17-5794-4315-bffa-e2a526bcb22c",
+          "degree": 0,
+          "name": "故障状态"
+        },
+        "5be55b80-46dd-453c-8618-625e7310af62": {
+          "value": "0",
+          "h_scale": 0,
+          "img": "/static/linkage/library/security-high.svg",
+          "href": "",
+          "v_scale": 0,
+          "id": "5be55b80-46dd-453c-8618-625e7310af62",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 237,
+      "height": 44,
+      "title": "系统状态",
+      "x_offset": 998,
+      "y_offset": 35,
+      "name": "model_237",
+      "datasource": "/SCADA/系统总故障"
+    },
+    "262": {
+      "width": 20,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 262,
+      "height": 20,
+      "title": "",
+      "x_offset": 594,
+      "y_offset": 383,
+      "name": "model_262",
+      "datasource": ""
+    },
+    "255": {
+      "width": 20,
+      "init_value": "n/a",
+      "vmap": {
+        "6dab53f8-e0f0-4d95-90a9-bf32e2b50876": {
+          "value": "1",
+          "h_scale": 0,
+          "img": "/static/linkage/library/emblem-important.svg",
+          "href": "",
+          "v_scale": 0,
+          "id": "6dab53f8-e0f0-4d95-90a9-bf32e2b50876",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 255,
+      "height": 20,
+      "title": "",
+      "x_offset": 156,
+      "y_offset": 31,
+      "name": "model_255",
+      "datasource": "/BMS数据块/2/BMS遥信信息/BMS通信故障"
+    },
+    "173": {
+      "width": 33,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 173,
+      "height": 35,
+      "title": "",
+      "x_offset": 238,
+      "y_offset": 326,
+      "name": "model_173",
+      "datasource": ""
+    },
+    "257": {
+      "width": 32,
+      "init_value": "n/a",
+      "vmap": {
+        "f915683a-5524-4a4b-8348-e34fd8db6e64": {
+          "value": "*",
+          "h_scale": 0,
+          "img": "/static/linkage/library/emblem-important.svg",
+          "href": "/history/current/all/",
+          "v_scale": 0,
+          "id": "f915683a-5524-4a4b-8348-e34fd8db6e64",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 257,
+      "height": 36,
+      "title": "",
+      "x_offset": 728,
+      "y_offset": 44,
+      "name": "model_257",
+      "datasource": ""
+    },
+    "233": {
+      "width": 80,
+      "init_value": "n/a",
+      "vmap": {
+        "8197b4b1-5ab2-4a7b-902f-0d9a3919ee10": {
+          "h_scale": 0,
+          "value": "*",
+          "href": "",
+          "img": "/static/linkage/library/avatar-default.png",
+          "v_scale": 0,
+          "id": "8197b4b1-5ab2-4a7b-902f-0d9a3919ee10",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 233,
+      "height": 80,
+      "title": "用户",
+      "x_offset": 1089,
+      "y_offset": 528,
+      "name": "model_233",
+      "datasource": ""
+    },
+    "165": {
+      "width": 85,
+      "init_value": "n/a",
+      "vmap": {
+        "b04b5d2a-f855-41ec-b4e4-47b2373827b1": {
+          "h_scale": 0,
+          "value": "*",
+          "href": "",
+          "img": "/static/linkage/library/audio-card.svg",
+          "v_scale": 0,
+          "id": "b04b5d2a-f855-41ec-b4e4-47b2373827b1",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 165,
+      "height": 90,
+      "title": "1#BMS",
+      "x_offset": 833,
+      "y_offset": 211,
+      "name": "model_165",
+      "datasource": ""
+    },
+    "31": {
+      "width": 48,
+      "init_value": "n/a",
+      "vmap": {
+        "b779e464-18e4-4907-ab9b-edabff0a9cad": {
+          "h_scale": 0,
+          "value": "1",
+          "img": "/static/linkage/d10070e2-317e-4e22-a220-1a7148f82c40/4fe3f964-67af-45e7-8433-d91d1a2af3e1-stock_volume-mute.png",
+          "v_scale": 0,
+          "id": "b779e464-18e4-4907-ab9b-edabff0a9cad",
+          "degree": 0,
+          "name": "默认值"
+        },
+        "85b87694-5479-4e52-b77e-9c1348aee433": {
+          "h_scale": 0,
+          "value": "0",
+          "img": "/static/linkage/d10070e2-317e-4e22-a220-1a7148f82c40/06e9fbb6-d6f5-4810-af18-d9183dde895f-stock_volume-max.png",
+          "v_scale": 0,
+          "id": "85b87694-5479-4e52-b77e-9c1348aee433",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 31,
+      "height": 44,
+      "title": "蜂鸣器",
+      "x_offset": 1077,
+      "y_offset": 36,
+      "name": "model_31",
+      "datasource": "/SCADA/蜂鸣器遥控点"
+    },
+    "261": {
+      "width": 20,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 261,
+      "height": 20,
+      "title": "",
+      "x_offset": 292,
+      "y_offset": 387,
+      "name": "model_261",
+      "datasource": ""
+    },
+    "199": {
+      "width": 35,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 199,
+      "height": 39,
+      "title": "",
+      "x_offset": 831,
+      "y_offset": 66,
+      "name": "model_199",
+      "datasource": ""
+    },
+    "159": {
+      "width": 85,
+      "init_value": "n/a",
+      "vmap": {
+        "b04b5d2a-f855-41ec-b4e4-47b2373827b1": {
+          "h_scale": 0,
+          "value": "*",
+          "img": "/static/linkage/d10070e2-317e-4e22-a220-1a7148f82c40/b04b5d2a-f855-41ec-b4e4-47b2373827b1-2015129153226512_MUK7.jpg",
+          "v_scale": 0,
+          "id": "b04b5d2a-f855-41ec-b4e4-47b2373827b1",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 159,
+      "height": 90,
+      "title": "2#储能变流器-250KW",
+      "x_offset": 538,
+      "y_offset": 420,
+      "name": "model_159",
+      "datasource": ""
+    },
+    "163": {
+      "width": 85,
+      "init_value": "n/a",
+      "vmap": {
+        "b04b5d2a-f855-41ec-b4e4-47b2373827b1": {
+          "h_scale": 0,
+          "value": "*",
+          "href": "",
+          "img": "/static/linkage/library/audio-card.svg",
+          "v_scale": 0,
+          "id": "b04b5d2a-f855-41ec-b4e4-47b2373827b1",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 163,
+      "height": 90,
+      "title": "2#BMS",
+      "x_offset": 538,
+      "y_offset": 211,
+      "name": "model_163",
+      "datasource": ""
+    },
+    "109": {
+      "width": 85,
+      "init_value": "n/a",
+      "vmap": {
+        "b779e464-18e4-4907-ab9b-edabff0a9cad": {
+          "h_scale": 0,
+          "value": "1",
+          "img": "/static/linkage/d10070e2-317e-4e22-a220-1a7148f82c40/b779e464-18e4-4907-ab9b-edabff0a9cad-gtk-dialog-warning.png",
+          "v_scale": 0,
+          "id": "b779e464-18e4-4907-ab9b-edabff0a9cad",
+          "degree": 0,
+          "name": "默认值"
+        },
+        "85b87694-5479-4e52-b77e-9c1348aee433": {
+          "h_scale": 0,
+          "value": "0",
+          "img": "/static/linkage/d10070e2-317e-4e22-a220-1a7148f82c40/85b87694-5479-4e52-b77e-9c1348aee433-error.png",
+          "v_scale": 0,
+          "id": "85b87694-5479-4e52-b77e-9c1348aee433",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 109,
+      "height": 90,
+      "title": "",
+      "x_offset": 725,
+      "y_offset": -540,
+      "name": "model_109",
+      "datasource": "/SCADA/蜂鸣器遥控点"
+    },
+    "119": {
+      "width": 44,
+      "init_value": "n/a",
+      "vmap": {
+        "03fe06d4-386b-4b6c-94df-9ccda4549c6a": {
+          "h_scale": 0,
+          "value": "*",
+          "href": "",
+          "img": "/static/linkage/library/battery-full.png",
+          "v_scale": 0,
+          "id": "03fe06d4-386b-4b6c-94df-9ccda4549c6a",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": true,
+      "comment": "",
+      "id": 119,
+      "height": 64,
+      "title": "3#电池堆 2MWh",
+      "x_offset": 101,
+      "y_offset": 66,
+      "name": "model_119",
+      "datasource": ""
+    },
+    "197": {
+      "width": 35,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 197,
+      "height": 39,
+      "title": "",
+      "x_offset": 538,
+      "y_offset": 66,
+      "name": "model_197",
+      "datasource": ""
+    },
+    "230": {
+      "width": 80,
+      "init_value": "n/a",
+      "vmap": {
+        "144aae3e-31bb-45af-ab13-b6af963137eb": {
+          "h_scale": 0,
+          "value": "*",
+          "img": "/static/linkage/library/transform.jpg",
+          "v_scale": 0,
+          "id": "144aae3e-31bb-45af-ab13-b6af963137eb",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 230,
+      "height": 80,
+      "title": "隔离变压器",
+      "x_offset": 950,
+      "y_offset": 528,
+      "name": "model_230",
+      "datasource": ""
+    },
+    "67": {
+      "width": 0,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 67,
+      "height": 0,
+      "title": "",
+      "x_offset": 0,
+      "y_offset": 0,
+      "name": "model_67",
+      "datasource": ""
+    },
+    "258": {
+      "width": 20,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 258,
+      "height": 20,
+      "title": "",
+      "x_offset": 292,
+      "y_offset": 178,
+      "name": "model_258",
+      "datasource": ""
+    },
+    "256": {
+      "width": 20,
+      "init_value": "n/a",
+      "vmap": {
+        "49c02179-b4d8-4eed-bce3-3f533cb64c42": {
+          "value": "1",
+          "h_scale": 0,
+          "img": "/static/linkage/library/emblem-important.svg",
+          "href": "",
+          "v_scale": 0,
+          "id": "49c02179-b4d8-4eed-bce3-3f533cb64c42",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 256,
+      "height": 20,
+      "title": "",
+      "x_offset": 448,
+      "y_offset": 30,
+      "name": "model_256",
+      "datasource": "/BMS数据块/1/BMS遥信信息/BMS通信故障"
+    },
+    "209": {
+      "width": 78,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 209,
+      "height": 20,
+      "title": "550V直流母线",
+      "x_offset": 392,
+      "y_offset": 420,
+      "name": "model_209",
+      "datasource": ""
+    },
+    "247": {
+      "width": 44,
+      "init_value": "n/a",
+      "vmap": {
+        "46bc958e-ccae-4cc7-b4a0-dab758111d65": {
+          "h_scale": 0,
+          "value": "*",
+          "href": "",
+          "img": "/static/linkage/library/battery-full.png",
+          "v_scale": 0,
+          "id": "46bc958e-ccae-4cc7-b4a0-dab758111d65",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": true,
+      "comment": "",
+      "id": 247,
+      "height": 64,
+      "title": "",
+      "x_offset": 695,
+      "y_offset": 66,
+      "name": "model_247",
+      "datasource": ""
+    },
+    "260": {
+      "width": 20,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 260,
+      "height": 20,
+      "title": "",
+      "x_offset": 888,
+      "y_offset": 178,
+      "name": "model_260",
+      "datasource": ""
+    },
+    "175": {
+      "width": 33,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 175,
+      "height": 35,
+      "title": "",
+      "x_offset": 538,
+      "y_offset": 326,
+      "name": "model_175",
+      "datasource": ""
+    },
+    "219": {
+      "width": 37,
+      "init_value": "n/a",
+      "vmap": {},
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 219,
+      "height": 36,
+      "title": "",
+      "x_offset": 238,
+      "y_offset": 528,
+      "name": "model_219",
+      "datasource": ""
+    },
+    "52": {
+      "width": 146,
+      "init_value": "n/a",
+      "vmap": {
+        "41403473-70ff-4e80-a9c8-0e1bc0de7f8d": {
+          "h_scale": 0,
+          "value": "*",
+          "img": "/static/linkage/library/Terminal.png",
+          "v_scale": 0,
+          "id": "41403473-70ff-4e80-a9c8-0e1bc0de7f8d",
+          "degree": 0,
+          "name": "默认值"
+        }
+      },
+      "font_size": 10,
+      "showed": false,
+      "show_boarder": false,
+      "comment": "",
+      "id": 52,
+      "height": 101,
+      "title": "SCADA",
+      "x_offset": 1035,
+      "y_offset": 162,
+      "name": "model_52",
+      "datasource": ""
+    }
+  },
+  "libraries": {},
+  "name": "测试站2"
+}

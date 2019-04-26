@@ -31,6 +31,35 @@ ClickSelectStack.prototype.active_links = function() {
 };
 
 
+let jDomMask = function(painter) {
+    // 绘制位置的父节点
+    this.parent = painter.dom.parentNode;
+
+    // 创建一个字符绘制蒙版
+    this.dom = document.createElement('div');
+    this.dom.id = painter.dom_id + '_text';
+    this.parent.appendChild(this.dom);
+
+    let text_dom_style = "display: block; position: absolute; float: left; ";
+
+    text_dom_style += "top: " + painter.master_dom.offsetTop + 'px;';
+    text_dom_style += "left: " + painter.master_dom.offsetLeft + 'px;';
+    text_dom_style += "width: " + painter.size.get_width() + "px;";
+    text_dom_style += "height: " + painter.size.get_height() + 'px;';
+    text_dom_style += "border: black solid 1px;";
+
+    this.dom.style.cssText = text_dom_style;
+
+    // 新建的dom对象
+    this.doms = {};
+};
+jDomMask.prototype.create_edit_box_for_model = function(id, text) {
+    if (this.doms.hasOwnProperty(id)) {
+        this.doms[id].innerText = text;
+    }
+};
+
+
 /**
  * jmodels 的模型对象编辑器
  * 主要功能：
@@ -100,6 +129,7 @@ let JEditor = function (painter) {
     // 编辑区空白处点击事件, 点击空白区域后清空选择栈中的全部对象
     //painter.empty_event_listener.onmousedown(this.select_stack.empty);
 
+    this.dom_mask = new jDomMask(painter);
     return this;
 };
 

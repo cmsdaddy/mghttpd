@@ -33,3 +33,9 @@ let jSize = function (width, height) {
     this.width = width;
     this.height = height;
 };
+jSize.prototype.get_width = function () {
+    return this.width;
+};
+jSize.prototype.get_height = function () {
+    return this.height;
+};
