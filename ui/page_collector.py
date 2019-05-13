@@ -17,7 +17,8 @@ import xlrd
 import re
 import uuid
 
-profile_path = scada.profile_dir_path + '/collector.json'
+
+profile_path = scada.collector_profile_path + '/profile.json'
 
 
 def read_collector_profile_without_error():

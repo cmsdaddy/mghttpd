@@ -32,7 +32,7 @@ if not os.path.exists(documents_dir_path):
     os.mkdir(documents_dir_path, 0o777)
 
 # 日志文件存放目录
-log_dir_path = os.path.dirname(project_dir_path) + '/log'
+log_dir_path = project_dir_path + '/log'
 print("日志存放目录: {}".format(log_dir_path))
 if not os.path.exists(log_dir_path):
     os.mkdir(log_dir_path, 0o777)
@@ -52,3 +52,9 @@ linkage_source_path = static_dir_path + '/linkage'
 print("一次图方案静态资源存放根目录: {}".format(linkage_source_path))
 if not os.path.exists(linkage_source_path):
     os.mkdir(linkage_source_path, 0o777)
+
+# 采集器配置数据存放目录
+collector_profile_path = profile_dir_path + '/collector'
+print("采集器配置数据存放目录: {}".format(collector_profile_path))
+if not os.path.exists(collector_profile_path):
+    os.mkdir(collector_profile_path, 0o777)

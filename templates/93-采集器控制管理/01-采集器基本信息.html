@@ -85,6 +85,33 @@
         </div>
 
         <div class="row">
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="mysql_host">MySQL 服务器地址</label>
+                    <input class="form-control" type="text" required value="{{ mysql_host }}" placeholder="eg: 127.0.0.1" id="mysql_host" name="mysql_host">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="mysql_port">MySQL 服务器端口</label>
+                    <input class="form-control" type="text" required  value="{{ mysql_port }}" placeholder="eg: 3306" id="mysql_port" name="mysql_port">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="mysql_username">用户名</label>
+                    <input class="form-control" type="text" required value="{{ mysql_username }}" placeholder="eg: root" id="mysql_username" name="mysql_username">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="mysql_password">密码</label>
+                    <input class="form-control" type="text" required value="{{ mysql_password }}" placeholder="eg: password" id="mysql_password" name="mysql_password">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-xs-offset-10 col-xs-2">
                 <input type="submit" class="btn btn-block btn-success" value="保存">
             </div>

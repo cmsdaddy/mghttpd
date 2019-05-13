@@ -310,13 +310,21 @@ def linkage_collector_value_as_json(request, lid):
 
     data = dict()
     collector = dict(status='ok', data=data)
+    datasource_map = dict()
     for nid, model in models.items():
         if model['datasource'] == '':
             continue
 
-        path = model['datasource']
-        data[nid] = mg.read(path)
-        print(nid, model['name'], model['datasource'])
+        p = model['datasource']
+        try:
+            datasource_map[p].append(nid)
+        except KeyError:
+            datasource_map[p] = [nid]
+
+    for p in datasource_map.keys():
+        value = mg.read(p)
+        for nid in datasource_map[p]:
+            data[nid] = value
 
     return JsonResponse(collector, safe=False)
 
@@ -562,6 +570,18 @@ def get_actived_linkage():
                 pass
 
     return actived
+
+
+def list_all_user_defined_inode(request):
+    pass
+
+
+def new_user_defined_inode(request):
+    return render(request, "95-系统一次图编辑显示管理/03-库文件/")
+
+
+def edit_user_defined_inode(request, iid):
+    pass
 
 
 urlpatterns = [

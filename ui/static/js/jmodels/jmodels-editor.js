@@ -129,7 +129,7 @@ let JEditor = function (painter) {
     // 编辑区空白处点击事件, 点击空白区域后清空选择栈中的全部对象
     //painter.empty_event_listener.onmousedown(this.select_stack.empty);
 
-    this.dom_mask = new jDomMask(painter);
+    //this.dom_mask = new jDomMask(painter);
     return this;
 };
 

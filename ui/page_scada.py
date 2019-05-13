@@ -5,7 +5,7 @@ import json
 import time
 from django.shortcuts import render
 from django.http import *
-from django.urls import path
+from django.urls import path, reverse
 from ui.models import *
 from django.db.models import *
 import ui.mg as mg
@@ -44,10 +44,18 @@ def show_alarm_control_page(request):
     return render(request, "06-SCADA设备/01-全局状态及控制.html", context=context)
 
 
+def show_scada_configure(request):
+    if request.method == 'GET':
+        return 0
+
+    return HttpResponseRedirect(reverse("scada configure"))
+
+
 urlpatterns = [
     # 蜂鸣器状态展示
     path('', lambda request: show_alarm_control_page(request)),
     path('beep/control/', lambda request: show_alarm_control_page(request)),
+    path('config/', lambda request: show_alarm_control_page(request), name="scada configure"),
 ]
 
 

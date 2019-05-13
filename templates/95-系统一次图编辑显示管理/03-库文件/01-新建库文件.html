@@ -1,0 +1,33 @@
+{% extends "theme/base-1-10-1.html" %}
+
+{% block meta_block %}{% endblock %}
+
+{% block title %}新建库文件{% endblock %}
+
+{% block js_library %}
+{% include "theme/01-js-library.html" %}
+{% endblock %}
+
+{% block css_library %}
+{% include "theme/02-css-library.html" %}
+{% endblock %}
+
+{% block inline_js %}
+{% endblock %}
+{% block inline_css %}{% endblock %}
+
+{% block page_header %}
+    {% include "95-系统一次图编辑显示管理/base-linkage-顶部标题栏.html" %}
+{% endblock %}
+
+{% block menu_tabs %}
+{% endblock %}
+
+{% block main_body %}
+{# 在这里添加你的代码 #}
+    <h1 class="text-danger">ID={{ nid }}的节点不存在.</h1>
+    <a class="btn btn-default" href="{% url 'design linkage profile' id %}">返回编辑</a>
+{% endblock %}
+
+{% block bottom_color_bar %}
+{% endblock %}
