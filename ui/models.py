@@ -8,8 +8,8 @@ class HistoryRecord(models.Model):
     kind = models.CharField(default="system", max_length=60, help_text="类型名称")
     code = models.IntegerField(default=0, blank=True, null=True, help_text="事件代码")
     datetime = models.DateTimeField(default="2018-01-01 00:00:00.000", help_text="事件产生时戳")
-    master = models.IntegerField(default=0, blank=True, null=True, help_text="设备主索引号")
-    slave = models.IntegerField(default=0, blank=True, null=True, help_text="设备次索引号")
+    main = models.IntegerField(default=0, blank=True, null=True, help_text="设备主索引号")
+    subordinate = models.IntegerField(default=0, blank=True, null=True, help_text="设备次索引号")
     body = models.TextField(default="无", help_text="事件内容")
     user = models.CharField(default="root", max_length=30, help_text="事件记录人")
 
